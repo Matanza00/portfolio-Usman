@@ -165,7 +165,7 @@ body.menu-open .menu__links a:nth-child(2){transition-delay:.05s}body.menu-open 
 .stage__pin{position:sticky;top:0;height:100svh;overflow:hidden;background:#000;isolation:isolate}
 .scene{position:absolute;inset:0;pointer-events:none}
 .layer{position:absolute;inset:0;z-index:1;opacity:0;will-change:opacity,transform}
-.layer video{width:100%;height:100%;object-fit:cover}
+.layer video{position:relative;width:100%;height:100%;object-fit:cover}
 .stage__gl{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none}
 .stage__pin::before{content:"";position:absolute;inset:0 0 auto 0;height:24vh;z-index:4;pointer-events:none;background:linear-gradient(rgba(0,0,0,.55),transparent)}
 .stage__pin::after{content:"";position:absolute;inset:auto 0 0 0;height:22vh;z-index:4;pointer-events:none;background:linear-gradient(transparent,rgba(7,6,8,.8) 70%,var(--bg))}
@@ -209,6 +209,7 @@ body.menu-open .menu__links a:nth-child(2){transition-delay:.05s}body.menu-open 
 /* hero scene 2: the tub in 3D, and its details panel */
 .layer--tub{background:radial-gradient(60% 60% at 42% 50%,#1b140d 0%,#0b0908 55%,#050405 100%)}
 .layer__still{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.layer--spot .layer__still{filter:brightness(.8) contrast(1.06)}
 .layer--tub.has-gl .layer__still{display:none}
 .tub-gl{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;touch-action:pan-y}
 .scene.live .tub-gl{pointer-events:auto}
@@ -1641,7 +1642,7 @@ float field(vec2 q){
     if (P.w < 0.001) continue;
     vec2 ba = -uV[i].xy * 0.05, pa = q - P.xy;
     float h = clamp(dot(pa, ba) / max(dot(ba, ba), 1e-6), 0.0, 1.0);
-    d = smin(d, length(pa - ba * h) - P.w * (1.0 - 0.5 * h), 0.08);
+    d = smin(d, length(pa - ba * h) - P.w * (1.0 - 0.5 * h), 0.1);
   }
   return d;
 }
@@ -1703,9 +1704,9 @@ function mountSplash(canvas, { host, delay = 0.6 } = {}) {
   const burst = () => {
     const add = (o) => parts.push(Object.assign({ kind: "spl", x: 0, y: 0, vx: 0, vy: 0, age: 0, g: 1, drag: 0 }, o, { r: o.r0 }));
     add({ core: true, vy: 0.25, r0: 0.25, life: 1.7, g: 0.25 });
-    add({ core: true, vx: -1.5, vy: 0.4, r0: 0.17, life: 1.3, g: 0.4, drag: 2.2 });
-    add({ core: true, vx: 1.5, vy: 0.45, r0: 0.17, life: 1.3, g: 0.4, drag: 2.2 });
-    for (let i = 0; i < 11; i++) { const a = ((16 + (148 * i) / 10 + (rnd() - 0.5) * 10) * Math.PI) / 180, s = 2.3 + rnd() * 1.3; add({ vx: Math.cos(a) * s * 1.15, vy: Math.sin(a) * s, r0: 0.05 + rnd() * 0.035, life: 1.7 + rnd() * 0.7 }); }
+    add({ core: true, vx: -1.5, vy: 0.4, r0: 0.17, life: 1.6, g: 0.4, drag: 2.2 });
+    add({ core: true, vx: 1.5, vy: 0.45, r0: 0.17, life: 1.6, g: 0.4, drag: 2.2 });
+    for (let i = 0; i < 11; i++) { const a = ((16 + (148 * i) / 10 + (rnd() - 0.5) * 10) * Math.PI) / 180, s = 2.3 + rnd() * 1.3; add({ vx: Math.cos(a) * s * 1.15, vy: Math.sin(a) * s, r0: 0.058 + rnd() * 0.04, life: 1.7 + rnd() * 0.7 }); }
     for (let i = 0; i < 8; i++) { const a = ((-20 + rnd() * 220) * Math.PI) / 180, s = 3.4 + rnd() * 1.4; add({ vx: Math.cos(a) * s, vy: Math.sin(a) * s, r0: 0.022 + rnd() * 0.018, life: 1.1 + rnd() * 0.4 }); }
     for (const sx of [-1, 1]) add({ vx: 3 * sx, vy: 0.15, r0: 0.075, life: 1.4, drag: 0.6 });
   };
@@ -1719,7 +1720,7 @@ function mountSplash(canvas, { host, delay = 0.6 } = {}) {
       if (p.drag) p.vx *= Math.exp(-p.drag * dt);
       p.x += p.vx * dt; p.y += p.vy * dt;
       if (p.kind === "drop") {
-        if (p.side * p.x >= -0.02) { p.r0 = 0; if (p.head && !fired) { fired = true; burst(); } }   // reached the middle: absorbed
+        if (p.side * p.x <= 0.02) { p.r0 = 0; if (p.head && !fired) { fired = true; burst(); } }   // reached the middle: absorbed
       } else {
         const k = Math.max(0, 1 - p.age / p.life);
         p.r = p.core ? p.r0 * (0.75 + 0.25 * Math.min(1, p.age / 0.15)) * Math.pow(k, 0.8) : p.r0 * Math.pow(k, 0.55);
@@ -1728,8 +1729,10 @@ function mountSplash(canvas, { host, delay = 0.6 } = {}) {
     }
     for (let i = parts.length - 1; i >= 0; i--) if (parts[i].r0 <= 0) parts.splice(i, 1);
   };
+  const FREEZE = Q.has("splash") ? +Q.get("splash") : null;   // test hook: hold the splash at a moment
+  if (FREEZE != null) { clock = -1 / 60; for (let t = 0; t < FREEZE + 1 / 60; t += 1 / 60) step(1 / 60); }
   const loop = frameLoop((dt, time) => {
-    step(Math.min(dt, 1 / 30) * 0.85);   // a touch of slow motion
+    if (FREEZE == null) step(Math.min(dt, 1 / 30) * 0.85);   // a touch of slow motion
     u.uTime.value = time;
     let x0 = 9, y0 = 9, x1 = -9, y1 = -9, n = 0;
     for (let i = 0; i < N; i++) {
@@ -1896,7 +1899,10 @@ function mountTub(canvas, { host, flavor = "raspberry", onPick } = {}) {
     if (!drag) {
       vel *= Math.exp(-dt * 2.4);
       ang += ((open ? 0 : 0.32) + vel) * dt;
-      if (open && Math.abs(vel) < 0.4) { const front = Math.round(ang / (Math.PI * 2)) * Math.PI * 2; ang += (front - ang) * (1 - Math.exp(-dt * 2.6)); }   // settle with the label facing you
+      if (open && Math.abs(vel) < 0.4) {   // settle with the label turned to the camera
+        const face = Math.atan2(-rig.position.x, camera.position.z), front = Math.round((ang - face) / (Math.PI * 2)) * Math.PI * 2 + face;
+        ang += (front - ang) * (1 - Math.exp(-dt * 2.6));
+      }
     }
     let extra = 0;
     if (swap) {   // a quick full turn hides the label change
@@ -2119,7 +2125,7 @@ function tubPanelHTML() {
 }
 const layerHTML = (s, i) => s.tub
   ? `<div class="layer layer--tub"><img class="layer__still" src="${A(s.poster)}" alt=""><canvas class="tub-gl" role="img" aria-label="${esc(t("x.tubAria"))}"></canvas></div>`
-  : `<div class="layer${s.spot ? " layer--spot" : ""}"><video muted playsinline preload="${i ? "metadata" : "auto"}" poster="${A(s.poster)}" aria-label="${s.alt}"><source src="${A(s.src)}" type="video/mp4"></video>${
+  : `<div class="layer${s.spot ? " layer--spot" : ""}"><img class="layer__still" src="${A(s.poster)}" alt=""><video muted playsinline preload="${i ? "metadata" : "auto"}" aria-label="${s.alt}"><source src="${A(s.src)}" type="video/mp4"></video>${
       s.splash ? `<canvas class="splash-gl" aria-hidden="true"></canvas>` : ""}${
       s.spot ? `<div class="spot" aria-hidden="true"><i class="spot__beam"></i><i class="spot__hit"></i><i class="spot__floor"></i></div>` : ""}</div>`;
 function stageHTML() {
@@ -2177,6 +2183,7 @@ function initStage(root) {
     splash = mountSplash($(".splash-gl", root), { host: root, delay: Math.max(0.5, (born - performance.now()) / 1000 + 0.5) });
     tub = mountTub($(".tub-gl", root), { host: root, onPick: () => setOpen(true) });
     if (tub) $(".layer--tub", root)?.classList.add("has-gl");
+    if (Q.has("tubopen")) setOpen(true);
     dirty = true;
   });
   let top = 0, range = 1, dirty = true;
