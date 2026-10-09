@@ -1,0 +1,1069 @@
+<title>Facility Management System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Public+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: a building operations desk. White sidebar with an emerald gradient marker, flat bordered cards on a warm
+   stone ground, a floor-by-floor tower diagram as the signature, emerald for action and brass for building identity. */
+:root{
+  color-scheme:light;
+  --ground:#F3F4F0; --card:#FFFFFF; --card-2:#F1F3EE; --line:#E0E5DD; --card-line:#E2E6DF; --hover:#F6F8F4; --field:#FFFFFF;
+  --ink:#14211C; --ink-2:#4A5852; --mute:#77857E;
+  --act:#0E8F6B; --act-fg:#0A7557; --act-tint:#DEF2E9; --focus:#0E8F6B;
+  --grad:linear-gradient(135deg,#1FBF8F 0%,#0E8F6B 52%,#0A6A58 100%);
+  --gold:#A27622; --gold-tint:#F6ECD3;
+  --ok:#1E9A55; --ok-tint:#DFF3E6; --warn:#B9770C; --warn-tint:#FBEFD4; --bad:#D4483B; --bad-tint:#FBE3E0;
+  --info:#2C79BC; --info-tint:#E1EDF8; --vio:#7657C6; --vio-tint:#EEE8FA;
+  --side-bg:#FFFFFF; --side-fg:#14211C; --side-fg-2:#56645E; --side-mute:#97A39D; --side-line:#E2E6DF; --side-hover:#F2F5F1;
+  --nav-on-bg:#E2F3EB; --nav-on-fg:#0A6A50; --nav-r:10px; --cnt-bg:#0E8F6B;
+  --navpill:#14211C; --navfg:#FFFFFF;
+  --top-bg:rgba(243,244,240,.86);
+  --shadow:none; --shadow-s:0 1px 2px rgba(20,33,28,.06); --btn-shadow:none;
+  --r:16px; --r-sm:12px; --well-r:11px; --btn-r:10px; --seg-r:8px; --search-r:10px; --ic-r:10px; --r-in:9px;
+  --f-display:'Outfit','Segoe UI',system-ui,sans-serif;
+  --f-body:'Public Sans','Segoe UI',system-ui,sans-serif;
+  --f-mono:ui-monospace,'Cascadia Mono',Consolas,monospace;
+  --wm-font:700 22px/1 var(--f-display); --wm-track:-.01em;
+  --h2-font:600 30px var(--f-display); --h3-font:600 17px var(--f-display); --kpi-font:600 34px var(--f-display); --h-track:-.02em;
+  --cam-a:#1A2420; --cam-b:#0C1210;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#0B1210; --card:#121B18; --card-2:#18231F; --line:#24322D; --card-line:#1E2B26; --hover:#16211D; --field:#0F1714;
+    --ink:#E7EFEA; --ink-2:#AFC0B8; --mute:#7F9188;
+    --act:#2BC294; --act-fg:#5FD9B0; --act-tint:#12332A; --focus:#2BC294;
+    --gold:#D9AE52; --gold-tint:#33290F;
+    --ok:#4CC97D; --ok-tint:#123222; --warn:#E5AE45; --warn-tint:#33270E; --bad:#F06A5C; --bad-tint:#3A1A16;
+    --info:#5FA8E6; --info-tint:#12263A; --vio:#A68BF0; --vio-tint:#231C40;
+    --side-bg:#0E1613; --side-fg:#E7EFEA; --side-fg-2:#9FB1A9; --side-mute:#62756C; --side-line:#1B2723; --side-hover:#15201C;
+    --nav-on-bg:#12332A; --nav-on-fg:#7DE3C0; --cnt-bg:#1F9E77;
+    --navpill:#E7EFEA; --navfg:#0B1210;
+    --top-bg:rgba(11,18,16,.86);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#0B1210; --card:#121B18; --card-2:#18231F; --line:#24322D; --card-line:#1E2B26; --hover:#16211D; --field:#0F1714;
+  --ink:#E7EFEA; --ink-2:#AFC0B8; --mute:#7F9188;
+  --act:#2BC294; --act-fg:#5FD9B0; --act-tint:#12332A; --focus:#2BC294;
+  --gold:#D9AE52; --gold-tint:#33290F;
+  --ok:#4CC97D; --ok-tint:#123222; --warn:#E5AE45; --warn-tint:#33270E; --bad:#F06A5C; --bad-tint:#3A1A16;
+  --info:#5FA8E6; --info-tint:#12263A; --vio:#A68BF0; --vio-tint:#231C40;
+  --side-bg:#0E1613; --side-fg:#E7EFEA; --side-fg-2:#9FB1A9; --side-mute:#62756C; --side-line:#1B2723; --side-hover:#15201C;
+  --nav-on-bg:#12332A; --nav-on-fg:#7DE3C0; --cnt-bg:#1F9E77;
+  --navpill:#E7EFEA; --navfg:#0B1210;
+  --top-bg:rgba(11,18,16,.86);
+}
+/* ===== Suite base: structure only. Every colour, font and radius comes from the app's tokens. ===== */
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font:500 14px/1.5 var(--f-body);-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;font-family:var(--f-display);line-height:1.15;text-wrap:balance}
+p{margin:0}
+button{font:inherit;color:inherit}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:var(--r-in,12px)}
+input::placeholder,textarea::placeholder{color:var(--mute)}
+select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--mute) 50%),linear-gradient(135deg,var(--mute) 50%,transparent 50%);background-position:calc(100% - 17px) 50%,calc(100% - 12px) 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:32px!important}
+small{display:block;font-size:12px;color:var(--mute);line-height:1.4}
+b{font-weight:700}
+em{font-style:normal;font-family:var(--f-display);font-weight:700;font-variant-numeric:tabular-nums}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.mono{font-family:var(--f-mono)}
+.num{font-variant-numeric:tabular-nums}
+.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none;display:inline-block;vertical-align:middle}
+.i.xs{width:14px;height:14px}
+.i.sm{width:16px;height:16px}
+.star{color:var(--warn);fill:currentColor;stroke:none}
+.grow{flex:1;min-width:0}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.stack{display:flex;flex-direction:column;gap:14px;min-width:0}
+.muted{color:var(--mute)}
+
+/* ---------- shell ---------- */
+.app{display:grid;grid-template-columns:var(--side-w,252px) minmax(0,1fr);min-height:100%}
+.side{background:var(--side-bg);color:var(--side-fg);border-right:1px solid var(--side-line);padding:22px 16px;display:flex;flex-direction:column;gap:18px;position:sticky;top:0;height:100vh;overflow-y:auto;scrollbar-width:none;z-index:30}
+.side::-webkit-scrollbar{display:none}
+.brand{display:flex;align-items:center;gap:11px;padding:2px 8px 8px;min-height:44px;text-decoration:none;color:inherit}
+.brand .wm{display:flex;flex-direction:column;line-height:1;min-width:0}
+.brand .wm b{font:var(--wm-font);letter-spacing:var(--wm-track,-.02em);color:var(--side-fg)}
+.brand .wm small{color:var(--side-mute);font:600 10.5px var(--f-body);letter-spacing:.12em;text-transform:uppercase;margin-top:5px}
+.nav{display:flex;flex-direction:column;gap:3px}
+.nav-sec{font:700 10.5px var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--side-mute);padding:16px 14px 6px}
+.nav a{display:flex;align-items:center;gap:12px;height:44px;padding:0 14px;border-radius:var(--nav-r,999px);color:var(--side-fg-2);text-decoration:none;font:600 14px var(--f-body);cursor:pointer;position:relative;transition:background .15s,color .15s}
+.nav a:hover{background:var(--side-hover);color:var(--side-fg)}
+.nav a.on{background:var(--nav-on-bg);color:var(--nav-on-fg);box-shadow:var(--nav-on-shadow,none)}
+.nav a .cnt{margin-left:auto;background:var(--cnt-bg,var(--act));color:var(--cnt-fg,#fff);font:800 11px/18px var(--f-body);padding:0 7px;border-radius:9px}
+.side-foot{margin-top:auto;display:flex;flex-direction:column;gap:10px}
+.who{display:flex;align-items:center;gap:10px;background:var(--side-hover);border-radius:var(--r-sm);padding:10px 12px;color:var(--side-fg)}
+.who>div{flex:1;min-width:0}
+.who b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.who small{color:var(--side-mute)}
+.side-link{display:flex;align-items:center;gap:8px;padding:6px 10px;color:var(--side-mute);font:600 12.5px var(--f-body);text-decoration:none;cursor:pointer;border-radius:10px}
+.side-link:hover{color:var(--side-fg);background:var(--side-hover)}
+
+.main{min-width:0;display:flex;flex-direction:column;position:relative}
+.topbar{display:flex;align-items:center;gap:12px;padding:18px 32px;position:sticky;top:0;background:var(--top-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);z-index:20;width:100%;max-width:var(--max,1560px);margin:0 auto}
+.search{display:flex;align-items:center;gap:10px;flex:0 1 460px;min-width:0;height:44px;padding:0 16px;border-radius:var(--search-r,999px);background:var(--field);color:var(--mute);border:1px solid var(--line)}
+.search input{border:0;background:none;flex:1;min-width:0;height:100%;padding:0;font:600 14px var(--f-body);color:var(--ink);outline:0;border-radius:0}
+.search kbd{font:600 11px var(--f-mono);color:var(--mute);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+.top-sp{flex:1}
+.date{color:var(--ink-2);font-weight:600;white-space:nowrap;font-size:13px}
+.ic{width:42px;height:42px;border-radius:var(--ic-r,50%);display:inline-grid;place-items:center;background:var(--card);border:1px solid var(--line);color:var(--ink);cursor:pointer;flex:none;position:relative;padding:0}
+.ic:hover{border-color:var(--mute)}
+.ic.sm{width:34px;height:34px}
+.ic.act{background:var(--grad);color:#fff;border-color:transparent}
+.ic .ndot{position:absolute;top:9px;right:10px;width:8px;height:8px;border-radius:50%;background:var(--bad);border:2px solid var(--card)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:42px;padding:0 18px;border-radius:var(--btn-r,999px);border:0;font:700 14px var(--f-body);cursor:pointer;color:var(--btn-fg,#fff);background:var(--grad);white-space:nowrap;text-decoration:none;flex:none;box-shadow:var(--btn-shadow,none);transition:filter .15s,transform .15s}
+.btn:hover{filter:brightness(1.06)}
+.btn:active{transform:translateY(1px)}
+.btn.dark{background:var(--navpill);color:var(--navfg);box-shadow:none}
+.btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--line);box-shadow:none}
+.btn.soft{background:var(--act-tint);color:var(--act-fg);box-shadow:none}
+.btn.ok{background:var(--ok-tint);color:var(--ok);box-shadow:none}
+.btn.bad{background:var(--bad-tint);color:var(--bad);box-shadow:none}
+.btn.sm{height:34px;padding:0 13px;font-size:12.5px}
+.btn.xs{height:28px;padding:0 10px;font-size:12px}
+.btn.wide{width:100%}
+.ava{width:40px;height:40px;border-radius:var(--ava-r,50%);background:var(--act-tint);color:var(--act-fg);display:grid;place-items:center;font:800 13px var(--f-display);flex:none;letter-spacing:.02em}
+.ava.sm{width:30px;height:30px;font-size:11px}
+.ava.lg{width:54px;height:54px;font-size:17px}
+.ava.ok{background:var(--ok-tint);color:var(--ok)} .ava.warn{background:var(--warn-tint);color:var(--warn)} .ava.info{background:var(--info-tint);color:var(--info)} .ava.vio{background:var(--vio-tint);color:var(--vio)} .ava.gray{background:var(--card-2);color:var(--ink-2)} .ava.bad{background:var(--bad-tint);color:var(--bad)}
+.avas{display:flex}
+.avas .ava{border:2px solid var(--card);margin-left:-8px}
+.avas .ava:first-child{margin-left:0}
+
+/* ---------- content ---------- */
+.content{padding:8px 32px 56px;display:flex;flex-direction:column;gap:32px;width:100%;max-width:var(--max,1560px);margin:0 auto}
+.view{display:flex;flex-direction:column;gap:28px;min-width:0}
+.ph{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.ph h2{font:var(--h2-font);letter-spacing:var(--h-track,-.02em)}
+.ph p{color:var(--mute);margin-top:6px;max-width:70ch}
+.ph .acts{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.eyebrow{font:700 11px var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--act-fg)}
+.card{background:var(--card);border:1px solid var(--card-line);border-radius:var(--r);padding:24px 26px;box-shadow:var(--shadow);min-width:0;position:relative}
+.card.pad-s{padding:18px}
+.card.flush{padding:0;overflow:hidden}
+.card-h{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+.card-h h3{font:var(--h3-font)}
+.card-h h3 small{display:inline;font:500 12px var(--f-body);margin-left:6px}
+.card-h .acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.grid{display:grid;gap:24px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g5{grid-template-columns:repeat(5,minmax(0,1fr))}
+.g32{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}
+.g23{grid-template-columns:minmax(0,1fr) minmax(0,2fr)}
+.g21{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)}
+.grid.top{align-items:start}
+.seg{display:inline-flex;background:var(--card-2);border-radius:var(--seg-r,999px);padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{border:0;background:transparent;padding:6px 13px;border-radius:var(--seg-r,999px);font:700 12.5px var(--f-body);color:var(--ink-2);cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.seg button.sel{background:var(--card);color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.10)}
+.seg button span{background:var(--card-2);border-radius:999px;padding:0 6px;font-size:11px;line-height:17px}
+.seg button.sel span{background:var(--act-tint);color:var(--act-fg)}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{border:0;background:none;padding:10px 14px;font:700 13px var(--f-body);color:var(--mute);cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:7px;border-radius:10px 10px 0 0}
+.tabs button:hover{color:var(--ink)}
+.tabs button.sel{color:var(--ink);box-shadow:inset 0 -2.5px 0 var(--act)}
+.pill{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;font:700 12px var(--f-body);background:var(--card-2);color:var(--ink-2);white-space:nowrap;flex:none}
+.pill.sm{height:22px;font-size:11px;padding:0 8px}
+.pill.ok{background:var(--ok-tint);color:var(--ok)} .pill.warn{background:var(--warn-tint);color:var(--warn)} .pill.bad{background:var(--bad-tint);color:var(--bad)}
+.pill.info{background:var(--info-tint);color:var(--info)} .pill.vio{background:var(--vio-tint);color:var(--vio)} .pill.act{background:var(--act-tint);color:var(--act-fg)}
+.pill.grad{background:var(--grad);color:#fff}
+.dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+.dot.live{animation:ping 1.8s ease-out infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 color-mix(in srgb,currentColor 55%,transparent)}100%{box-shadow:0 0 0 8px transparent}}
+.link{border:0;background:none;padding:0;color:var(--act-fg);font:700 13px var(--f-body);cursor:pointer;display:inline-flex;align-items:center;gap:5px;text-decoration:none}
+.link.mute{color:var(--mute)}
+.well{width:44px;height:44px;border-radius:var(--well-r,14px);background:var(--act-tint);color:var(--act-fg);display:grid;place-items:center;flex:none}
+.well.sm{width:36px;height:36px;border-radius:calc(var(--well-r,14px) - 3px)}
+.well.ok{background:var(--ok-tint);color:var(--ok)} .well.warn{background:var(--warn-tint);color:var(--warn)} .well.bad{background:var(--bad-tint);color:var(--bad)}
+.well.info{background:var(--info-tint);color:var(--info)} .well.vio{background:var(--vio-tint);color:var(--vio)} .well.gray{background:var(--card-2);color:var(--ink-2)}
+.well.grad{background:var(--grad);color:#fff}
+
+/* KPI tiles */
+.kpi{display:flex;flex-direction:column;gap:12px;overflow:hidden}
+.kpi .k-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.kpi .k-lbl{font:700 11px var(--f-body);text-transform:uppercase;letter-spacing:.08em;color:var(--mute)}
+.kpi .k-val{font:var(--kpi-font);font-variant-numeric:tabular-nums;letter-spacing:-.01em;line-height:1}
+.kpi .k-val small{display:inline;font:600 13px var(--f-body);margin-left:3px;color:var(--mute)}
+.delta{display:inline-flex;align-items:center;gap:4px;font:700 12px var(--f-body);color:var(--ok)}
+.delta.down{color:var(--bad)}
+.delta.flat{color:var(--mute)}
+.spark{width:100%;height:44px;display:block}
+.spark path.l{fill:none;stroke:var(--c,var(--act));stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.spark path.a{fill:var(--c,var(--act));opacity:.14}
+.bar{height:8px;border-radius:8px;background:var(--card-2);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:8px;background:var(--c,var(--grad))}
+.bar.thin{height:6px}
+.meter{display:flex;flex-direction:column;gap:7px}
+.meter .m-row{display:flex;justify-content:space-between;gap:10px;font-size:13px}
+.meter .m-row b{font-variant-numeric:tabular-nums}
+
+/* charts (drawn by UI.chart at real pixel width) */
+.chart{width:100%;display:block;font:600 11px var(--f-body);overflow:visible}
+.chart .gl line{stroke:var(--line);stroke-width:1}
+.chart .gl line.base{stroke:var(--mute);opacity:.4}
+.chart .ax text{fill:var(--mute)}
+.chart .s path.l{fill:none;stroke:var(--c);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.chart .s path.a{fill:var(--c);opacity:.13}
+.chart .s circle{fill:var(--c);stroke:var(--card);stroke-width:2}
+.chart .s circle.end{r:5}
+.chart .b rect{fill:var(--c)}
+.chart .tip text{fill:var(--ink);font-weight:800}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px;font:600 12px var(--f-body);color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend i{width:10px;height:10px;border-radius:3px;background:var(--c)}
+.donut-wrap{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.donut{width:150px;height:150px;flex:none}
+.donut circle{fill:none;stroke-width:16}
+.donut .track{stroke:var(--card-2)}
+.donut text{fill:var(--ink);text-anchor:middle;font-family:var(--f-display)}
+.donut .dv{font-size:26px;font-weight:800}
+.donut .dl{font-size:11px;fill:var(--mute);font-family:var(--f-body);font-weight:600}
+.dlist{display:flex;flex-direction:column;gap:9px;flex:1;min-width:150px}
+.dlist div{display:flex;align-items:center;gap:9px;font-size:13px}
+.dlist i{width:10px;height:10px;border-radius:3px;background:var(--c);flex:none}
+.dlist span{flex:1;color:var(--ink-2)}
+.dlist b{font-variant-numeric:tabular-nums}
+
+/* tables */
+.tbl-wrap{overflow-x:auto;margin:0 -6px;padding:0 6px}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;font:700 11px var(--f-body);letter-spacing:.07em;text-transform:uppercase;color:var(--mute);padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl td{padding:13px 12px;border-bottom:1px solid var(--line);vertical-align:middle;white-space:nowrap}
+.tbl tr:last-child td{border-bottom:0}
+.tbl td.wrap{white-space:normal;min-width:180px}
+.tbl tbody tr[data-row]{cursor:pointer}
+.tbl tbody tr[data-row]:hover td{background:var(--hover)}
+.tbl tr.sel td{background:var(--act-tint)}
+.tbl .r{text-align:right}
+.cell{display:flex;align-items:center;gap:10px}
+.cell b{display:block}
+.acts-cell{display:flex;gap:6px;justify-content:flex-end}
+.cbx{width:18px;height:18px;border-radius:5px;accent-color:var(--act)}
+
+/* lists */
+.rows{display:flex;flex-direction:column}
+.rows>div,.rows>a{display:flex;align-items:center;gap:14px;padding:13px 0;border-top:1px solid var(--line);color:inherit;text-decoration:none}
+.rows>:first-child{border-top:0;padding-top:0}
+.rows>:last-child{padding-bottom:0}
+.rows .grow b{display:block;font-size:13.5px}
+.rows em{font-size:13px}
+
+/* boards */
+.board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(270px,1fr);gap:20px;overflow-x:auto;padding-bottom:8px;scrollbar-width:thin}
+.col{background:var(--col-bg,var(--card-2));border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:12px;min-width:0;border:1px solid var(--col-line,transparent)}
+.col-h{display:flex;align-items:center;gap:8px;padding:4px 6px;font:700 13.5px var(--f-display)}
+.col-h .dot{width:9px;height:9px;color:var(--c,var(--mute))}
+.col-h span.n{margin-left:auto;background:var(--card);border-radius:999px;padding:0 9px;font:800 11px/21px var(--f-body);color:var(--ink-2)}
+.job{background:var(--card);border-radius:var(--r-sm);padding:14px 16px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow-s,var(--shadow));border:1px solid var(--card-line);border-top:3px solid var(--c,var(--line));cursor:default}
+.job .j-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.job .j-top small{font-weight:700}
+.job b{font-size:13.5px;display:block;line-height:1.3}
+.job .j-foot{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.job .j-foot em{font-size:13.5px}
+.empty{border:2px dashed var(--line);border-radius:var(--r-sm);padding:18px;text-align:center;color:var(--mute);font-size:12.5px}
+
+/* forms */
+.form{display:flex;flex-direction:column;gap:18px}
+.fgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.field{display:flex;flex-direction:column;gap:7px;min-width:0}
+.field label{font:700 12px var(--f-body);color:var(--ink-2)}
+.field input,.field select,.field textarea{height:42px;padding:0 13px;font:600 14px var(--f-body);outline:0;width:100%}
+.field textarea{height:auto;min-height:84px;padding:11px 13px;resize:vertical;line-height:1.5}
+.field input:focus,.field select:focus,.field textarea:focus,.sheet-in:focus{border-color:var(--act);box-shadow:0 0 0 3px var(--act-tint)}
+.field input:disabled{color:var(--mute);background:var(--card-2)}
+.sheet-in{height:36px;padding:0 10px;font:600 13px var(--f-body);width:100%;min-width:0;outline:0;font-variant-numeric:tabular-nums}
+.sw{appearance:none;-webkit-appearance:none;border:0;padding:0;width:44px;height:26px;border-radius:999px;background:var(--line);position:relative;cursor:pointer;flex:none;margin:0;transition:background .2s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:transform .2s}
+.sw:checked{background:var(--ok)}
+.sw:checked::after{transform:translateX(18px)}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0;border-top:1px solid var(--line)}
+.toggle-row:first-child{border-top:0;padding-top:0}
+.toggle-row b{display:block;font-size:13.5px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink-2);border-radius:999px;height:32px;padding:0 13px;font:700 12.5px var(--f-body);cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.chip:hover{border-color:var(--mute)}
+.chip.sel{background:var(--act-tint);color:var(--act-fg);border-color:transparent}
+.chip.sm{height:26px;padding:0 10px;font-size:11.5px}
+.note{display:flex;gap:12px;align-items:flex-start;background:var(--act-tint);border-radius:var(--r-sm);padding:12px 14px;color:var(--act-fg);font-size:13px}
+.note p{color:var(--ink-2)}
+.note b{color:var(--ink)}
+.kv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.kv>div{background:var(--card-2);border-radius:12px;padding:11px 12px;min-width:0}
+.kv b{display:block;font:700 16px var(--f-display);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dl2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 20px}
+.dl2>div small{margin-bottom:2px}
+.dl2>div b{font-size:13.5px}
+.tl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.tl li{position:relative;display:flex;gap:14px;padding:0 0 18px}
+.tl li::before{content:"";position:absolute;left:9px;top:22px;bottom:0;width:2px;background:var(--line)}
+.tl li:last-child{padding-bottom:0}
+.tl li:last-child::before{display:none}
+.tl li.done::before{background:var(--ok)}
+.tl i{width:20px;height:20px;border-radius:50%;background:var(--card);border:3px solid var(--line);flex:none;z-index:1;margin-top:1px}
+.tl li.done i{background:var(--ok);border-color:var(--ok)}
+.tl li.now i{background:var(--act);border-color:var(--card);box-shadow:0 0 0 3px var(--act)}
+.tl li>div{flex:1;min-width:0}
+.tl b{display:block;font-size:13.5px}
+.foot{color:var(--mute);font-size:12px;padding:0 32px 32px;max-width:var(--max,1560px);margin:0 auto;width:100%}
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:var(--navpill);color:var(--navfg);padding:12px 18px;border-radius:999px;font:700 13px var(--f-body);box-shadow:0 14px 40px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:60;display:flex;align-items:center;gap:8px}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- responsive ---------- */
+@media (max-width:1320px){
+  .g4,.g5{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g21{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:1180px){
+  .app{grid-template-columns:84px minmax(0,1fr)}
+  .side{padding:20px 12px;align-items:center}
+  .brand{padding:0;justify-content:center}
+  .brand .wm,.nav-sec,.side-foot,.side-extra{display:none}
+  .nav{width:100%;align-items:center}
+  .nav a{justify-content:center;padding:0;width:52px;height:46px}
+  .nav a .t{display:none}
+  .nav a .cnt{position:absolute;top:2px;right:0;margin:0;font-size:10px;line-height:16px;padding:0 5px}
+  .g32,.g23{grid-template-columns:minmax(0,1fr)}
+  .grid.top{align-items:stretch}
+  .content{padding:8px 24px 48px}
+  .topbar{padding:16px 24px}
+  .foot{padding:0 24px 28px}
+}
+@media (max-width:1000px){
+  .g3{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:860px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{position:sticky;top:0;height:auto;flex-direction:row;align-items:center;gap:10px;padding:10px 16px;overflow-x:auto;border-right:0;border-bottom:1px solid var(--side-line)}
+  .nav{flex-direction:row;gap:2px;width:auto}
+  .nav a{height:38px;padding:0 12px;width:auto;font-size:13px;white-space:nowrap}
+  .nav a .t{display:inline}
+  .nav a .cnt{position:static;margin-left:4px;font-size:11px;line-height:18px;padding:0 7px}
+  .topbar{padding:12px 16px;flex-wrap:wrap;position:static}
+  .date{display:none}
+  .content{padding:8px 16px 40px;gap:24px}
+  .view{gap:22px}
+  .foot{padding:0 16px 24px}
+  .fgrid,.dl2{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:600px){
+  .g2,.g3,.g4,.g5{grid-template-columns:minmax(0,1fr)}
+  .card{padding:20px 18px}
+  .kv{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .btn .t{display:none}
+  .ph h2{font-size:24px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+
+
+/* ---------- facility components ---------- */
+.logo{width:40px;height:40px;flex:none;display:block}
+.nav a.on::before{content:"";position:absolute;left:-16px;top:9px;bottom:9px;width:4px;border-radius:0 4px 4px 0;background:var(--grad)}
+.nav a.on{font-weight:700}
+.card.hov:hover{border-color:var(--mute)}
+.kpi .k-ic{width:38px;height:38px;border-radius:11px}
+.kpi .k-head{display:flex;align-items:center;gap:10px}
+.gold{color:var(--gold)}
+.pill.gold{background:var(--gold-tint);color:var(--gold)}
+.split{display:flex;height:8px;border-radius:5px;overflow:hidden;gap:2px}
+.split i{display:block;background:var(--c)}
+/* tower */
+.tower{display:flex;flex-direction:column;gap:5px}
+.crown{display:grid;grid-template-columns:40px 1fr 64px;gap:12px;align-items:center}
+.crown .cap{height:22px;border-radius:10px 10px 4px 4px;background:var(--card-2);border:1px dashed var(--line);display:flex;align-items:center;justify-content:center;font:600 11px var(--f-body);color:var(--mute);margin:0 18%}
+.floor{display:grid;grid-template-columns:40px 1fr 64px;gap:12px;align-items:center}
+.floor .fl{font:600 13px var(--f-display);color:var(--ink-2);text-align:right}
+.floor .segs{display:flex;height:28px;border-radius:7px;overflow:hidden;gap:2px;background:var(--card-2)}
+.floor.sm .segs{height:22px}
+.seg{background:var(--c);display:flex;align-items:center;padding:0 9px;color:#fff;font:600 11.5px var(--f-body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;cursor:pointer;transition:filter .15s}
+.seg:hover{filter:brightness(1.1)}
+.seg.vac{background:repeating-linear-gradient(135deg,var(--card-2) 0 6px,var(--line) 6px 8px);color:var(--ink-2)}
+.seg.com{background:var(--card-2);color:var(--mute);border:1px dashed var(--line)}
+.seg.hi{outline:2px solid var(--ink);outline-offset:-2px}
+.floor .pct{font:600 12px var(--f-body);color:var(--mute);font-variant-numeric:tabular-nums}
+.ground-line{height:3px;border-radius:2px;background:var(--grad);margin:4px 0 4px 52px}
+.tower-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;font:600 12px var(--f-body);color:var(--ink-2)}
+.tower-legend span{display:inline-flex;align-items:center;gap:7px}
+.tower-legend i{width:12px;height:12px;border-radius:3px;background:var(--c)}
+.tower-legend i.vac{background:repeating-linear-gradient(135deg,var(--card-2) 0 3px,var(--mute) 3px 4px)}
+/* plant gauges */
+.plant{display:flex;align-items:center;gap:14px;padding:14px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--card);cursor:pointer;text-align:left;color:var(--ink);width:100%}
+.plant:hover{border-color:var(--mute)}
+.plant .donut{width:78px;height:78px}
+.plant .donut circle{stroke-width:14}
+.plant .donut .dv{font-size:38px}
+.plant .donut .dl{font-size:14px}
+.plant>div{flex:1;min-width:0}
+.plant b{display:block;font:600 15px var(--f-display)}
+/* cameras */
+.cams{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.cam{border-radius:12px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
+.cam .feed{aspect-ratio:16/10;background:radial-gradient(120% 90% at 30% 20%,var(--cam-a),var(--cam-b));position:relative;display:grid;place-items:center;color:rgba(255,255,255,.35)}
+.cam .feed::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 3px)}
+.cam .feed .rec{position:absolute;left:8px;top:7px;display:flex;align-items:center;gap:5px;font:700 10px var(--f-mono);color:#FF6B5E}
+.cam .feed .ts{position:absolute;right:8px;bottom:6px;font:600 9.5px var(--f-mono);color:rgba(255,255,255,.55)}
+.cam.off .feed{background:repeating-linear-gradient(135deg,#2A1A18 0 8px,#1E1412 8px 16px);color:#FF8A7E}
+.cam .cap{padding:8px 10px}
+.cam .cap b{display:block;font-size:12px}
+.cam .cap small{font-size:11px}
+/* roster */
+.roster td,.roster th{text-align:center}
+.roster td:first-child,.roster th:first-child{text-align:left}
+.sh{display:inline-grid;place-items:center;width:34px;height:26px;border-radius:7px;font:700 11.5px var(--f-body)}
+.sh.M{background:var(--ok-tint);color:var(--ok)} .sh.E{background:var(--info-tint);color:var(--info)} .sh.N{background:var(--vio-tint);color:var(--vio)} .sh.O{background:var(--card-2);color:var(--mute)}
+.mark{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:8px}
+.mark.y{background:var(--ok-tint);color:var(--ok)} .mark.p{background:var(--warn-tint);color:var(--warn)} .mark.n{background:var(--bad-tint);color:var(--bad)}
+/* complaints */
+.cmp-row{display:flex;gap:14px;align-items:flex-start;padding:14px;border-radius:12px;border:1px solid transparent;cursor:pointer}
+.cmp-row:hover{background:var(--hover)}
+.cmp-row.sel{border-color:var(--act);background:var(--act-tint)}
+.cmp-row>div{flex:1;min-width:0}
+.cmp-row b{display:block;font-size:14px}
+.cmp-row .meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+.cmp-list{display:flex;flex-direction:column;gap:4px;margin:0 -8px}
+.tech-pick{display:flex;gap:8px;flex-wrap:wrap}
+/* reading tiles */
+.read{display:flex;flex-direction:column;gap:4px;padding:14px 16px;border-radius:12px;background:var(--card-2)}
+.read em{font:600 26px var(--f-display);line-height:1.05}
+.read em small{display:inline;font:600 13px var(--f-body);margin-left:3px}
+@media (max-width:1180px){ .nav a.on::before{left:-16px} }
+@media (max-width:860px){ .nav a.on::before{display:none} }
+@media (max-width:600px){ .floor,.crown{grid-template-columns:30px 1fr 44px;gap:8px} .ground-line{margin-left:38px} }
+</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7.5" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.6a4 4 0 0 1 0 7.8"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7.5" r="4"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5"/><path d="m11 12 9.5-9.5M17 6l3 3M14.5 8.5l2.5 2.5"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></symbol>
+  <symbol id="i-car" viewBox="0 0 24 24"><path d="M5 11l1.6-4.2A2 2 0 0 1 8.5 5.5h7a2 2 0 0 1 1.9 1.3L19 11"/><path d="M3 11h18a1 1 0 0 1 1 1v4.5a1 1 0 0 1-1 1h-1.5M3 11a1 1 0 0 0-1 1v4.5a1 1 0 0 0 1 1h1.5M9 17.5h6"/><circle cx="6.5" cy="17.5" r="2"/><circle cx="17.5" cy="17.5" r="2"/></symbol>
+  <symbol id="i-link-car" viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 0 1 7 7h2M15 7h2a5 5 0 1 1 0 10h-2M8 12h8"/></symbol>
+  <symbol id="i-fuel" viewBox="0 0 24 24"><path d="M3 22h12M4 9h10M14 22V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v18"/><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0V9.8a2 2 0 0 0-.6-1.4L18 5"/></symbol>
+  <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.9-7.9z"/></symbol>
+  <symbol id="i-cal-check" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="17" rx="3"/><path d="M16 2.5v4M8 2.5v4M3 10h18M9 15.5l2 2 4-4"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="17" rx="3"/><path d="M16 2.5v4M8 2.5v4M3 10h18"/><path d="M8 15h.01M12 15h.01M16 15h.01"/></symbol>
+  <symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5M12 7v5l4 2"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></symbol>
+  <symbol id="i-map" viewBox="0 0 24 24"><path d="M3 6.5 9 3.5l6 3 6-3v14l-6 3-6-3-6 3z"/><path d="M9 3.5v14M15 6.5v14"/></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-nav" viewBox="0 0 24 24"><path d="M3 11 22 2l-9 19-2-8z"/></symbol>
+  <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M4.5 18a9 9 0 1 1 15 0"/><path d="m12 14 3.5-4.5"/><circle cx="12" cy="15" r="1.6"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><path d="m21 21-4.6-4.6"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8.5a6 6 0 0 1 12 0c0 6.5 2.5 8 2.5 8h-17S6 15 6 8.5"/><path d="M10.3 21a2 2 0 0 0 3.4 0"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6.5 6.5 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-chev-l" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-chev-d" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+  <symbol id="i-arrow-l" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.4" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.9.6 2.8.7a2 2 0 0 1 1.7 2z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-check-c" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="m8 12 3 3 5-6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-x-c" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="m15 9-6 6M9 9l6 6"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 6.5V12l3.5 2"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18l-7 8.5V19l-4 2v-7.5z"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 3v12M6 9l6 6 6-6M4 21h16"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 15V3M6 9l6-6 6 6M4 21h16"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z"/></symbol>
+  <symbol id="i-trend" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></symbol>
+  <symbol id="i-trend-d" viewBox="0 0 24 24"><path d="M3 7l6 6 4-4 8 8"/><path d="M14 17h7v-7"/></symbol>
+  <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M4 3h16v18l-2.7-1.5-2.6 1.5-2.7-1.5L9.4 21l-2.7-1.5L4 21z"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol>
+  <symbol id="i-clip" viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="18" rx="2.5"/><path d="M9 3.5V2h6v1.5"/><path d="m9 13 2 2 4-4"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2.5 21.5z"/><path d="M8 10h8M8 13.5h5"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></symbol>
+  <symbol id="i-broom" viewBox="0 0 24 24"><path d="m13 11 9-9M14.6 12.6c.8.8.9 2.1.2 2.9L13 17.3 6.7 11l1.8-1.8c.8-.7 2.1-.6 2.9.2z"/><path d="m6.7 11-3.5 3.6a2 2 0 0 0 0 2.8l2.4 2.4a2 2 0 0 0 2.8 0l3.6-3.5M2.5 21.5 5 19"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.4-.5-2-1-3-1.1-2.1-.2-4.1 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.2.4-2.3 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+  <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 2.7c-3 3.7-6 7.2-6 10.3a6 6 0 0 0 12 0c0-3.1-3-6.6-6-10.3z"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H13z"/></symbol>
+  <symbol id="i-thermo" viewBox="0 0 24 24"><path d="M14 14.8V4a2 2 0 0 0-4 0v10.8a4 4 0 1 0 4 0z"/></symbol>
+  <symbol id="i-fan" viewBox="0 0 24 24"><path d="M10.8 9.2C9.6 5.7 10.4 2 13.6 2c4.4 0 2.8 5.8-.6 8.1M14.8 10.8c3.5-1.2 7.2-.4 7.2 2.8 0 4.4-5.8 2.8-8.1-.6M13.2 14.8c1.2 3.5.4 7.2-2.8 7.2-4.4 0-2.8-5.8.6-8.1M9.2 13.2c-3.5 1.2-7.2.4-7.2-2.8 0-4.4 5.8-2.8 8.1.6"/><circle cx="12" cy="12" r="1.6"/></symbol>
+  <symbol id="i-snow" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20M5 5l14 14M19 5 5 19"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="i-cctv" viewBox="0 0 24 24"><path d="M16.75 12h3.63a1 1 0 0 1 .93 1.36l-2.04 5.27A2 2 0 0 1 17.4 20H12"/><path d="m3.22 7.27 10.92-4.6a1 1 0 0 1 1.31.53l2.06 4.87a1 1 0 0 1-.53 1.31l-10.92 4.6a1 1 0 0 1-1.31-.53L2.69 8.58a1 1 0 0 1 .53-1.31z"/><path d="M7 14v6H3"/></symbol>
+  <symbol id="i-plug" viewBox="0 0 24 24"><path d="M12 22v-5M9 8V2M15 8V2M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/></symbol>
+  <symbol id="i-pipe" viewBox="0 0 24 24"><path d="M3 7h7a4 4 0 0 1 4 4v10M3 11h7M18 21v-8a8 8 0 0 0-8-8H3"/></symbol>
+  <symbol id="i-door" viewBox="0 0 24 24"><path d="M13 4h3a2 2 0 0 1 2 2v14M2 20h3M13 20h9M10 12v.01M13 4.56v16.88a.5.5 0 0 1-.64.48l-6-1.71A.5.5 0 0 1 6 19.72V5.5a.5.5 0 0 1 .4-.49l6-1.3a.5.5 0 0 1 .6.49z"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-8 9"/></symbol>
+  <symbol id="i-library" viewBox="0 0 24 24"><path d="M2 4.5h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4.5h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19.5 13.5c1.4-1.4 2.5-3 2.5-5A5 5 0 0 0 17 3.5c-1.8 0-3.5 1-5 2.5-1.5-1.5-3.2-2.5-5-2.5a5 5 0 0 0-5 5c0 2 1.1 3.6 2.5 5L12 21z"/></symbol>
+  <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M11 3l1.9 5.6L18.5 10.5l-5.6 1.9L11 18l-1.9-5.6L3.5 10.5l5.6-1.9z"/><path d="M19 15l.8 2.2 2.2.8-2.2.8L19 21l-.8-2.2-2.2-.8 2.2-.8z"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M12.6 2.6A2 2 0 0 0 11.2 2H4a2 2 0 0 0-2 2v7.2a2 2 0 0 0 .6 1.4l8.7 8.7a2.4 2.4 0 0 0 3.4 0l6.6-6.6a2.4 2.4 0 0 0 0-3.4z"/><circle cx="7.5" cy="7.5" r="1.5"/></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5M3 12a9 3 0 0 0 18 0"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16M8 17v-5M13 17V7M18 17v-8"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></symbol>
+  <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22"/><path d="m18 2 4 4-4 4M2 6h1.9c1.5 0 2.9.9 3.6 2.2M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8M18 14l4 4-4 4"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8M21 3v5h-5M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16M8 16H3v5"/></symbol>
+  <symbol id="i-dollar" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="1.5"/></symbol>
+  <symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 12h10"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.7-.9l-.8-1.2A2 2 0 0 0 7.9 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2.5"/><path d="m22 7-10 6L2 7"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 16v-4.5M12 8h.01"/></symbol>
+  <symbol id="i-sidebar" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 3v18"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="m7 4 13 8-13 8z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+  <symbol id="i-signal" viewBox="0 0 24 24"><path d="M2 20h.01M7 20v-4M12 20v-8M17 20V8M22 4v16"/></symbol>
+  <symbol id="i-hard-hat" viewBox="0 0 24 24"><path d="M2 18a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1z"/><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5M4 15v-3a6 6 0 0 1 6-6M14 6a6 6 0 0 1 6 6v3"/></symbol>
+  <symbol id="i-water" viewBox="0 0 24 24"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.5 2.6 3.8 6 3.8 9.5s-1.3 6.9-3.8 9.5c-2.5-2.6-3.8-6-3.8-9.5S9.5 5.1 12 2.5z"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2.5"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+</svg>
+
+
+<div class="app">
+  <aside class="side">
+    <a class="brand" data-view="dash" role="button" tabindex="0" aria-label="Facility home">
+      <svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="fcG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1FBF8F"/><stop offset=".55" stop-color="#0E8F6B"/><stop offset="1" stop-color="#0A6A58"/></linearGradient></defs><rect width="40" height="40" rx="11" fill="url(#fcG)"/><g fill="#fff"><rect x="9" y="19" width="6.5" height="13" rx="1.6" opacity=".72"/><rect x="16.8" y="9" width="7.4" height="23" rx="1.8"/><rect x="25.5" y="14.5" width="6.5" height="17.5" rx="1.6" opacity=".86"/></g><g fill="#0E8F6B"><rect x="19" y="12.5" width="3" height="2.2" rx=".6"/><rect x="19" y="17" width="3" height="2.2" rx=".6"/><rect x="19" y="21.5" width="3" height="2.2" rx=".6"/><rect x="19" y="26" width="3" height="2.2" rx=".6"/></g><circle cx="20.5" cy="5.8" r="1.8" fill="#F2C14E"/></svg>
+      <span class="wm"><b>Facility</b><small>Management system</small></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a class="on" data-view="dash" role="button" tabindex="0"><svg class="i"><use href="#i-grid"/></svg><span class="t">Overview</span></a>
+      <span class="nav-sec">Customer relations</span>
+      <a data-view="cmp" role="button" tabindex="0"><svg class="i"><use href="#i-chat"/></svg><span class="t">Complaints</span><span class="cnt">12</span></a>
+      <a data-view="jobs" role="button" tabindex="0"><svg class="i"><use href="#i-clip"/></svg><span class="t">Job slips</span></a>
+      <span class="nav-sec">Building</span>
+      <a data-view="ten" role="button" tabindex="0"><svg class="i"><use href="#i-building"/></svg><span class="t">Tenants &amp; occupancy</span></a>
+      <a data-view="plant" role="button" tabindex="0"><svg class="i"><use href="#i-thermo"/></svg><span class="t">Plant room</span></a>
+      <a data-view="duty" role="button" tabindex="0"><svg class="i"><use href="#i-broom"/></svg><span class="t">Janitorial &amp; duty</span></a>
+      <a data-view="sec" role="button" tabindex="0"><svg class="i"><use href="#i-shield"/></svg><span class="t">Security &amp; CCTV</span></a>
+      <span class="nav-sec">Admin</span>
+      <a data-view="users" role="button" tabindex="0"><svg class="i"><use href="#i-key"/></svg><span class="t">Users &amp; access</span></a>
+    </nav>
+    <div class="side-foot">
+      <div class="who" style="flex-direction:column;align-items:flex-start;gap:4px"><small style="letter-spacing:.1em;text-transform:uppercase;font-weight:700">Building</small><b>Tower One</b><small>Jinnah Avenue, Blue Area, Islamabad</small></div>
+      <div class="who"><span class="ava sm">HA</span><div><b>Hamza Aslam</b><small>Facility manager</small></div></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <label class="search"><svg class="i"><use href="#i-search"/></svg><input id="q" type="search" placeholder="Search complaints, tenants, job slips"></label>
+      <span class="top-sp"></span>
+      <span class="date">Fri, 9 Oct 2026 · 09:42</span>
+      <button class="ic" aria-label="Notifications, 3 new"><svg class="i"><use href="#i-bell"/></svg><i class="ndot"></i></button>
+      <button class="ic" id="theme-btn" aria-label="Toggle dark theme"><svg class="i"><use href="#i-moon"/></svg></button>
+      <button class="btn" data-view="cmp"><svg class="i"><use href="#i-plus"/></svg><span class="t">New complaint</span></button>
+    </header>
+
+    <main class="content">
+
+      <!-- ===================== OVERVIEW ===================== -->
+      <section class="view" data-view="dash">
+        <div class="ph">
+          <div><span class="eyebrow gold">Tower One · Blue Area, Islamabad</span><h2>Good morning, Hamza</h2><p>12 complaints are open, 4 job slips are in progress, and the boiler's hourly log is due at 10:00.</p></div>
+          <div class="acts"><div class="seg"><button class="sel">Today</button><button>Week</button><button>Month</button></div><button class="btn ghost" data-toast="Daily report exported"><svg class="i"><use href="#i-down"/></svg><span class="t">Daily report</span></button></div>
+        </div>
+        <div class="grid g4">
+          <div class="card kpi"><div class="k-head"><span class="well k-ic grad"><svg class="i"><use href="#i-building"/></svg></span><span class="k-lbl">Occupancy</span></div><div class="k-val" id="k-occ">93%</div><div class="bar"><i id="k-occ-bar" style="width:93%"></i></div><small id="k-occ-sub">160,200 of 172,000 sq ft leased · 19 tenants</small></div>
+          <div class="card kpi"><div class="k-head"><span class="well k-ic bad"><svg class="i"><use href="#i-chat"/></svg></span><span class="k-lbl">Open complaints</span></div><div class="k-val">12</div><div class="row" style="gap:6px"><span class="pill sm warn">5 pending</span><span class="pill sm info">4 in progress</span><span class="pill sm bad">3 new</span></div><small>First response averages 18 min · resolved in 6.4 h</small></div>
+          <div class="card kpi"><div class="k-head"><span class="well k-ic info"><svg class="i"><use href="#i-clip"/></svg></span><span class="k-lbl">Job slips</span></div><div class="k-val">9<small>active</small></div><div class="split"><i style="--c:var(--bad);flex:2"></i><i style="--c:var(--warn);flex:3"></i><i style="--c:var(--info);flex:4"></i></div><small>2 open · 3 pending · 4 in progress · 58 done this month</small></div>
+          <div class="card kpi"><div class="k-head"><span class="well k-ic gold" style="background:var(--gold-tint);color:var(--gold)"><svg class="i"><use href="#i-hard-hat"/></svg></span><span class="k-lbl">Staff on duty</span></div><div class="k-val">97<small>of 213</small></div><div class="split"><i style="--c:var(--act);flex:38"></i><i style="--c:var(--gold);flex:6"></i><i style="--c:var(--info);flex:22"></i><i style="--c:var(--vio);flex:31"></i></div><small>Technicians 38 · Supervisors 6 · Security 22 · Janitorial 31</small></div>
+        </div>
+        <div class="grid g21">
+          <div class="card"><div class="card-h"><h3>Tower occupancy <small>by floor and tenant</small></h3><button class="link" data-view="ten">Tenants<svg class="i xs"><use href="#i-chev-r"/></svg></button></div><div id="tower-dash"></div></div>
+          <div class="stack" style="gap:24px">
+            <div class="card"><div class="card-h"><h3>Complaints <small>this month</small></h3><button class="link" data-view="cmp">View<svg class="i xs"><use href="#i-chev-r"/></svg></button></div><div class="donut-wrap"><svg class="donut" id="dn-cmp"></svg><div class="dlist" id="dn-cmp-l"></div></div></div>
+            <div class="card"><div class="card-h"><h3>Job slips <small>this month</small></h3><button class="link" data-view="jobs">Board<svg class="i xs"><use href="#i-chev-r"/></svg></button></div><div class="donut-wrap"><svg class="donut" id="dn-job"></svg><div class="dlist" id="dn-job-l"></div></div></div>
+            <div class="card" style="flex:1"><div class="card-h"><h3>Today at the tower</h3></div><div class="rows">
+              <div><em class="num" style="min-width:48px">10:00</em><div class="grow"><b>Boiler hourly log</b><small>Waheed Ur Rehman · plant room B1</small></div><span class="pill sm warn">Due</span></div>
+              <div><em class="num" style="min-width:48px">11:30</em><div class="grow"><b>Lift 3 vendor visit</b><small>Controller reset · lift bank B</small></div></div>
+              <div><em class="num" style="min-width:48px">14:00</em><div class="grow"><b>Fire pump weekly test</b><small>Tariq Jamil · pump room</small></div></div>
+              <div><em class="num" style="min-width:48px">16:00</em><div class="grow"><b>Lease renewal meeting</b><small>Kohsar Asset Management · floor 8</small></div><span class="pill sm gold">Renewal</span></div>
+            </div></div>
+          </div>
+        </div>
+        <div class="card"><div class="card-h"><h3>Plant room <small>latest readings</small></h3><button class="link" data-view="plant">Daily maintenance logs<svg class="i xs"><use href="#i-chev-r"/></svg></button></div><div class="grid g3" id="plant-grid" style="gap:14px"></div></div>
+        <div class="grid g21">
+          <div class="card"><div class="card-h"><h3>Recent complaints</h3><button class="btn sm ghost" data-view="cmp">All complaints</button></div>
+            <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Complaint</th><th>Tenant</th><th>Service</th><th>Attended by</th><th>Status</th></tr></thead><tbody id="cmp-mini"></tbody></table></div></div>
+          <div class="card"><div class="card-h"><h3>Security &amp; CCTV</h3><button class="link" data-view="sec">Open<svg class="i xs"><use href="#i-chev-r"/></svg></button></div>
+            <div class="rows">
+              <div><span class="well sm ok"><svg class="i sm"><use href="#i-cctv"/></svg></span><div class="grow"><b>64 of 66 cameras online</b><small>DVR-4 camera 16 at the B1 lift lobby is faulty</small></div><span class="pill sm bad">2 down</span></div>
+              <div><span class="well sm info"><svg class="i sm"><use href="#i-shield"/></svg></span><div class="grow"><b>22 guards on duty</b><small>Morning shift, all posts manned</small></div></div>
+              <div><span class="well sm warn"><svg class="i sm"><use href="#i-flame"/></svg></span><div class="grow"><b>Fire pump at 7.1 bar</b><small>Last drill 21 September · next 21 October</small></div></div>
+              <div><span class="well sm gray"><svg class="i sm"><use href="#i-door"/></svg></span><div class="grow"><b>1,284 entries since 07:00</b><small>3 visitor passes pending approval</small></div></div>
+            </div></div>
+        </div>
+      </section>
+
+      <!-- ===================== COMPLAINTS ===================== -->
+      <section class="view" data-view="cmp" hidden>
+        <div class="ph"><div><span class="eyebrow">Customer relations</span><h2>Feedback &amp; complaints</h2><p>Every request from tenants, with who attended, what was used and the job slips raised against it.</p></div>
+          <div class="acts"><button class="btn ghost" data-toast="Complaints exported to Excel"><svg class="i"><use href="#i-down"/></svg><span class="t">Export</span></button><button class="btn" data-toast="New complaint form opened"><svg class="i"><use href="#i-plus"/></svg><span class="t">Add complaint</span></button></div></div>
+        <div class="card"><div class="card-h" style="margin-bottom:16px"><h3>Filters</h3><button class="link mute" data-toast="Filters cleared">Clear all</button></div>
+          <div class="grid g4" style="gap:14px">
+            <div class="field"><label for="c-no">Complaint no.</label><input id="c-no" placeholder="CMP-1042"></div>
+            <div class="field"><label for="c-from">From</label><input id="c-from" type="date" value="2026-10-01"></div>
+            <div class="field"><label for="c-to">To</label><input id="c-to" type="date" value="2026-10-09"></div>
+            <div class="field"><label for="c-by">Complaint by</label><input id="c-by" placeholder="Tenant or person"></div>
+            <div class="field"><label for="c-floor">Floor</label><select id="c-floor"><option>All floors</option><option>Basement</option><option>Ground</option><option>1–7</option><option>8–14</option></select></div>
+            <div class="field"><label for="c-svc">Service</label><select id="c-svc"><option>All services</option><option>Electrical</option><option>Plumbing</option><option>HVAC</option><option>Civil</option><option>Janitorial</option><option>Security</option><option>Lifts</option></select></div>
+            <div class="field"><label for="c-att">Attended by</label><input id="c-att" placeholder="Technician"></div>
+            <div class="field"><label for="c-st">Status</label><select id="c-st"><option>Any status</option><option>Open</option><option>Pending</option><option>In progress</option><option>Resolved</option></select></div>
+          </div>
+          <div class="row" style="margin-top:16px"><button class="btn sm" data-toast="Filters applied"><svg class="i xs"><use href="#i-filter"/></svg>Apply filters</button></div></div>
+        <div class="grid g23 top">
+          <div class="card"><div class="card-h"><h3>Complaints <small>10 this week</small></h3><div class="seg" data-cmpfilter><button class="sel" data-v="all">All</button><button data-v="open">Open</button><button data-v="Resolved">Resolved</button></div></div><div class="cmp-list" id="cmp-list"></div></div>
+          <div class="stack" style="gap:24px" id="cmp-detail"></div>
+        </div>
+      </section>
+
+      <!-- ===================== JOB SLIPS ===================== -->
+      <section class="view" data-view="jobs" hidden>
+        <div class="ph"><div><span class="eyebrow">Customer relations</span><h2>Job slips</h2><p>Work orders raised from complaints and inspections, assigned to technicians by department.</p></div>
+          <div class="acts"><div class="seg" data-deptfilter><button class="sel" data-v="all">All</button><button data-v="Electrical">Electrical</button><button data-v="Plumbing">Plumbing</button><button data-v="HVAC">HVAC</button><button data-v="Civil">Civil</button></div><button class="btn" data-toast="Job slip form opened"><svg class="i"><use href="#i-plus"/></svg><span class="t">New job slip</span></button></div></div>
+        <div class="board" id="jobs-board" style="grid-auto-columns:minmax(240px,1fr)"></div>
+      </section>
+
+      <!-- ===================== TENANTS ===================== -->
+      <section class="view" data-view="ten" hidden>
+        <div class="ph"><div><span class="eyebrow">Building</span><h2>Tenants &amp; occupancy</h2><p>Who occupies each floor, how much space is free, and which leases come up next.</p></div>
+          <div class="acts"><button class="btn ghost" data-toast="Rent roll exported"><svg class="i"><use href="#i-down"/></svg><span class="t">Rent roll</span></button><button class="btn" data-toast="New tenant form opened"><svg class="i"><use href="#i-plus"/></svg><span class="t">Add tenant</span></button></div></div>
+        <div class="grid g4" id="ten-kpis"></div>
+        <div class="grid g21">
+          <div class="card"><div class="card-h"><h3>Floor directory</h3><small>Hover a block for the tenant and area</small></div><div id="tower-big"></div></div>
+          <div class="stack" style="gap:24px">
+            <div class="card"><div class="card-h"><h3>Vacant units</h3><span class="pill gold">11,800 sq ft</span></div><div class="rows" id="vacant"></div></div>
+            <div class="card"><div class="card-h"><h3>Leases ending soon</h3></div><div class="rows" id="leases"></div></div>
+          </div>
+        </div>
+        <div class="card"><div class="card-h"><h3>All tenants</h3><small id="ten-count">19 tenants</small></div>
+          <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Tenant</th><th>Floors</th><th class="r">Area</th><th class="r">Share</th><th>Lease ends</th><th>Contact</th><th>Status</th></tr></thead><tbody id="ten-body"></tbody></table></div></div>
+      </section>
+
+      <!-- ===================== PLANT ROOM ===================== -->
+      <section class="view" data-view="plant" hidden data-scope>
+        <div class="ph"><div><span class="eyebrow">Daily maintenance</span><h2>Plant room</h2><p>Hourly logs for the systems that keep the tower running. Readings outside their limits turn red.</p></div>
+          <div class="acts"><button class="btn ghost" data-toast="Logs exported"><svg class="i"><use href="#i-down"/></svg><span class="t">Export logs</span></button></div></div>
+        <div class="tabs" data-tabs id="plant-tabs"></div>
+        <div id="plant-panes"></div>
+      </section>
+
+      <!-- ===================== JANITORIAL & DUTY ===================== -->
+      <section class="view" data-view="duty" hidden data-scope>
+        <div class="ph"><div><span class="eyebrow">General administration</span><h2>Janitorial &amp; duty chart</h2><p>Who is on which shift this week, and how each floor scored on this morning's cleaning round.</p></div>
+          <div class="acts"><div class="seg" data-tabs><button class="sel" data-tab="roster">Duty chart</button><button data-tab="jan">Janitorial</button></div></div></div>
+        <div class="card" data-pane="roster"><div class="card-h"><h3>Week of 5 – 11 October</h3><div class="legend" style="margin:0"><span><span class="sh M">M</span>07:00–15:00</span><span><span class="sh E">E</span>15:00–23:00</span><span><span class="sh N">N</span>23:00–07:00</span><span><span class="sh O">Off</span></span></div></div>
+          <div class="tbl-wrap"><table class="tbl roster"><thead><tr><th>Staff</th><th>Mon 5</th><th>Tue 6</th><th>Wed 7</th><th>Thu 8</th><th>Fri 9</th><th>Sat 10</th><th>Sun 11</th></tr></thead><tbody id="roster-body"></tbody></table></div></div>
+        <div class="card" data-pane="jan" hidden><div class="card-h"><h3>Morning round · 9 October</h3><div class="legend" style="margin:0"><span><span class="mark y"><svg class="i xs"><use href="#i-check"/></svg></span>Done</span><span><span class="mark p"><svg class="i xs"><use href="#i-clock"/></svg></span>In progress</span><span><span class="mark n"><svg class="i xs"><use href="#i-x"/></svg></span>Missed</span></div></div>
+          <div class="tbl-wrap"><table class="tbl roster"><thead><tr><th>Floor</th><th>Washrooms</th><th>Pantry</th><th>Floors</th><th>Glass</th><th>Waste</th><th>Inspector score</th></tr></thead><tbody id="jan-body"></tbody></table></div></div>
+      </section>
+
+      <!-- ===================== SECURITY ===================== -->
+      <section class="view" data-view="sec" hidden>
+        <div class="ph"><div><span class="eyebrow">Security services</span><h2>Security &amp; CCTV</h2><p>Camera health across four DVRs, guard posts, firefighting duty and the incident log.</p></div>
+          <div class="acts"><button class="btn ghost" data-toast="CCTV report form opened"><svg class="i"><use href="#i-cctv"/></svg><span class="t">CCTV report</span></button><button class="btn" data-toast="Security report form opened"><svg class="i"><use href="#i-plus"/></svg><span class="t">Security report</span></button></div></div>
+        <div class="grid g4">
+          <div class="card kpi"><div class="k-head"><span class="well k-ic info"><svg class="i"><use href="#i-shield"/></svg></span><span class="k-lbl">Guards on duty</span></div><div class="k-val">22<small>of 24 posts</small></div><small>Morning shift · Supervisor Imran Shah</small></div>
+          <div class="card kpi"><div class="k-head"><span class="well k-ic ok"><svg class="i"><use href="#i-cctv"/></svg></span><span class="k-lbl">Cameras online</span></div><div class="k-val">64<small>of 66</small></div><small>Recording 30 days on four DVRs</small></div>
+          <div class="card kpi"><div class="k-head"><span class="well k-ic warn"><svg class="i"><use href="#i-alert"/></svg></span><span class="k-lbl">Incidents this week</span></div><div class="k-val">3</div><small>1 tailgating, 1 lost card, 1 parking dispute</small></div>
+          <div class="card kpi"><div class="k-head"><span class="well k-ic bad"><svg class="i"><use href="#i-flame"/></svg></span><span class="k-lbl">Fire readiness</span></div><div class="k-val">7.1<small>bar</small></div><small>Jockey pump pressure · drill due 21 Oct</small></div>
+        </div>
+        <div class="card" data-scope><div class="card-h"><h3>Cameras</h3><div class="seg" data-tabs><button class="sel" data-tab="d1">DVR 1</button><button data-tab="d2">DVR 2</button><button data-tab="d3">DVR 3</button><button data-tab="d4">DVR 4 <span>1 down</span></button></div></div><div id="cams"></div></div>
+        <div class="grid g2">
+          <div class="card"><div class="card-h"><h3>Security log</h3></div><div class="rows" id="sec-log"></div></div>
+          <div class="card"><div class="card-h"><h3>Firefighting duty</h3><small>Today</small></div><div class="rows" id="fire-duty"></div></div>
+        </div>
+      </section>
+
+      <!-- ===================== USERS & ACCESS ===================== -->
+      <section class="view" data-view="users" hidden data-scope>
+        <div class="ph"><div><span class="eyebrow">Admin</span><h2>Users &amp; access</h2><p>Departments, roles and what each role may do. Replaces the old colour-coded accordion panel.</p></div>
+          <div class="acts"><div class="seg" data-tabs><button class="sel" data-tab="u">Users</button><button data-tab="d">Departments</button><button data-tab="r">Roles</button><button data-tab="p">Permissions</button></div><button class="btn" data-toast="Invite sent"><svg class="i"><use href="#i-plus"/></svg><span class="t">Add user</span></button></div></div>
+        <div class="card" data-pane="u"><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Name</th><th>Department</th><th>Role</th><th>Phone</th><th>Last active</th><th>Status</th><th class="r"></th></tr></thead><tbody id="u-body"></tbody></table></div></div>
+        <div class="grid g4" data-pane="d" hidden id="d-grid"></div>
+        <div class="card" data-pane="r" hidden><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Role</th><th>Scope</th><th class="r">Users</th><th>Can approve</th><th class="r"></th></tr></thead><tbody id="r-body"></tbody></table></div></div>
+        <div class="card" data-pane="p" hidden><div class="card-h"><h3>Role × department permissions</h3><button class="btn sm" data-toast="Permissions saved"><svg class="i xs"><use href="#i-check"/></svg>Save</button></div><div class="tbl-wrap"><table class="tbl roster"><thead id="p-head"></thead><tbody id="p-body"></tbody></table></div></div>
+      </section>
+
+    </main>
+    <p class="foot">Facility Management System redesign. Building, tenants, staff and readings are sample data shaped on the live product's modules.</p>
+  </div>
+</div>
+
+<script>
+/* ===== Suite base script: views, tabs, theme, toasts, charts. Exposes window.UI ===== */
+(function(){
+  const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const fmt=(n,d=0)=>Number(n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+  function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+  const UI=window.UI={$,$$,esc,fmt,rng,reduce};
+
+  /* ---- views ---- */
+  UI.showView=function(id){
+    if(!$(`.view[data-view="${id}"]`)) return;
+    $$('.view').forEach(v=>v.hidden=v.dataset.view!==id);
+    $$('.nav a[data-view]').forEach(a=>{const on=a.dataset.view===id;a.classList.toggle('on',on);on?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current');});
+    if(window.scrollY>0) window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});
+    document.dispatchEvent(new CustomEvent('ui:view',{detail:id}));
+    requestAnimationFrame(()=>UI.redraw());
+  };
+  document.addEventListener('click',e=>{
+    const v=e.target.closest('[data-view]');
+    if(v && !v.classList.contains('view')){e.preventDefault();UI.showView(v.dataset.view);return;}
+    const tab=e.target.closest('[data-tabs] > button');
+    if(tab){
+      const g=tab.parentNode; [...g.children].forEach(b=>{const on=b===tab;b.classList.toggle('sel',on);b.setAttribute('aria-selected',on);});
+      const scope=g.closest('[data-scope]')||g.closest('.view')||document;
+      if(tab.dataset.tab) $$('[data-pane]',scope).forEach(p=>{ if(p.closest('[data-scope]')===g.closest('[data-scope]')) p.hidden=p.dataset.pane!==tab.dataset.tab; });
+      g.dispatchEvent(new CustomEvent('ui:pick',{detail:tab.dataset.tab||tab.dataset.v||tab.textContent.trim(),bubbles:true}));
+      requestAnimationFrame(()=>UI.redraw());
+      return;
+    }
+    const seg=e.target.closest('.seg > button, .chips.pick > .chip');
+    if(seg){
+      [...seg.parentNode.children].forEach(b=>b.classList.toggle('sel',b===seg));
+      seg.parentNode.dispatchEvent(new CustomEvent('ui:pick',{detail:seg.dataset.v||seg.textContent.trim(),bubbles:true}));
+      return;
+    }
+    const multi=e.target.closest('.chips.multi > .chip'); if(multi){multi.classList.toggle('sel');return;}
+    const t=e.target.closest('[data-toast]'); if(t){UI.toast(t.dataset.toast);}
+  });
+  document.addEventListener('keydown',e=>{
+    if(e.key!=='Enter'&&e.key!==' ') return;
+    const t=e.target.closest('a[data-view],[role="button"]');
+    if(t&&t.tagName!=='BUTTON'){e.preventDefault();t.click();}
+  });
+
+  /* ---- theme ---- */
+  UI.isDark=()=>{const r=document.documentElement;return r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches);};
+  document.addEventListener('click',e=>{
+    if(!e.target.closest('#theme-btn')) return;
+    document.documentElement.dataset.theme=UI.isDark()?'light':'dark';
+    requestAnimationFrame(()=>UI.redraw());
+  });
+
+  /* ---- toast ---- */
+  let tt;
+  UI.toast=function(msg){
+    let el=$('#toast'); if(!el){el=document.createElement('div');el.id='toast';el.className='toast';el.setAttribute('role','status');document.body.appendChild(el);}
+    el.innerHTML='<svg class="i sm"><use href="#i-check"/></svg>'+esc(msg); el.classList.add('on');
+    clearTimeout(tt); tt=setTimeout(()=>el.classList.remove('on'),2200);
+  };
+
+  /* ---- sparklines: <svg class="spark" data-spark="1,2,3"> ---- */
+  UI.sparks=function(root=document){
+    $$('svg.spark[data-spark]',root).forEach(svg=>{
+      const v=svg.dataset.spark.split(',').map(Number),W=200,H=44,P=3;
+      const min=Math.min(...v),max=Math.max(...v),span=(max-min)||1;
+      const pts=v.map((n,i)=>[P+i*(W-2*P)/(v.length-1),H-P-(n-min)/span*(H-2*P)]);
+      const d=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+      svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.setAttribute('preserveAspectRatio','none');svg.setAttribute('aria-hidden','true');
+      svg.innerHTML=`<path class="a" d="${d} L${W-P} ${H} L${P} ${H} Z"/><path class="l" d="${d}"/>`;
+    });
+  };
+
+  /* ---- charts drawn at the element's real width ---- */
+  const charts=new Map();
+  UI.chart=function(el,draw){charts.set(el,draw);el.dataset.w='';paint(el);};
+  function paint(el){
+    const draw=charts.get(el); if(!draw) return;
+    const hidden=el.getClientRects().length===0;
+    if(hidden && el.dataset.w) return; // hidden: keep the last drawing until it is shown
+    const w=hidden?600:Math.max(260,Math.round(el.getBoundingClientRect().width));
+    if(!hidden && +el.dataset.w===w && el.dataset.theme===String(UI.isDark())) return;
+    el.dataset.w=w; el.dataset.theme=String(UI.isDark()); draw(el,w);
+  }
+  UI.redraw=()=>charts.forEach((_,el)=>paint(el));
+  if('ResizeObserver' in window){ const ro=new ResizeObserver(()=>UI.redraw()); ro.observe(document.body); }
+  else addEventListener('resize',()=>UI.redraw());
+
+  function niceMax(m){ if(m<=0) return 1; const p=Math.pow(10,Math.floor(Math.log10(m))); const n=m/p; return (n<=1?1:n<=2?2:n<=2.5?2.5:n<=5?5:10)*p; }
+  UI.niceMax=niceMax;
+
+  /* line/area chart. opts: {labels, series:[{c, data, area}], h, yfmt, every} */
+  UI.line=function(el,o){
+    UI.chart(el,(svg,W)=>{
+      const H=o.h||240,L=o.left||44,R=14,T=14,B=30,n=o.labels.length;
+      const all=o.series.flatMap(s=>s.data), steps=4; let lo=0, max=niceMax(Math.max(...all)*1.05);
+      if(o.zero===false){ const mn=Math.min(...all), mx=Math.max(...all); let st=niceMax(((mx-mn)||Math.abs(mx)||1)/3); lo=Math.floor(mn/st)*st; while(lo+st*steps<mx) st=niceMax(st*1.001); if(mn-lo<st*.15 && lo>0) lo-=st; while(lo+st*steps<mx) st=niceMax(st*1.001); max=lo+st*steps; }
+      const x=i=>L+i*(W-L-R)/(n-1), y=v=>T+(H-T-B)*(1-(v-lo)/(max-lo));
+      let g='',ax='';
+      for(let s=0;s<=steps;s++){const v=lo+(max-lo)/steps*s,yy=y(v).toFixed(1);g+=`<line x1="${L}" x2="${W-R}" y1="${yy}" y2="${yy}"${s===0?' class="base"':''}/>`;ax+=`<text x="${L-10}" y="${(+yy+4)}" text-anchor="end">${(o.yfmt||fmt)(v)}</text>`;}
+      const every=o.every||Math.ceil(n/Math.max(2,Math.floor((W-L)/78)));
+      o.labels.forEach((l,i)=>{ if(i%every && i!==n-1) return; ax+=`<text x="${x(i).toFixed(1)}" y="${H-8}" text-anchor="${i===0?'start':i===n-1?'end':'middle'}">${esc(l)}</text>`; });
+      let s='';
+      o.series.forEach(se=>{
+        const d=se.data.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');
+        const area=se.area?`<path class="a" d="${d} L${x(n-1).toFixed(1)} ${y(lo).toFixed(1)} L${x(0).toFixed(1)} ${y(lo).toFixed(1)} Z"/>`:'';
+        const dots=se.dots===false?'':se.data.map((v,i)=>`<circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="${i===n-1?4.5:3}"/>`).join('');
+        s+=`<g class="s" style="--c:${se.c}">${area}<path class="l" d="${d}"${se.dash?' stroke-dasharray="5 5"':''}/>${dots}</g>`;
+      });
+      svg.setAttribute('viewBox',`0 0 ${W} ${H}`); svg.setAttribute('height',H);
+      svg.innerHTML=`<g class="gl">${g}</g><g class="ax">${ax}</g>${s}`;
+    });
+  };
+
+  /* bar chart (grouped or stacked). opts: {labels, series:[{c,data}], stacked, h, yfmt} */
+  UI.bars=function(el,o){
+    UI.chart(el,(svg,W)=>{
+      const H=o.h||240,L=o.left||44,R=10,T=14,B=30,n=o.labels.length,k=o.series.length;
+      const tot=o.labels.map((_,i)=>o.stacked?o.series.reduce((a,s)=>a+s.data[i],0):Math.max(...o.series.map(s=>s.data[i])));
+      const max=niceMax(Math.max(...tot)*1.05), steps=4, slot=(W-L-R)/n, y=v=>T+(H-T-B)*(1-v/max);
+      let g='',ax='';
+      for(let s=0;s<=steps;s++){const v=max/steps*s,yy=y(v).toFixed(1);g+=`<line x1="${L}" x2="${W-R}" y1="${yy}" y2="${yy}"${s===0?' class="base"':''}/>`;ax+=`<text x="${L-10}" y="${(+yy+4)}" text-anchor="end">${(o.yfmt||fmt)(v)}</text>`;}
+      const every=Math.ceil(n/Math.max(2,Math.floor((W-L)/56)));
+      o.labels.forEach((l,i)=>{ if(i%every) return; ax+=`<text x="${(L+slot*i+slot/2).toFixed(1)}" y="${H-8}" text-anchor="middle">${esc(l)}</text>`; });
+      let b='';
+      const bw=Math.min(o.stacked?28:16,slot*(o.stacked?.56:.34));
+      o.labels.forEach((_,i)=>{
+        let acc=0;
+        o.series.forEach((se,j)=>{
+          const v=se.data[i]; if(!v) return;
+          let xx,yy,hh;
+          if(o.stacked){ xx=L+slot*i+(slot-bw)/2; yy=y(acc+v); hh=y(acc)-y(acc+v); acc+=v; }
+          else { const gw=bw*k+3*(k-1); xx=L+slot*i+(slot-gw)/2+j*(bw+3); yy=y(v); hh=y(0)-y(v); }
+          const top=o.stacked?j===k-1||o.series.slice(j+1).every(s=>!s.data[i]):true;
+          b+=`<g class="b" style="--c:${se.c}"><rect x="${xx.toFixed(1)}" y="${yy.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(0,hh).toFixed(1)}" rx="${top?Math.min(6,bw/2.5):1.5}"/></g>`;
+        });
+      });
+      svg.setAttribute('viewBox',`0 0 ${W} ${H}`); svg.setAttribute('height',H);
+      svg.innerHTML=`<g class="gl">${g}</g><g class="ax">${ax}</g>${b}`;
+    });
+  };
+
+  /* donut: segs [{v,c}] value label */
+  UI.donut=function(svg,segs,label,sub){
+    const r=58,C=2*Math.PI*r,tot=segs.reduce((a,s)=>a+s.v,0)||1; let off=0,arcs='';
+    segs.forEach(s=>{const len=C*s.v/tot; if(len<=0) return; arcs+=`<circle r="${r}" cx="75" cy="75" stroke="${s.c}" stroke-dasharray="${Math.max(0,len-3).toFixed(2)} ${C.toFixed(2)}" stroke-dashoffset="${(-off).toFixed(2)}" stroke-linecap="round" transform="rotate(-90 75 75)"/>`; off+=len;});
+    svg.setAttribute('viewBox','0 0 150 150');
+    svg.innerHTML=`<circle class="track" r="${r}" cx="75" cy="75"/>${arcs}<text class="dv" x="75" y="80">${esc(label)}</text><text class="dl" x="75" y="98">${esc(sub||'')}</text>`;
+  };
+
+  /* simple gauge ring: value 0..100 */
+  UI.ring=function(svg,v,c,label,sub){
+    const r=58,C=2*Math.PI*r*0.75,len=C*Math.max(0,Math.min(100,v))/100;
+    svg.setAttribute('viewBox','0 0 150 150');
+    svg.innerHTML=`<circle class="track" r="${r}" cx="75" cy="75" stroke-dasharray="${C.toFixed(1)} 999" stroke-linecap="round" transform="rotate(135 75 75)"/>`+
+      `<circle r="${r}" cx="75" cy="75" stroke="${c}" stroke-dasharray="${len.toFixed(1)} 999" stroke-linecap="round" transform="rotate(135 75 75)"/>`+
+      `<text class="dv" x="75" y="80">${esc(label)}</text><text class="dl" x="75" y="98">${esc(sub||'')}</text>`;
+  };
+
+  document.addEventListener('DOMContentLoaded',()=>UI.sparks());
+  if(document.readyState!=='loading') UI.sparks();
+})();
+
+(function(){
+const {$,$$,esc,fmt,rng}=UI;
+const ini=n=>n.split(/\s+/).filter(w=>/^[A-Z]/.test(w)).slice(0,2).map(w=>w[0]).join('');
+
+/* ===================== tower data ===================== */
+const COMMON=['Lobby','Facility office','Parking · 84 bays','Plant room','Parking · 96 bays','Water tanks'];
+const FLOORS=[
+ ['14',[['Margalla Telecom',12000]]],['13',[['Margalla Telecom',12000]]],['12',[['Margalla Telecom',12000]]],
+ ['11',[['Indus Hydropower',7500],['Rawal Consulting',4500]]],['10',[['Indus Hydropower',12000]]],['9',[['Potohar Bank',12000]]],
+ ['8',[['Kohsar Asset Management',5400],['Silkroute Engineering',4100],['Vacant',2500]]],['7',[['Pak-Gulf Investment',8000],['Mehran Textiles',4000]]],
+ ['6',[['Taxila Systems',6200],['Faisal Avenue Partners',3500],['Vacant',2300]]],['5',[['Nexa Logistics',8000],['Capital Law Associates',4000]]],
+ ['4',[['Saffron Takaful',12000]]],['3',[['Blue Area Coworking',9000],['Vacant',3000]]],
+ ['2',[['Orbit Telecom Services',5200],['Haider & Co. Accountants',3800],['Kestrel Aviation',3000]]],['1',[['Crescent Pharma',6000],['Facility office',2000],['Vacant',4000]]],
+ ['G',[['Potohar Bank',3200],['Daily Grind Café',2800],['Lobby',2000]]],
+ ['B1',[['Parking · 84 bays',7000],['Plant room',5000]]],['B2',[['Parking · 96 bays',8000],['Water tanks',4000]]]];
+const PAL=['#0E8F6B','#2C79BC','#A27622','#7657C6','#14979B','#C25A3D','#4C8A33','#8F6A2F','#3E64C8','#A1517F','#2F7D74','#6C7A2E','#B5482F','#4E6FAE'];
+const TEN={}; let k=0;
+FLOORS.forEach(([f,segs])=>segs.forEach(([n,a])=>{ if(n==='Vacant'||COMMON.includes(n)) return; if(!TEN[n]){TEN[n]={c:PAL[k++%PAL.length],area:0,floors:[]};} TEN[n].area+=a; TEN[n].floors.push(f); }));
+let leasable=0,vacant=0; FLOORS.forEach(([,segs])=>segs.forEach(([n,a])=>{ if(COMMON.includes(n)) return; leasable+=a; if(n==='Vacant') vacant+=a; }));
+const leased=leasable-vacant, occ=leased/leasable*100, tenants=Object.keys(TEN).length;
+$('#k-occ').textContent=occ.toFixed(1)+'%'; $('#k-occ-bar').style.width=occ.toFixed(1)+'%';
+$('#k-occ-sub').textContent=`${fmt(leased)} of ${fmt(leasable)} sq ft leased · ${tenants} tenants`;
+
+function tower(host,big){
+  let h=`<div class="tower"><div class="crown"><span></span><div class="cap">Roof · absorption chillers &amp; cooling towers</div><span></span></div>`;
+  FLOORS.forEach(([f,segs],i)=>{
+    const tot=segs.reduce((a,s)=>a+s[1],0), com=segs.every(s=>COMMON.includes(s[0])&&s[0]!=='Facility office'&&s[0]!=='Lobby');
+    const used=segs.filter(s=>!COMMON.includes(s[0])).reduce((a,s)=>a+s[1],0), vac=segs.filter(s=>s[0]==='Vacant').reduce((a,s)=>a+s[1],0);
+    const pct=used?Math.round((used-vac)/used*100)+'%':'—';
+    if(f==='B1') h+=`<div class="ground-line"></div>`;
+    h+=`<div class="floor${big?'':' sm'}"><span class="fl">${f}</span><div class="segs">`+segs.map(([n,a])=>{
+      const cls=n==='Vacant'?'seg vac':COMMON.includes(n)?'seg com':'seg'; const st=TEN[n]?` style="--c:${TEN[n].c};flex:${a}"`:` style="flex:${a}"`;
+      return `<span class="${cls}"${st} title="${esc(n)} · ${fmt(a)} sq ft" data-ten="${esc(n)}">${a/tot>.22||big&&a/tot>.17?esc(n):''}</span>`;}).join('')+`</div><span class="pct">${com?'Service':pct}</span></div>`;
+  });
+  h+=`</div><div class="tower-legend"><span><i style="--c:var(--act)"></i>Each colour is one tenant</span><span><i class="vac"></i>Vacant</span><span><i style="--c:var(--card-2);border:1px dashed var(--line)"></i>Common &amp; service</span></div>`;
+  host.innerHTML=h;
+}
+tower($('#tower-dash'),false); tower($('#tower-big'),true);
+
+/* ===================== donuts ===================== */
+const CMPS=[['Open',3,'var(--bad)'],['Pending',5,'var(--warn)'],['In progress',4,'var(--info)'],['Resolved',41,'var(--ok)']];
+const JOBS=[['Open',2,'var(--bad)'],['Pending',3,'var(--warn)'],['In progress',4,'var(--info)'],['Completed',58,'var(--ok)']];
+UI.donut($('#dn-cmp'),CMPS.map(s=>({v:s[1],c:s[2]})),String(CMPS.reduce((a,s)=>a+s[1],0)),'complaints');
+UI.donut($('#dn-job'),JOBS.map(s=>({v:s[1],c:s[2]})),String(JOBS.reduce((a,s)=>a+s[1],0)),'job slips');
+$('#dn-cmp-l').innerHTML=CMPS.map(s=>`<div style="--c:${s[2]}"><i></i><span>${s[0]}</span><b>${s[1]}</b></div>`).join('');
+$('#dn-job-l').innerHTML=JOBS.map(s=>`<div style="--c:${s[2]}"><i></i><span>${s[0]}</span><b>${s[1]}</b></div>`).join('');
+
+/* ===================== plant room ===================== */
+const HRS=['06','07','08','09','10','11','12','13','14','15','16','17'];
+const wave=(base,amp,seed,n=10)=>{const r=rng(seed);return Array.from({length:n},(_,i)=>+(base+Math.sin(i/2.2+seed)*amp+(r()-.5)*amp*.5).toFixed(1));};
+const PLANT=[
+ {k:'boiler',n:'Hot water boiler',ic:'i-flame',st:'Running',stc:'ok',g:[78,95,'var(--bad)','°C out'],sub:'Started 05:35 · operator Waheed Ur Rehman',
+  reads:[['Hot water out','78','°C'],['Hot water in','62','°C'],['Exhaust','186','°C'],['Furnace pressure','1.8','bar']],
+  ser:[['Water out','var(--bad)',wave(76,3,1)],['Water in','var(--info)',wave(61,2.5,2)]],cols:['Water in °C','Water out °C','Exhaust °C','Furnace bar'],row:i=>[61+i%3,76+i%4,180+i*2,(1.7+i%3*.05).toFixed(2)]},
+ {k:'chiller',n:'Absorption chiller',ic:'i-snow',st:'Running',stc:'ok',g:[71,100,'var(--info)','% load'],sub:'Chiller 2 of 2 · supply 7.2 °C',
+  reads:[['Chilled water supply','7.2','°C'],['Chilled water return','12.4','°C'],['Condenser in','29.5','°C'],['Load','71','%']],
+  ser:[['Supply','var(--info)',wave(7.3,.4,3)],['Return','var(--vio)',wave(12.3,.5,4)]],cols:['Supply °C','Return °C','Condenser °C','Load %'],row:i=>[(7.1+i%3*.1).toFixed(1),(12.2+i%4*.1).toFixed(1),(29+i%3*.4).toFixed(1),64+i*2]},
+ {k:'gen',n:'Generator',ic:'i-zap',st:'Standby',stc:'warn',g:[82,100,'var(--gold)','% fuel'],sub:'1,250 kVA · last test Monday, 32 min',
+  reads:[['Fuel level','82','%'],['Battery','26.4','V'],['Run hours','4,212','h'],['Coolant','34','°C']],
+  ser:[['Battery V','var(--gold)',wave(26.4,.2,5)]],cols:['Fuel %','Battery V','Coolant °C','Mode'],row:i=>[82,(26.3+i%2*.1).toFixed(1),33+i%3,'Standby']},
+ {k:'trafo',n:'Transformer',ic:'i-plug',st:'Normal',stc:'ok',g:[64,100,'var(--act)','% load'],sub:'2,000 kVA · 11 kV to 400 V',
+  reads:[['Load','64','%'],['Oil temperature','58','°C'],['HT voltage','11.1','kV'],['LT voltage','402','V']],
+  ser:[['Load %','var(--act)',wave(60,8,6)],['Oil °C','var(--warn)',wave(56,3,7)]],cols:['Load %','Oil °C','HT kV','LT V'],row:i=>[52+i*2,54+i%4,(11.0+i%2*.1).toFixed(1),398+i%5]},
+ {k:'water',n:'Water management',ic:'i-water',st:'Normal',stc:'ok',g:[74,100,'var(--info)','% overhead'],sub:'Overhead 74% · underground 61%',
+  reads:[['Overhead tank','74','%'],['Underground tank','61','%'],['Used today','86','m³'],['Tanker deliveries','1','']],
+  ser:[['Overhead %','var(--info)',wave(76,6,8)],['Underground %','var(--act)',wave(63,3,9)]],cols:['Overhead %','Underground %','Flow m³/h','Pump'],row:i=>[80-i,64-i%3,8+i%4,i%3?'Off':'On']},
+ {k:'fcu',n:'FCU report',ic:'i-fan',st:'6 faulty',stc:'bad',g:[90,100,'var(--act)','% running'],sub:'212 of 236 fan coil units running',
+  reads:[['Units running','212','of 236'],['Faulty','6',''],['Filters due','18',''],['Average supply','15.8','°C']],
+  ser:[['Avg supply °C','var(--act)',wave(15.8,.6,10)]],cols:['Running','Faulty','Avg supply °C','Floor checked'],row:i=>[208+i%5,6,(15.5+i%4*.1).toFixed(1),['14','12','10','8','6','4'][i%6]]},
+ {k:'plumb',n:'Plumbing',ic:'i-pipe',st:'2 leaks',stc:'warn',g:[94,100,'var(--info)','% washrooms'],sub:'64 of 68 washrooms checked',
+  reads:[['Open leaks','2',''],['Pump pressure','4.2','bar'],['Washrooms checked','64','of 68'],['Drain jobs','1','']],
+  ser:[['Pump bar','var(--info)',wave(4.2,.2,11)]],cols:['Pump bar','Leaks','Checked','Notes'],row:i=>[(4.1+i%3*.05).toFixed(2),2,60+i%5,i===0?'Floor 9 pantry':'—']},
+ {k:'fire',n:'Firefighting',ic:'i-flame',st:'Ready',stc:'ok',g:[88,100,'var(--bad)','% ready'],sub:'Jockey pump 7.1 bar · 9 extinguishers due',
+  reads:[['Jockey pump','7.1','bar'],['Main pump','Auto',''],['Sprinkler valves','Open',''],['Extinguishers due','9','']],
+  ser:[['Jockey bar','var(--bad)',wave(7.1,.15,12)]],cols:['Jockey bar','Main pump','Valves','Panel'],row:i=>[(7.0+i%3*.05).toFixed(2),'Auto','Open','Normal']}];
+$('#plant-grid').innerHTML=PLANT.slice(0,6).map((p,i)=>`<button class="plant" data-plant="${p.k}"><svg class="donut" id="pg-${i}"></svg><div><b>${p.n}</b><small>${esc(p.sub)}</small><span class="pill sm ${p.stc}" style="margin-top:8px">${p.st}</span></div></button>`).join('');
+PLANT.slice(0,6).forEach((p,i)=>UI.ring($(`#pg-${i}`),p.g[0]/p.g[1]*100,p.g[2],String(p.g[0]),''));
+$('#plant-tabs').innerHTML=PLANT.map((p,i)=>`<button class="${i?'':'sel'}" data-tab="${p.k}"><svg class="i sm"><use href="#${p.ic}"/></svg>${p.n}</button>`).join('');
+$('#plant-panes').innerHTML=PLANT.map((p,i)=>`<div class="stack" data-pane="${p.k}" ${i?'hidden':''} style="gap:24px">
+  <div class="grid g4">${p.reads.map(r=>`<div class="read"><small>${r[0]}</small><em>${r[1]}<small>${r[2]}</small></em></div>`).join('')}</div>
+  <div class="grid g21 top">
+    <div class="card"><div class="card-h"><h3>${p.n} <small>today, hourly</small></h3><span class="pill ${p.stc}"><span class="dot"></span>${p.st}</span></div><svg class="chart" id="pc-${p.k}" role="img" aria-label="${p.n} readings today"></svg><div class="legend">${p.ser.map(s=>`<span style="--c:${s[1]}"><i></i>${s[0]}</span>`).join('')}</div></div>
+    <div class="card"><div class="card-h"><h3>Add log entry</h3></div><div class="form">
+      <div class="fgrid"><div class="field"><label for="st-${p.k}">Start time</label><input id="st-${p.k}" type="time" value="05:35"></div><div class="field"><label for="sd-${p.k}">Shutdown time</label><input id="sd-${p.k}" type="time" value="21:35"></div></div>
+      <div class="fgrid"><div class="field"><label for="op-${p.k}">Operator</label><select id="op-${p.k}"><option>Waheed Ur Rehman</option><option>Adil Ashraf</option><option>Hammad Rafique</option></select></div><div class="field"><label for="sv-${p.k}">Supervisor</label><select id="sv-${p.k}"><option>Imtiaz Ali</option><option>Rizwan Haider</option></select></div></div>
+      <div class="field"><label for="rm-${p.k}">Remarks</label><textarea id="rm-${p.k}">Temperature and pressure are good.</textarea></div>
+      <button class="btn wide" data-toast="${p.n} log saved"><svg class="i"><use href="#i-check"/></svg>Save entry</button></div></div>
+  </div>
+  <div class="card"><div class="card-h"><h3>Hourly log</h3><button class="btn sm ghost" data-toast="New hourly row added"><svg class="i xs"><use href="#i-plus"/></svg>Add hour</button></div><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Hour</th>${p.cols.map(c=>`<th>${c}</th>`).join('')}<th>Checked by</th></tr></thead><tbody>${Array.from({length:5},(_,j)=>{const r=p.row(4-j);return `<tr><td class="num"><b>${HRS[4-j]}:00</b></td>${r.map(v=>`<td class="num">${v}</td>`).join('')}<td>${['Waheed Ur Rehman','Adil Ashraf','Hammad Rafique'][j%3]}</td></tr>`;}).join('')}</tbody></table></div></div>
+</div>`).join('');
+PLANT.forEach(p=>UI.line($(`#pc-${p.k}`),{labels:HRS.slice(0,10).map(h=>h+':00'),series:p.ser.map(s=>({c:s[1],data:s[2],area:p.ser.length===1})),h:240,zero:false,yfmt:v=>(+v.toFixed(1)).toString()}));
+document.addEventListener('click',e=>{ const b=e.target.closest('[data-plant]'); if(!b) return; UI.showView('plant'); const t=$(`#plant-tabs [data-tab="${b.dataset.plant}"]`); if(t) t.click(); });
+
+/* ===================== complaints ===================== */
+const CMP=[
+ ['CMP-1042','AC not cooling in the boardroom','Margalla Telecom','12','HVAC','In progress','Adil Ashraf','09:05','Boardroom 12-B · east wing','Gas top-up and filter clean','R-410A gas, 1 filter'],
+ ['CMP-1041','Water leaking under the pantry sink','Potohar Bank','9','Plumbing','Pending','Hammad Rafique','08:40','Pantry, north core','Waiting on a P-trap from stores','P-trap 40 mm, sealant'],
+ ['CMP-1040','Lift 3 stops between floors','Common area','Core','Lifts','Open','—','08:22','Lift bank B','Vendor called','—'],
+ ['CMP-1039','Lights flickering in the open office','Indus Hydropower','10','Electrical','In progress','Waheed Ur Rehman','Yesterday','Open office, west','Replacing ballasts','LED panel 2×2 × 4'],
+ ['CMP-1038','Washroom needs cleaning, east side','Orbit Telecom Services','2','Janitorial','Resolved','Janitorial team B','Yesterday','Gents washroom, east','Cleaned and restocked','Tissue, soap'],
+ ['CMP-1037','Access card rejected at turnstile 2','Kohsar Asset Management','8','Security','Pending','Imran Shah','Yesterday','Ground floor turnstiles','Card re-encoding scheduled','—'],
+ ['CMP-1036','Stained ceiling tile, possible leak','Taxila Systems','6','Civil','Open','—','7 Oct','Meeting room 6-C','Inspection booked','—'],
+ ['CMP-1035','Socket sparking in the server room','Margalla Telecom','13','Electrical','Resolved','Adil Ashraf','6 Oct','Server room 13-A','Socket and breaker replaced','13 A socket, 20 A MCB'],
+ ['CMP-1034','Hot water not reaching the 14th floor','Margalla Telecom','14','Plumbing','Pending','Hammad Rafique','6 Oct','Washrooms, 14th floor','Booster pump check due','—'],
+ ['CMP-1033','Parking barrier stuck at the B1 exit','Common area','B1','Security','Open','—','5 Oct','B1 exit ramp','Vendor called','—']];
+const CS={'Open':'bad','Pending':'warn','In progress':'info','Resolved':'ok'};
+const SLIP={'CMP-1042':'JS-0454','CMP-1041':'JS-0458','CMP-1040':'JS-0460','CMP-1039':'JS-0452','CMP-1038':'JS-0446','CMP-1037':'JS-0457','CMP-1036':'JS-0461','CMP-1035':'JS-0447','CMP-1034':'JS-0455'};
+let cSel=0,cFilter='all';
+$('#cmp-mini').innerHTML=CMP.slice(0,6).map(c=>`<tr><td><b>${esc(c[1])}</b><small class="mono">${c[0]} · ${c[7]}</small></td><td>${esc(c[2])}<small>Floor ${c[3]}</small></td><td>${c[4]}</td><td>${c[6]==='—'?'<span class="muted">Unassigned</span>':esc(c[6])}</td><td><span class="pill ${CS[c[5]]}">${c[5]}</span></td></tr>`).join('');
+const TECHS=['Adil Ashraf','Hammad Rafique','Waheed Ur Rehman','Shoaib Akhtar','Zeeshan Malik'];
+function renderCmp(){
+  $('#cmp-list').innerHTML=CMP.map((c,i)=>[c,i]).filter(([c])=>cFilter==='all'||(cFilter==='open'?c[5]!=='Resolved':c[5]===cFilter)).map(([c,i])=>`<div class="cmp-row${i===cSel?' sel':''}" data-cmp="${i}" role="button" tabindex="0"><span class="well sm ${CS[c[5]]}"><svg class="i sm"><use href="#i-${c[4]==='Electrical'?'zap':c[4]==='Plumbing'?'drop':c[4]==='HVAC'?'fan':c[4]==='Security'?'shield':c[4]==='Janitorial'?'broom':c[4]==='Lifts'?'layers':'building'}"/></svg></span><div><b>${esc(c[1])}</b><small>${esc(c[2])} · Floor ${c[3]} · ${c[7]}</small><div class="meta"><span class="pill sm">${c[4]}</span><span class="pill sm ${CS[c[5]]}">${c[5]}</span></div></div><small class="mono">${c[0]}</small></div>`).join('');
+  const c=CMP[cSel], done=c[5]==='Resolved';
+  const tl=[['Logged by tenant',c[7]+' · via the tenant app',true],['Assigned',c[6]==='—'?'Waiting for a technician':c[6],c[6]!=='—'],['Job slip raised',SLIP[c[0]]?SLIP[c[0]]+(c[5]==='Open'?' · not started':''):'Not yet',!!SLIP[c[0]]&&c[5]!=='Open'],['Resolved',done?'Tenant confirmed the fix':'Pending',done]];
+  $('#cmp-detail').innerHTML=`<div class="card"><div class="card-h"><div><small class="mono">${c[0]}</small><h3 style="font-size:20px;margin-top:2px">${esc(c[1])}</h3></div><span class="pill ${CS[c[5]]}">${c[5]}</span></div>
+     <div class="dl2"><div><small>Tenant</small><b>${esc(c[2])}</b></div><div><small>Floor · location</small><b>${c[3]} · ${esc(c[8])}</b></div><div><small>Service</small><b>${c[4]}</b></div><div><small>Attended by</small><b>${c[6]==='—'?'Unassigned':esc(c[6])}</b></div><div><small>Action taken</small><b>${esc(c[9])}</b></div><div><small>Material required</small><b>${esc(c[10])}</b></div></div></div>
+   <div class="card"><div class="card-h"><h3>Progress</h3></div><ol class="tl">${tl.map((t,j)=>`<li class="${t[2]?'done':(j===tl.findIndex(x=>!x[2])?'now':'')}"><i></i><div><b>${t[0]}</b><small>${esc(t[1])}</small></div></li>`).join('')}</ol></div>
+   <div class="card"><div class="card-h"><h3>Add job slip</h3></div><div class="form">
+     <div class="fgrid"><div class="field"><label for="js-dept">Department</label><select id="js-dept"><option${c[4]==='Electrical'?' selected':''}>Electrical</option><option${c[4]==='Plumbing'?' selected':''}>Plumbing</option><option${c[4]==='HVAC'?' selected':''}>HVAC</option><option>Civil</option><option>Janitorial</option></select></div>
+       <div class="field"><label for="js-mat">Material required</label><input id="js-mat" value="${esc(c[10]==='—'?'':c[10])}" placeholder="e.g. LED bulb"></div></div>
+     <div class="field"><label>Technicians</label><div class="chips multi tech-pick">${TECHS.map((t,j)=>`<button class="chip${j<2?' sel':''}"><span class="ava sm" style="width:20px;height:20px;font-size:9px">${ini(t)}</span>${t}</button>`).join('')}</div></div>
+     <div class="field"><label for="js-desc">Description</label><textarea id="js-desc">${esc(c[1])}.</textarea></div>
+     <div class="row"><button class="btn" data-toast="Job slip added to ${c[0]}"><svg class="i"><use href="#i-plus"/></svg>Add job slip</button><button class="btn ghost" data-toast="${c[0]} marked resolved">Mark resolved</button></div></div></div>`;
+}
+document.addEventListener('click',e=>{ const r=e.target.closest('[data-cmp]'); if(!r) return; cSel=+r.dataset.cmp; renderCmp(); });
+document.addEventListener('ui:pick',e=>{ if(e.target.matches('[data-cmpfilter]')){cFilter=e.detail; renderCmp();} });
+renderCmp();
+
+/* ===================== job slips ===================== */
+const JS=[
+ ['Open','JS-0461','Inspect stained ceiling tile','Civil','6',['Zeeshan Malik'],'—','CMP-1036'],
+ ['Open','JS-0460','Free lift 3 and reset controller','Lifts','Core',[],'Vendor visit','CMP-1040'],
+ ['Pending','JS-0458','Replace pantry P-trap','Plumbing','9',['Hammad Rafique'],'P-trap 40 mm','CMP-1041'],
+ ['Pending','JS-0457','Re-encode access card','Security','G',['Imran Shah'],'Blank card','CMP-1037'],
+ ['Pending','JS-0455','Check 14th floor booster pump','Plumbing','14',['Hammad Rafique','Shoaib Akhtar'],'—','CMP-1034'],
+ ['In progress','JS-0454','Gas top-up, boardroom AC','HVAC','12',['Adil Ashraf'],'R-410A, filter','CMP-1042'],
+ ['In progress','JS-0452','Replace flickering LED panels','Electrical','10',['Waheed Ur Rehman','Adil Ashraf'],'LED panel × 4','CMP-1039'],
+ ['In progress','JS-0450','FCU filter change, floors 4–6','HVAC','4–6',['Shoaib Akhtar'],'Filters × 18','Inspection'],
+ ['In progress','JS-0449','Repaint fire exit signage','Civil','B2',['Zeeshan Malik'],'Paint, stencil','Inspection'],
+ ['Completed','JS-0447','Replace server room socket','Electrical','13',['Adil Ashraf'],'13 A socket, MCB','CMP-1035'],
+ ['Completed','JS-0446','Deep clean east washroom','Janitorial','2',['Team B'],'Supplies','CMP-1038'],
+ ['Completed','JS-0444','Fix lobby door closer','Civil','G',['Zeeshan Malik'],'Door closer','Inspection']];
+const JC={'Open':'var(--bad)','Pending':'var(--warn)','In progress':'var(--info)','Completed':'var(--ok)'};
+const JCOUNT={'Open':2,'Pending':3,'In progress':4,'Completed':58};
+let jFilter='all';
+function renderJobs(){
+  $('#jobs-board').innerHTML=Object.keys(JC).map(col=>{
+    const list=JS.filter(j=>j[0]===col&&(jFilter==='all'||j[3]===jFilter));
+    return `<div class="col"><div class="col-h" style="--c:${JC[col]}"><span class="dot"></span>${col}<span class="n">${JCOUNT[col]}</span></div>`+
+     (list.map(j=>`<div class="job" style="--c:${JC[col]}"><div class="j-top"><small class="mono">${j[1]}</small><span class="pill sm">${j[3]}</span></div><b>${esc(j[2])}</b><small>Floor ${j[4]} · ${esc(j[6])}</small><div class="j-foot"><div class="avas">${j[5].length?j[5].map((t,i)=>`<span class="ava sm ${['info','ok','vio'][i%3]}" title="${esc(t)}">${ini(t)||'T'}</span>`).join(''):'<span class="pill sm bad">Unassigned</span>'}</div><small class="mono">${j[7]}</small></div></div>`).join('')||'<div class="empty">No slips for this department</div>')+
+     (col==='Completed'?`<button class="btn sm ghost wide" data-toast="Showing all completed slips">Show ${JCOUNT[col]-3} more</button>`:'')+`</div>`;
+  }).join('');
+}
+document.addEventListener('ui:pick',e=>{ if(e.target.matches('[data-deptfilter]')){jFilter=e.detail; renderJobs();} });
+renderJobs();
+
+/* ===================== tenants ===================== */
+const LEASE={'Margalla Telecom':['Jun 2029','Faraz Hussain','Active'],'Indus Hydropower':['Dec 2027','Sadia Noor','Active'],'Rawal Consulting':['Feb 2027','Umer Saeed','Renewal due'],'Potohar Bank':['Mar 2030','Khalid Mir','Active'],
+ 'Kohsar Asset Management':['Nov 2026','Ayesha Kamal','Renewal due'],'Silkroute Engineering':['Aug 2028','Bilal Chaudhry','Active'],'Pak-Gulf Investment':['Jan 2028','Tahir Anwar','Active'],'Mehran Textiles':['Dec 2026','Nida Shah','Notice given'],
+ 'Taxila Systems':['Sep 2027','Hassan Javed','Active'],'Faisal Avenue Partners':['May 2028','Mehwish Ali','Active'],'Nexa Logistics':['Jul 2027','Junaid Khan','Active'],'Capital Law Associates':['Oct 2028','Saima Rauf','Active'],
+ 'Saffron Takaful':['Apr 2029','Imran Qadir','Active'],'Blue Area Coworking':['Jan 2027','Zara Malik','Renewal due'],'Orbit Telecom Services':['Jun 2028','Fahad Iqbal','Active'],'Haider & Co. Accountants':['Mar 2028','Ali Haider','Active'],
+ 'Kestrel Aviation':['Aug 2027','Omer Farooq','Active'],'Crescent Pharma':['Feb 2029','Rabia Aslam','Active'],'Daily Grind Café':['Dec 2027','Sana Tariq','Active']};
+const LS={'Active':'ok','Renewal due':'warn','Notice given':'bad'};
+$('#ten-kpis').innerHTML=[['Leasable area',fmt(leasable),'sq ft','i-layers','grad'],['Leased',fmt(leased),'sq ft · '+occ.toFixed(1)+'%','i-check-c','ok'],['Vacant',fmt(vacant),'sq ft in 4 units','i-door','gold'],['Tenants',String(tenants),'3 renewals due','i-users','info']]
+  .map(t=>`<div class="card kpi"><div class="k-head"><span class="well k-ic ${t[4]==='gold'?'':t[4]}" ${t[4]==='gold'?'style="background:var(--gold-tint);color:var(--gold)"':''}><svg class="i"><use href="#${t[3]}"/></svg></span><span class="k-lbl">${t[0]}</span></div><div class="k-val">${t[1]}</div><small>${t[2]}</small></div>`).join('');
+$('#vacant').innerHTML=[['Floor 1','4,000 sq ft','West wing, fitted with partitions'],['Floor 3','3,000 sq ft','Open plan, north light'],['Floor 8','2,500 sq ft','Corner unit, two cabins'],['Floor 6','2,300 sq ft','Shell and core']].map(v=>`<div><span class="well sm" style="background:var(--gold-tint);color:var(--gold)"><svg class="i sm"><use href="#i-door"/></svg></span><div class="grow"><b>${v[0]} · ${v[1]}</b><small>${v[2]}</small></div><button class="btn xs ghost" data-toast="Viewing booked for ${v[0]}">Book viewing</button></div>`).join('');
+$('#leases').innerHTML=Object.entries(LEASE).filter(([,l])=>l[2]!=='Active').map(([n,l])=>`<div><span class="ava sm" style="background:${TEN[n].c};color:#fff">${ini(n)}</span><div class="grow"><b>${esc(n)}</b><small>Ends ${l[0]} · ${l[1]}</small></div><span class="pill sm ${LS[l[2]]}">${l[2]}</span></div>`).join('');
+$('#ten-body').innerHTML=Object.entries(TEN).sort((a,b)=>b[1].area-a[1].area).map(([n,t])=>{const l=LEASE[n]; return `<tr data-row data-hi="${esc(n)}"><td><div class="cell"><span class="ava sm" style="background:${t.c};color:#fff">${ini(n)}</span><b>${esc(n)}</b></div></td><td>${t.floors.join(', ')}</td><td class="r num">${fmt(t.area)} sq ft</td><td class="r num">${(t.area/leasable*100).toFixed(1)}%</td><td>${l[0]}</td><td>${l[1]}</td><td><span class="pill ${LS[l[2]]}">${l[2]}</span></td></tr>`;}).join('');
+document.addEventListener('click',e=>{ const r=e.target.closest('[data-hi]'); if(!r) return; $$('#tower-big .seg').forEach(s=>s.classList.toggle('hi',s.dataset.ten===r.dataset.hi)); $$('#ten-body tr').forEach(t=>t.classList.toggle('sel',t===r)); $('#tower-big').scrollIntoView({behavior:UI.reduce?'auto':'smooth',block:'center'}); });
+
+/* ===================== duty chart & janitorial ===================== */
+const STAFF=[['Imran Shah','Security supervisor'],['Rizwan Haider','Shift engineer'],['Waheed Ur Rehman','Boiler operator'],['Adil Ashraf','Electrician'],['Hammad Rafique','Plumber'],['Shoaib Akhtar','HVAC technician'],['Zeeshan Malik','Civil technician'],['Nasreen Bibi','Janitorial lead'],['Asad Mehmood','Fire warden'],['Kashif Raza','CCTV operator']];
+const r2=rng(31), SH=['M','E','N','O'];
+$('#roster-body').innerHTML=STAFF.map((s,i)=>`<tr><td><div class="cell"><span class="ava sm ${['info','ok','vio','warn','gray'][i%5]}">${ini(s[0])}</span><div><b>${s[0]}</b><small>${s[1]}</small></div></div></td>${Array.from({length:7},(_,d)=>{const base=SH[(i+Math.floor(d/2))%3]; const v=(d===6&&i%2)||(d===5&&i%3===0)?'O':base; return `<td><span class="sh ${v}">${v==='O'?'Off':v}</span></td>`;}).join('')}</tr>`).join('');
+const FL=['14','13','12','11','10','9','8','7','6','5','4','3','2','1','G'];
+$('#jan-body').innerHTML=FL.map((f,i)=>{const cells=Array.from({length:5},(_,j)=>{const u=r2(); return u<.78?'y':u<.93?'p':'n';}); const score=Math.round(100-cells.filter(c=>c==='p').length*6-cells.filter(c=>c==='n').length*15);
+  return `<tr><td><b>Floor ${f}</b></td>${cells.map(c=>`<td><span class="mark ${c}"><svg class="i xs"><use href="#i-${c==='y'?'check':c==='p'?'clock':'x'}"/></svg></span></td>`).join('')}<td><div class="row" style="justify-content:center;gap:8px"><div class="bar thin" style="width:70px;--c:${score>=90?'var(--ok)':score>=80?'var(--warn)':'var(--bad)'}"><i style="width:${score}%"></i></div><b class="num">${score}</b></div></td></tr>`;}).join('');
+
+/* ===================== security ===================== */
+const LOC=['Main entrance','Lobby reception','Turnstiles','Lift lobby G','Lift lobby B1','Lift lobby B2','B1 ramp','B2 ramp','Loading bay','Stair core N','Stair core S','Roof access','Plant room','Generator room','Server corridor','Parking exit'];
+$('#cams').innerHTML=[1,2,3,4].map(d=>`<div class="cams" data-pane="d${d}" ${d>1?'hidden':''}>`+Array.from({length:d===4?18:16},(_,i)=>{const off=(d===4&&i===15)||(d===2&&i===11); const loc=LOC[(i+d*3)%LOC.length]+(d>1?` · ${['','','F'+(d*3+i%4),'F'+(d*4+i%3)][d-1]}`:'');
+  return `<div class="cam${off?' off':''}"><div class="feed">${off?'<span style="font:700 11px var(--f-body)">No signal</span>':'<svg class="i" style="width:26px;height:26px"><use href="#i-camera"/></svg>'}<span class="rec">${off?'':'<span class="dot"></span>REC'}</span><span class="ts">09:42:${String(10+i).padStart(2,'0')}</span></div><div class="cap"><b>Camera-${String(i+1).padStart(2,'0')}</b><small>${esc(loc)}</small></div></div>`;}).join('')+`</div>`).join('');
+$('#sec-log').innerHTML=[['warn','i-door','Tailgating at turnstile 2','08:51 · visitor escorted back to reception'],['info','i-key','Lost access card reported','08:12 · Kohsar Asset Management, card blocked'],['bad','i-cctv','DVR-4 camera 16 offline','07:30 · B1 lift lobby, technician informed'],['gray','i-car','Parking dispute at B2','Yesterday 18:40 · resolved by supervisor'],['ok','i-shield','Night patrol completed','06:55 · 14 checkpoints, no exceptions']].map(l=>`<div><span class="well sm ${l[0]}"><svg class="i sm"><use href="#${l[1]}"/></svg></span><div class="grow"><b>${l[2]}</b><small>${l[3]}</small></div></div>`).join('');
+$('#fire-duty').innerHTML=[['Asad Mehmood','Fire warden · floors 8–14','On post'],['Tariq Jamil','Pump room · jockey and main pumps','On post'],['Saleem Akhtar','Fire warden · floors 1–7','On post'],['Naveed Iqbal','Basement and generator room','Break till 10:00']].map(f=>`<div><span class="ava sm warn">${ini(f[0])}</span><div class="grow"><b>${f[0]}</b><small>${f[1]}</small></div><span class="pill sm ${f[2]==='On post'?'ok':'warn'}">${f[2]}</span></div>`).join('');
+
+/* ===================== users & access ===================== */
+const USERS=[['Hamza Aslam','Administration','Facility manager','0300 555 0142','Now','Active'],['Imtiaz Ali','Engineering','Supervisor','0301 555 0118','5 min ago','Active'],['Rizwan Haider','Engineering','Supervisor','0302 555 0177','12 min ago','Active'],
+ ['Adil Ashraf','Electrical','Technician','0333 555 0190','Now','Active'],['Hammad Rafique','Plumbing','Technician','0334 555 0128','20 min ago','Active'],['Imran Shah','Security','Security officer','0345 555 0163','Now','Active'],
+ ['Kashif Raza','Security','CCTV operator','0346 555 0105','1 h ago','Active'],['Nasreen Bibi','Janitorial','Janitorial supervisor','0312 555 0156','35 min ago','Active'],['Faraz Hussain','Tenant · Margalla Telecom','Tenant','0321 555 0181','Yesterday','Active'],['Umer Saeed','Tenant · Rawal Consulting','Tenant','0322 555 0109','3 days ago','Invited']];
+$('#u-body').innerHTML=USERS.map((u,i)=>`<tr><td><div class="cell"><span class="ava sm ${['info','ok','vio','warn','gray'][i%5]}">${ini(u[0])}</span><b>${u[0]}</b></div></td><td>${u[1]}</td><td><span class="pill sm ${u[2]==='Tenant'?'gold':'act'}">${u[2]}</span></td><td class="num">${u[3]}</td><td>${u[4]}</td><td><span class="pill sm ${u[5]==='Active'?'ok':'warn'}">${u[5]}</span></td><td><div class="acts-cell"><button class="btn xs ghost" data-toast="Editing ${u[0]}">Edit</button></div></td></tr>`).join('');
+const DEPTS=[['Electrical','i-zap','Adil Ashraf',28],['Plumbing','i-drop','Hammad Rafique',19],['HVAC','i-fan','Shoaib Akhtar',24],['Civil','i-building','Zeeshan Malik',15],['Janitorial','i-broom','Nasreen Bibi',62],['Security','i-shield','Imran Shah',48],['Customer relations','i-chat','Sana Javed',6],['Administration','i-key','Hamza Aslam',11]];
+$('#d-grid').innerHTML=DEPTS.map((d,i)=>`<div class="card kpi"><div class="k-head"><span class="well k-ic ${['act','info','vio','gray','ok','warn','bad','gray'][i]}"><svg class="i"><use href="#${d[1]}"/></svg></span><span class="k-lbl">${d[0]}</span></div><div class="k-val">${d[3]}<small>staff</small></div><small>Head: ${d[2]}</small></div>`).join('');
+const RL=[['Super admin','Whole building',2,'Everything'],['Facility manager','Whole building',3,'Complaints, job slips, logs'],['Supervisor','Assigned department',14,'Job slips, hourly logs'],['Technician','Own job slips',134,'—'],['Security officer','Security & CCTV',22,'Visitor passes'],['CCTV operator','CCTV reports',4,'—'],['Janitorial supervisor','Janitorial',5,'Cleaning rounds'],['Tenant','Own company',38,'—']];
+$('#r-body').innerHTML=RL.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td class="r num">${r[2]}</td><td>${r[3]==='—'?'<span class="muted">Nothing</span>':r[3]}</td><td><div class="acts-cell"><button class="btn xs ghost" data-toast="Editing ${r[0]}">Edit</button></div></td></tr>`).join('');
+const PD=['Electrical','Plumbing','HVAC','Civil','Janitorial','Security'];
+$('#p-head').innerHTML=`<tr><th>Role</th>${PD.map(d=>`<th>${d}</th>`).join('')}</tr>`;
+$('#p-body').innerHTML=RL.slice(0,7).map((r,i)=>`<tr><td><b>${r[0]}</b></td>${PD.map((d,j)=>{const on=i<2||(i===2&&j<4)||(i===3&&j<4)||(i===4&&j===5)||(i===5&&j===5)||(i===6&&j===4); return `<td><input type="checkbox" class="cbx" aria-label="${r[0]} ${d}"${on?' checked':''}></td>`;}).join('')}</tr>`).join('');
+
+const h=location.hash.slice(1); if(h) UI.showView(h);
+})();
+</script>

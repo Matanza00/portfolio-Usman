@@ -1,0 +1,852 @@
+<title>GaragePal Web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: the garage-owner web app. A white sidebar with a charcoal active pill, a top bar with search and one coral
+   "New booking" action, and a warm stone work area of white cards. Seven views switch in place: Dashboard, My garage,
+   Employees, Customers, Bookings, Appointments, Messages. Same tokens and type as the GaragePal customer app. */
+:root{
+  color-scheme:light;
+  --ground:#f3f1ee;
+  --card:#ffffff;
+  --card-2:#f1ebe7;
+  --line:#e5dfda;
+  --ink:#1e2230;
+  --ink-2:#4b5160;
+  --mute:#7d838f;
+  --act:#ee7a55; --act-fg:#d6552f; --act-tint:#fde6dd;
+  --steel:#3b6ea8; --steel-tint:#e2ecf8;
+  --ok:#2a9d68; --ok-tint:#dcf3e7;
+  --warn:#d3941a; --warn-tint:#fbf0d2;
+  --bad:#d6453d; --bad-tint:#fbe3e1;
+  --navpill:#1e2230; --navfg:#ffffff;
+  --shadow:0 10px 30px rgba(30,34,48,.07);
+  --f-display:'Nunito','Segoe UI',system-ui,sans-serif;
+  --f-body:'DM Sans','Segoe UI',system-ui,sans-serif;
+  --r:20px; --r-sm:14px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#13161c; --card:#1d212a; --card-2:#262b36; --line:#323847;
+    --ink:#eceef3; --ink-2:#b9bec9; --mute:#8c92a0;
+    --act:#f4865f; --act-fg:#ff9b7b; --act-tint:#3c2419;
+    --steel:#86abdf; --steel-tint:#1f2d42; --ok:#4cc08a; --ok-tint:#16342a;
+    --warn:#e8b64c; --warn-tint:#3a2e12; --bad:#f06b62; --bad-tint:#3f1e1b;
+    --navpill:#eef0f4; --navfg:#1e2230;
+    --shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#13161c; --card:#1d212a; --card-2:#262b36; --line:#323847;
+  --ink:#eceef3; --ink-2:#b9bec9; --mute:#8c92a0;
+  --act:#f4865f; --act-fg:#ff9b7b; --act-tint:#3c2419;
+  --steel:#86abdf; --steel-tint:#1f2d42; --ok:#4cc08a; --ok-tint:#16342a;
+  --warn:#e8b64c; --warn-tint:#3a2e12; --bad:#f06b62; --bad-tint:#3f1e1b;
+  --navpill:#eef0f4; --navfg:#1e2230;
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font:500 14px/1.45 var(--f-body);-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;font-family:var(--f-display);line-height:1.15;text-wrap:balance}
+p{margin:0}
+button{font:inherit;color:inherit}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px}
+input::placeholder{color:var(--mute)}
+small{display:block;font-size:12px;color:var(--mute);line-height:1.35}
+b{font-weight:700}
+em{font-style:normal;font-family:var(--f-display);font-weight:800;font-variant-numeric:tabular-nums}
+:focus-visible{outline:3px solid var(--act);outline-offset:2px}
+.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none;display:inline-block;vertical-align:middle}
+.i.xs{width:14px;height:14px}
+.star{color:var(--warn);fill:currentColor;stroke:none}
+
+/* ---------- shell ---------- */
+.app{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:100%}
+.side{background:var(--card);border-right:1px solid var(--line);padding:24px 18px;display:flex;flex-direction:column;gap:24px;position:sticky;top:env(safe-area-inset-top,0px);height:100vh;overflow-y:auto}
+.brand{display:flex;align-items:center;gap:10px;padding:0 4px;--logo-cut:var(--card)}
+.logo-mark{width:50px;height:40px;flex:none}
+.mark{width:40px;height:40px;border-radius:13px;background:var(--act);color:#fff;display:grid;place-items:center;flex:none}
+.mark .i{width:22px;height:22px}
+.brand h1{font:900 23px var(--f-display);letter-spacing:-.03em}
+.brand h1 span{background:linear-gradient(135deg,#FFB088,#F27A52 55%,#E2512B);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.nav{display:flex;flex-direction:column;gap:6px}
+.nav a{display:flex;align-items:center;gap:12px;height:46px;padding:0 14px;border-radius:999px;color:var(--ink-2);text-decoration:none;font:700 14px var(--f-body);cursor:pointer;position:relative}
+.nav a:hover{background:var(--card-2);color:var(--ink)}
+.nav a.on{background:var(--navpill);color:var(--navfg)}
+.nav a .cnt{margin-left:auto;background:var(--act);color:#fff;font:800 11px/18px var(--f-body);padding:0 7px;border-radius:9px}
+.nav a.on .cnt{background:var(--act)}
+.side-foot{margin-top:auto;display:flex;flex-direction:column;gap:10px}
+.shop{display:flex;align-items:center;gap:10px;background:var(--card-2);border-radius:var(--r-sm);padding:10px 12px}
+.shop>div{flex:1;min-width:0}
+.shop b{display:block;font-size:13px}
+.shop small{display:inline-flex;align-items:center;gap:5px}
+.shop small::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.main{min-width:0;display:flex;flex-direction:column}
+.topbar{display:flex;align-items:center;gap:14px;padding:20px 32px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--ground);z-index:5;width:100%;max-width:1560px;margin:0 auto}
+.search{display:flex;align-items:center;gap:10px;flex:1 1 auto;min-width:0;max-width:460px;height:44px;padding:0 16px;border-radius:999px;background:var(--card);color:var(--mute);border:1px solid var(--line)}
+.search input{border:0;background:none;flex:1;min-width:0;font:600 14px var(--f-body);color:var(--ink);outline:0}
+.search input::placeholder{color:var(--mute)}
+.date{color:var(--ink-2);font-weight:600;white-space:nowrap}
+.ic{width:42px;height:42px;border-radius:50%;display:inline-grid;place-items:center;background:var(--card);border:1px solid var(--line);color:var(--ink);cursor:pointer;flex:none;position:relative;padding:0}
+.ic.sm{width:34px;height:34px}
+.ic.act{background:var(--act);color:#fff;border-color:var(--act)}
+.ic .ndot{position:absolute;top:9px;right:10px;width:8px;height:8px;border-radius:50%;background:var(--act);border:2px solid var(--card)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:42px;padding:0 18px;border-radius:999px;border:0;font:800 14px var(--f-body);cursor:pointer;color:#fff;background:var(--act);white-space:nowrap;text-decoration:none;flex:none}
+.btn:hover{filter:brightness(1.05)}
+.btn.dark{background:var(--navpill);color:var(--navfg)}
+.btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.btn.sm{height:34px;padding:0 13px;font-size:12px}
+.btn.steel{background:var(--steel-tint);color:var(--steel)}
+.btn.ok{background:var(--ok-tint);color:var(--ok)}
+.ava{width:40px;height:40px;border-radius:50%;background:var(--act-tint);color:var(--act-fg);display:grid;place-items:center;font:800 13px var(--f-display);flex:none;letter-spacing:.02em}
+.ava.sm{width:30px;height:30px;font-size:11px}
+.ava.steel{background:var(--steel-tint);color:var(--steel)}
+.ava.ok{background:var(--ok-tint);color:var(--ok)}
+.ava.gray{background:var(--card-2);color:var(--ink-2)}
+.content{padding:10px 32px 56px;display:flex;flex-direction:column;gap:32px;width:100%;max-width:1560px;margin:0 auto}
+.view{display:flex;flex-direction:column;gap:32px;min-width:0}
+.view[hidden]{display:none}
+.ph{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.ph h2{font:900 28px var(--f-display);letter-spacing:-.02em}
+.ph p{color:var(--mute);margin-top:6px}
+.ph .acts{display:flex;gap:8px;flex-wrap:wrap}
+.card{background:var(--card);border-radius:var(--r);padding:24px 26px;box-shadow:var(--shadow);min-width:0}
+.card-h{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+.card-h h3{font:800 16px var(--f-display)}
+.card-h h3 small{display:inline;font-weight:600}
+.seg{display:inline-flex;background:var(--card-2);border-radius:999px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;padding:6px 12px;border-radius:999px;font:700 12px var(--f-body);color:var(--ink-2);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.seg button.sel{background:var(--card);color:var(--ink);box-shadow:0 2px 8px rgba(30,34,48,.12)}
+.seg button span{background:var(--card-2);border-radius:999px;padding:0 6px;font-size:11px;line-height:17px}
+.pill{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;font:700 12px var(--f-body);background:var(--card-2);color:var(--ink-2);white-space:nowrap}
+.pill.ok{background:var(--ok-tint);color:var(--ok)}
+.pill.steel{background:var(--steel-tint);color:var(--steel)}
+.pill.warn{background:var(--warn-tint);color:var(--warn)}
+.pill.act{background:var(--act-tint);color:var(--act-fg)}
+.pill.bad{background:var(--bad-tint);color:var(--bad)}
+.dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+.link{border:0;background:none;padding:0;color:var(--act-fg);font:700 13px var(--f-body);cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.link.mute{color:var(--mute)}
+.grid{display:grid;gap:28px}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g32{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}
+.g23{grid-template-columns:minmax(0,1fr) minmax(0,2fr)}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid.top{align-items:start}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.well{width:44px;height:44px;border-radius:14px;background:var(--act-tint);color:var(--act-fg);display:grid;place-items:center;flex:none}
+.well.steel{background:var(--steel-tint);color:var(--steel)}
+.well.ok{background:var(--ok-tint);color:var(--ok)}
+.well.warn{background:var(--warn-tint);color:var(--warn)}
+.well.gray{background:var(--card-2);color:var(--ink-2)}
+.plate{display:inline-flex;align-items:center;white-space:nowrap;height:22px;padding:0 7px;border-radius:5px;background:#fff;color:#1b3f8a;font:800 11px var(--f-body);letter-spacing:.08em;border:1.5px solid #c9d2e4}
+
+/* KPI tiles */
+.kpi{display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden}
+.kpi .k-top{display:flex;justify-content:space-between;align-items:center}
+.kpi .k-top small{font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:11px}
+.kpi em{font-size:28px;line-height:1;display:block}
+.kpi .delta{display:inline-flex;align-items:center;gap:4px;font:700 12px var(--f-body);color:var(--ok)}
+.kpi .delta.down{color:var(--bad)}
+.kpi .delta.flat{color:var(--mute)}
+.spark{width:100%;height:44px}
+.spark path.l{fill:none;stroke:var(--act);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.spark path.a{fill:var(--act);opacity:.14}
+.spark.steel path.l{stroke:var(--steel)} .spark.steel path.a{fill:var(--steel)}
+.spark.ok path.l{stroke:var(--ok)} .spark.ok path.a{fill:var(--ok)}
+.bar{height:8px;border-radius:8px;background:var(--card-2);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:8px;background:var(--act)}
+.bar.ok i{background:var(--ok)}
+.bar.steel i{background:var(--steel)}
+
+/* chart */
+.chart{width:100%;height:auto;display:block;font:600 11px var(--f-body)}
+.chart .grid line{stroke:var(--line);stroke-width:1}
+.chart .axis text{fill:var(--mute)}
+.chart .s path.l{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.chart .s circle{stroke:var(--card);stroke-width:2}
+.chart .s.done path.l{stroke:var(--act)} .chart .s.done circle{fill:var(--act)} .chart .s.done path.a{fill:var(--act);opacity:.12}
+.chart .s.prog path.l{stroke:var(--steel)} .chart .s.prog circle{fill:var(--steel)}
+.chart .s.pend path.l{stroke:var(--warn)} .chart .s.pend circle{fill:var(--warn)}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px;font:700 12px var(--f-body);color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px}
+.legend .done i{background:var(--act)} .legend .prog i{background:var(--steel)} .legend .pend i{background:var(--warn)}
+
+/* calendar */
+.cal-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:16px}
+.cal-h b{font:800 16px var(--f-display)}
+.cal-nav{display:flex;gap:6px;align-items:center}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center}
+.cal .dow{font:700 11px var(--f-body);color:var(--mute);padding:4px 0 6px;text-transform:uppercase;letter-spacing:.04em}
+.cal .d{aspect-ratio:1;max-height:56px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:700 13px var(--f-body);color:var(--ink);cursor:pointer;border:0;background:transparent;font-variant-numeric:tabular-nums}
+.cal .d:hover{background:var(--card-2)}
+.cal .d.out{color:var(--line)}
+.cal .d.today{background:var(--navpill);color:var(--navfg)}
+.cal .d .n{display:flex;gap:2px}
+.cal .d .n i{width:5px;height:5px;border-radius:50%;background:var(--act)}
+.cal .d.today .n i{background:var(--act)}
+.cal .d.sel{box-shadow:inset 0 0 0 2px var(--act)}
+.agenda{display:flex;flex-direction:column;gap:10px;margin-top:18px;border-top:1px solid var(--line);padding-top:16px}
+.agenda div{display:flex;align-items:center;gap:10px;font-size:13px}
+.agenda em{font-size:12px;color:var(--ink-2);font-family:var(--f-body);min-width:62px}
+.agenda .pill{height:22px;font-size:11px}
+
+/* table */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;font:700 11px var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--mute);padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl td{padding:14px 12px;border-bottom:1px solid var(--line);vertical-align:middle;white-space:nowrap}
+.tbl tr:last-child td{border-bottom:0}
+.tbl tr.sel td{background:var(--act-tint)}
+.tbl tbody tr{cursor:default}
+.tbl tbody tr[data-cust]{cursor:pointer}
+.tbl tbody tr[data-cust]:hover td{background:var(--card-2)}
+.tbl .who{display:flex;align-items:center;gap:10px}
+.tbl .who b{display:block}
+.tbl .num{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+.tbl .mono{font-family:var(--f-body);font-weight:700;color:var(--ink-2);white-space:nowrap}
+.tbl-wrap{overflow-x:auto}
+.tbl-wrap .tbl{min-width:860px}
+.acts-cell{display:flex;gap:6px;justify-content:flex-end}
+
+/* bays */
+.bays{display:flex;flex-direction:column;gap:14px}
+.bay{display:flex;align-items:center;gap:14px;background:var(--card-2);border-radius:var(--r-sm);padding:14px 16px}
+.bay.free{background:transparent;border:2px dashed var(--line)}
+.bay .num{width:38px;height:38px;border-radius:12px;background:var(--navpill);color:var(--navfg);display:grid;place-items:center;font:900 13px var(--f-display);flex:none}
+.bay.free .num{background:var(--card-2);color:var(--mute)}
+.bay>div{flex:1;min-width:0}
+.bay b{display:block;font-size:13px}
+.bay .bar{margin-top:6px;height:6px}
+
+/* schedule */
+.sched{display:flex;flex-direction:column}
+.sched>div{display:flex;align-items:center;gap:14px;padding:13px 0;border-top:1px solid var(--line)}
+.sched>div:first-child{border-top:0;padding-top:0}
+.sched>div>div{flex:1;min-width:0}
+.sched em{font-size:12px;font-family:var(--f-body);color:var(--ink-2);min-width:64px}
+.sched b{display:block;font-size:13px}
+.sched .pill{margin-left:auto}
+.quick{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.quick a{display:flex;align-items:center;gap:14px;background:var(--card-2);border-radius:var(--r-sm);padding:14px 16px;text-decoration:none;color:var(--ink);cursor:pointer}
+.quick a>div{flex:1;min-width:0}
+.quick b{font-size:13px;display:block}
+.quick small{font-size:11px}
+
+/* board */
+.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.col{background:var(--card-2);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.col-h{display:flex;align-items:center;justify-content:space-between;padding:6px 8px 4px;font:800 13px var(--f-display)}
+.col-h span{background:var(--card);border-radius:999px;padding:0 8px;font:800 11px/20px var(--f-body);color:var(--ink-2)}
+.job{background:var(--card);border-radius:var(--r-sm);padding:14px 16px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow);border-left:4px solid var(--line)}
+.job.pend{border-color:var(--warn)} .job.prog{border-color:var(--steel)} .job.appr{border-color:var(--act)} .job.done{border-color:var(--ok)}
+.job .j-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.job .j-top small{font-weight:700}
+.job b{font-size:13px;display:block}
+.job .j-foot{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.job .j-foot em{font-size:13px}
+
+/* customers */
+.cust-side{display:flex;flex-direction:column;gap:18px}
+.cust-head{display:flex;align-items:center;gap:12px}
+.cust-head>div{flex:1;min-width:0}
+.cust-head b{font:800 18px var(--f-display);display:block}
+.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.kv div{background:var(--card-2);border-radius:12px;padding:10px}
+.kv b{display:block;font:800 16px var(--f-display);font-variant-numeric:tabular-nums}
+.vehlist{display:flex;flex-direction:column;gap:10px}
+.vehlist div{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.vehlist div>span:nth-child(2){flex:1;min-width:0}
+.vehlist b{display:block;font-size:13px}
+.notes{background:var(--warn-tint);color:var(--ink-2);border-radius:12px;padding:10px 12px;font-size:12px}
+.notes b{color:var(--ink)}
+
+/* week view */
+.week{display:grid;grid-template-columns:56px repeat(7,minmax(0,1fr));gap:0;border:1px solid var(--line);border-radius:var(--r-sm);overflow:hidden;background:var(--card)}
+.week .wh{padding:10px 8px;border-bottom:1px solid var(--line);border-left:1px solid var(--line);font:700 12px var(--f-body);color:var(--ink-2);text-align:center}
+.week .wh b{display:block;font:800 16px var(--f-display);color:var(--ink)}
+.week .wh.today b{color:var(--act-fg)}
+.week .wh:first-child{border-left:0}
+.week .tcol{display:grid;grid-template-rows:repeat(10,52px);font:700 11px var(--f-body);color:var(--mute)}
+.week .tcol span{border-top:1px solid var(--line);padding:4px 6px;text-align:right}
+.week .dcol{position:relative;border-left:1px solid var(--line);display:grid;grid-template-rows:repeat(10,52px)}
+.week .dcol i{border-top:1px solid var(--line);display:block}
+.week .ev{position:absolute;left:4px;right:4px;min-width:0;border-radius:10px;padding:6px 8px;font:700 11px/1.25 var(--f-body);overflow:hidden;border-left:3px solid currentColor;cursor:pointer}
+.week .ev small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.week .ev small{color:inherit;opacity:.8;font-size:10px;font-weight:600}
+.week .ev.pend{background:var(--warn-tint);color:var(--warn)} .week .ev.prog{background:var(--steel-tint);color:var(--steel)} .week .ev.appr{background:var(--act-tint);color:var(--act-fg)} .week .ev.done{background:var(--ok-tint);color:var(--ok)}
+.week .now{position:absolute;left:0;right:0;height:2px;background:var(--act)}
+.week-wrap{overflow-x:auto}
+.week-wrap .week{min-width:820px}
+
+/* messages */
+.inbox{display:grid;grid-template-columns:320px minmax(0,1fr);gap:0;background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;min-height:620px}
+.threads{border-right:1px solid var(--line);display:flex;flex-direction:column}
+.threads .search{margin:14px;max-width:none;height:40px;flex:none}
+.thread{display:flex;gap:12px;padding:14px 18px;cursor:pointer;border-top:1px solid var(--line);align-items:flex-start}
+.thread:hover{background:var(--card-2)}
+.thread.sel{background:var(--act-tint)}
+.thread>div{flex:1;min-width:0}
+.thread b{display:block;font-size:13px}
+.thread p{font-size:12px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.thread .meta{text-align:right;flex:none}
+.thread .meta small{font-size:11px}
+.thread .unread{display:inline-block;min-width:18px;height:18px;border-radius:9px;background:var(--act);color:#fff;font:800 11px/18px var(--f-body);text-align:center;padding:0 5px;margin-top:4px}
+.convo{display:flex;flex-direction:column;min-width:0}
+.convo-h{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line)}
+.convo-h>div{flex:1;min-width:0}
+.convo-h b{display:block}
+.msgs{flex:1;padding:24px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;background:var(--ground)}
+.day{align-self:center;font:700 11px var(--f-body);color:var(--mute);background:var(--card-2);border-radius:999px;padding:4px 10px}
+.msg{max-width:70%;border-radius:18px;padding:10px 14px;font-size:13px;line-height:1.4}
+.msg.them{align-self:flex-start;background:var(--card);border-bottom-left-radius:6px}
+.msg.me{align-self:flex-end;background:var(--navpill);color:var(--navfg);border-bottom-right-radius:6px}
+.msg small{margin-top:4px;font-size:10px}
+.msg.me small{color:color-mix(in srgb,var(--navfg) 65%,transparent)}
+.msg.est{background:var(--card);border:2px solid var(--act);align-self:flex-end;display:flex;flex-direction:column;gap:4px}
+.msg.est b{font:800 15px var(--f-display)}
+.composer{display:flex;align-items:center;gap:10px;padding:14px 18px 16px}
+.composer .search{max-width:none;height:42px}
+.canned{display:flex;gap:8px;flex-wrap:wrap;padding:14px 18px 6px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink-2);border-radius:999px;height:32px;padding:0 12px;font:700 12px var(--f-body);cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+
+/* employees */
+.emp{display:flex;flex-direction:column;gap:16px}
+.emp-h{display:flex;align-items:center;gap:12px}
+.emp-h>div{flex:1;min-width:0}
+.emp-h b{display:block;font:800 16px var(--f-display)}
+.emp .kv{grid-template-columns:repeat(3,1fr)}
+.emp .kv b{font-size:15px}
+
+/* my garage form */
+.form{display:flex;flex-direction:column;gap:18px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font:700 12px var(--f-body);color:var(--ink-2)}
+.field input,.field select,.field textarea{height:42px;border:1px solid var(--line);border-radius:12px;background:var(--card);padding:0 12px;font:600 14px var(--f-body);color:var(--ink);outline:0;width:100%}
+.field textarea{height:auto;min-height:80px;padding:10px 12px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--act)}
+.hours{display:flex;flex-direction:column;gap:10px}
+.hours div{display:grid;grid-template-columns:48px 1fr 1fr 60px;gap:8px;align-items:center;font-size:13px}
+.hours input{height:36px;font-size:13px;font-weight:600;padding:0 12px;width:100%;min-width:0;outline:0}
+.hours input:focus{border-color:var(--act)}
+.hours input:disabled{color:var(--mute);background:var(--card-2)}
+.sw{appearance:none;-webkit-appearance:none;border:0;padding:0;width:44px;height:26px;border-radius:999px;background:var(--line);position:relative;cursor:pointer;flex:none;margin:0;transition:background .2s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--card);box-shadow:0 2px 6px rgba(0,0,0,.2);transition:transform .2s}
+.sw:checked{background:var(--ok)}
+.sw:checked::after{transform:translateX(18px)}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0;border-top:1px solid var(--line)}
+.toggle-row:first-child{border-top:0}
+.toggle-row b{display:block;font-size:13px}
+.price-tbl td input{height:34px;width:110px;font-size:13px;font-weight:600;padding:0 10px;text-align:right;font-variant-numeric:tabular-nums;outline:0}
+.price-tbl td input:focus{border-color:var(--act)}
+
+.foot{color:var(--mute);font-size:12px;padding:0 28px 28px;max-width:80ch}
+
+@media (max-width:1280px){
+  .g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:1180px){
+  .app{grid-template-columns:84px minmax(0,1fr)}
+  .side{padding:20px 12px;align-items:center}
+  .side .brand{padding:0;justify-content:center}
+  .side .brand h1{display:none}
+  .nav{width:100%;align-items:center}
+  .nav a{justify-content:center;padding:0;width:52px;height:46px}
+  .nav a .t{display:none}
+  .nav a .cnt{position:absolute;top:2px;right:0;margin:0;font-size:10px;line-height:16px;padding:0 5px}
+  .side-foot{display:none}
+  .g32,.g23{grid-template-columns:minmax(0,1fr)}
+  .grid.top{align-items:stretch}
+  .board{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .inbox{grid-template-columns:minmax(0,1fr)}
+  .threads{border-right:0;border-bottom:1px solid var(--line)}
+  .thread:nth-child(n+5){display:none}
+  .content{padding:10px 24px 48px}
+  .topbar{padding:16px 24px}
+}
+@media (max-width:1000px){
+  .g3{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:860px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{position:static;height:auto;flex-direction:row;align-items:center;gap:12px;padding:12px 16px;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line)}
+  .side .brand{padding:0}
+  .side .brand h1{display:none}
+  .nav{flex-direction:row;gap:2px;width:auto}
+  .nav a{height:38px;padding:0 12px;width:auto;font-size:13px;white-space:nowrap}
+  .nav a .t{display:inline}
+  .nav a .cnt{position:static;margin-left:4px;font-size:11px;line-height:18px;padding:0 7px}
+  .side-foot{display:none}
+  .topbar{padding:12px 16px;flex-wrap:wrap}
+  .date{display:none}
+  .content{padding:8px 16px 40px;gap:24px}
+  .view{gap:24px}
+  .foot{padding:0 16px 24px}
+}
+@media (max-width:600px){
+  .g4,.g2,.g3,.board{grid-template-columns:minmax(0,1fr)}
+  .quick{grid-template-columns:minmax(0,1fr)}
+  .kv{grid-template-columns:repeat(3,1fr)}
+  .hours div{grid-template-columns:40px 1fr 1fr 50px}
+  .btn.new .t{display:none}
+  .btn.new{width:42px;padding:0}
+}
+@media (prefers-reduced-motion:reduce){.sw,.sw::after{transition:none}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></symbol>
+  <symbol id="i-garage" viewBox="0 0 24 24"><path d="M3 10.5 12 4l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M7 21v-8h10v8M7 16.5h10"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7.5" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.6a4 4 0 0 1 0 7.8"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7.5" r="4"/></symbol>
+  <symbol id="i-clip" viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="18" rx="2.5"/><path d="M9 3.5V2h6v1.5"/><path d="m9 13 2 2 4-4"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="17" rx="3"/><path d="M16 2.5v4M8 2.5v4M3 10h18"/><path d="M8 15h.01M12 15h.01M16 15h.01"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2.5 21.5z"/><path d="M8 10h8M8 13.5h5"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><path d="m21 21-4.6-4.6"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8.5a6 6 0 0 1 12 0c0 6.5 2.5 8 2.5 8h-17S6 15 6 8.5"/><path d="M10.3 21a2 2 0 0 0 3.4 0"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6.5 6.5 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-chev-l" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-chev-d" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.4" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.9.6 2.8.7a2 2 0 0 1 1.7 2z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.9-7.9z"/></symbol>
+  <symbol id="i-car" viewBox="0 0 24 24"><path d="M5 11l1.6-4.2A2 2 0 0 1 8.5 5.5h7a2 2 0 0 1 1.9 1.3L19 11"/><path d="M3 11h18a1 1 0 0 1 1 1v4.5a1 1 0 0 1-1 1h-1.5M3 11a1 1 0 0 0-1 1v4.5a1 1 0 0 0 1 1h1.5M9 17.5h6"/><circle cx="6.5" cy="17.5" r="2"/><circle cx="17.5" cy="17.5" r="2"/><path d="M6 13.5h1M17 13.5h1"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 6.5V12l3.5 2"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18l-7 8.5V19l-4 2v-7.5z"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 3v12M6 9l6 6 6-6M4 21h16"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></symbol>
+  <symbol id="i-trend" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></symbol>
+  <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M4 3h16v18l-2.7-1.5-2.6 1.5-2.7-1.5L9.4 21l-2.7-1.5L4 21z"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-8 9"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></symbol>
+</svg>
+
+<div class="app">
+  <aside class="side">
+    <div class="brand"><svg class="logo-mark" viewBox="0 0 120 96" aria-hidden="true"><defs><linearGradient id="gpG" gradientUnits="userSpaceOnUse" x1="10" y1="8" x2="112" y2="94"><stop offset="0" stop-color="#FFB088"/><stop offset=".55" stop-color="#F27A52"/><stop offset="1" stop-color="#E2512B"/></linearGradient><linearGradient id="gpS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><g transform="translate(0 0) scale(1)"><g fill="url(#gpG)"><path d="M29 52 L36 22 Q38.5 12 48 12 H72 Q81.5 12 84 22 L91 52 Z"/><rect x="4" y="42" width="112" height="42" rx="16"/><rect x="14" y="76" width="24" height="16" rx="7"/><rect x="82" y="76" width="24" height="16" rx="7"/></g><g fill="var(--logo-cut,#fff)"><path d="M40.5 24 Q41.5 20 45.5 20 H74.5 Q78.5 20 79.5 24 L84 44 H36 Z"/><circle cx="23" cy="63" r="7.5"/><circle cx="97" cy="63" r="7.5"/><rect x="47" y="59" width="26" height="8" rx="4"/></g><g fill="url(#gpS)"><path d="M20 42 H100 a16 16 0 0 1 16 16 H4 a16 16 0 0 1 16-16 Z"/></g></g></svg><h1>Garage<span>Pal</span></h1></div>
+    <nav class="nav" aria-label="Main">
+      <a class="on" data-view="dash" role="button" tabindex="0"><svg class="i"><use href="#i-grid"/></svg><span class="t">Dashboard</span></a>
+      <a data-view="garage" role="button" tabindex="0"><svg class="i"><use href="#i-garage"/></svg><span class="t">My garage</span></a>
+      <a data-view="emp" role="button" tabindex="0"><svg class="i"><use href="#i-users"/></svg><span class="t">Employees</span></a>
+      <a data-view="cust" role="button" tabindex="0"><svg class="i"><use href="#i-user"/></svg><span class="t">Customers</span></a>
+      <a data-view="book" role="button" tabindex="0"><svg class="i"><use href="#i-clip"/></svg><span class="t">Bookings</span><span class="cnt">3</span></a>
+      <a data-view="appt" role="button" tabindex="0"><svg class="i"><use href="#i-cal"/></svg><span class="t">Appointments</span></a>
+      <a data-view="msg" role="button" tabindex="0"><svg class="i"><use href="#i-chat"/></svg><span class="t">Messages</span><span class="cnt">2</span></a>
+    </nav>
+    <div class="side-foot">
+      <div class="shop"><span class="well steel" style="width:38px;height:38px;border-radius:12px"><svg class="i"><use href="#i-garage"/></svg></span><div><b>Mike's Auto Repair</b><small>Open · closes 6:00 PM</small></div></div>
+      <a class="nav-out link mute" role="button" tabindex="0" style="padding:0 8px"><svg class="i xs"><use href="#i-logout"/></svg>Sign out</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <label class="search"><svg class="i"><use href="#i-search"/></svg><input id="q" type="search" placeholder="Search orders, customers, plates…"></label>
+      <span class="date" id="today-lbl">Fri, Oct 9, 2026</span>
+      <button class="ic" aria-label="Notifications, 3 new"><svg class="i"><use href="#i-bell"/></svg><i class="ndot"></i></button>
+      <button class="ic" id="theme-btn" aria-label="Toggle dark theme"><svg class="i"><use href="#i-moon"/></svg></button>
+      <button class="btn new" data-view="book"><svg class="i"><use href="#i-plus"/></svg><span class="t">New booking</span></button>
+      <span class="ava" title="Mike Dawson, owner">MD</span>
+    </header>
+
+    <main class="content">
+
+      <!-- ================= DASHBOARD ================= -->
+      <section class="view" data-view="dash">
+        <div class="ph"><div><h2>Good morning, Mike</h2><p>6 cars in the shop, 3 estimates waiting on customers, 2 pickups due before 6 PM.</p></div><div class="acts"><button class="btn ghost" data-view="appt"><svg class="i"><use href="#i-cal"/></svg>Today's schedule</button><button class="btn dark" data-view="book">Repair board</button></div></div>
+
+        <div class="grid g4">
+          <div class="card kpi"><div class="k-top"><small>Today</small><span class="delta"><svg class="i xs"><use href="#i-trend"/></svg>+12%</span></div><em>CAD 1,240</em><small>vs CAD 1,105 last Friday</small><svg class="spark" data-spark="820,940,760,1105,990,1180,1240" aria-hidden="true"></svg></div>
+          <div class="card kpi"><div class="k-top"><small>This week</small><span class="delta"><svg class="i xs"><use href="#i-trend"/></svg>+8%</span></div><em>CAD 6,380</em><small>Mon to Fri · 38 jobs</small><svg class="spark steel" data-spark="5200,5400,5900,5100,6380" aria-hidden="true"></svg></div>
+          <div class="card kpi"><div class="k-top"><small>This month</small><span class="delta flat">83% of goal</span></div><em>CAD 24,910</em><small>Goal CAD 30,000 · 9 days in</small><div class="bar" style="margin-top:4px"><i style="width:83%"></i></div><small>On pace for CAD 31,400</small></div>
+          <div class="card kpi"><div class="k-top"><small>Awaiting approval</small><span class="pill warn" style="height:22px"><svg class="i xs"><use href="#i-clock"/></svg>3</span></div><em>CAD 1,912</em><small>Oldest estimate sent 2 h 10 min ago</small><button class="btn sm ghost" data-view="msg" style="align-self:flex-start">Nudge customers</button></div>
+        </div>
+
+        <div class="grid g32 top">
+          <div class="card">
+            <div class="card-h"><h3>Bookings overview <small>· jobs per period</small></h3><div class="seg" data-range><button data-range="weekly" class="sel">Weekly</button><button data-range="monthly">Monthly</button><button data-range="yearly">Yearly</button></div></div>
+            <svg class="chart" id="chart" viewBox="0 0 640 250" role="img" aria-label="Completed, in progress and pending bookings over time"></svg>
+            <div class="legend"><span class="done"><i></i>Completed</span><span class="prog"><i></i>In progress</span><span class="pend"><i></i>Pending</span></div>
+          </div>
+          <div class="card">
+            <div class="cal-h"><b id="cal-title">October 2026</b><div class="cal-nav"><button class="ic sm" id="cal-prev" aria-label="Previous month"><svg class="i xs"><use href="#i-chev-l"/></svg></button><button class="btn sm ghost" id="cal-today">Today</button><button class="ic sm" id="cal-next" aria-label="Next month"><svg class="i xs"><use href="#i-chev-r"/></svg></button></div></div>
+            <div class="cal" id="cal" aria-label="Month calendar"></div>
+            <div class="agenda" id="agenda"></div>
+          </div>
+        </div>
+
+        <div class="card">
+            <div class="card-h"><h3>Service repair status <small>· today</small></h3><div class="acts" style="display:flex;gap:8px"><button class="btn sm ghost"><svg class="i xs"><use href="#i-filter"/></svg>Filter</button><button class="btn sm ghost"><svg class="i xs"><use href="#i-down"/></svg>Export</button></div></div>
+            <div class="tbl-wrap">
+            <table class="tbl">
+              <thead><tr><th>Order</th><th>Customer</th><th>Vehicle</th><th>Service</th><th>Promise</th><th>Status</th><th style="text-align:right">Action</th></tr></thead>
+              <tbody>
+                <tr><td class="mono">GP-1042</td><td><div class="who"><span class="ava sm">JL</span><div><b>Jordan Lee</b><small>Bay 2 · Dave R.</small></div></div></td><td>2019 Honda Civic<br><span class="plate">CBPR 412</span></td><td>Brake service</td><td class="num">4:30 PM</td><td><span class="pill act"><span class="dot"></span>Awaiting approval</span></td><td><div class="acts-cell"><button class="btn sm ghost" data-view="msg">Remind</button></div></td></tr>
+                <tr><td class="mono">GP-1041</td><td><div class="who"><span class="ava sm steel">AK</span><div><b>Ahmed Khan</b><small>Bay 1 · Marco T.</small></div></div></td><td>2018 Ford F-150<br><span class="plate">AWRT 118</span></td><td>Diagnostics</td><td class="num">2:00 PM</td><td><span class="pill steel"><span class="dot"></span>In progress</span></td><td><div class="acts-cell"><button class="btn sm ghost">Update</button></div></td></tr>
+                <tr><td class="mono">GP-1043</td><td><div class="who"><span class="ava sm ok">CT</span><div><b>Chloe Tremblay</b><small>Bay 3 · Lena K.</small></div></div></td><td>2020 Mazda CX-5<br><span class="plate">CKLM 740</span></td><td>Tire swap</td><td class="num">12:30 PM</td><td><span class="pill steel"><span class="dot"></span>In progress</span></td><td><div class="acts-cell"><button class="btn sm ghost">Update</button></div></td></tr>
+                <tr><td class="mono">GP-1039</td><td><div class="who"><span class="ava sm gray">DR</span><div><b>Daniel Roy</b><small>Done 9:50 AM</small></div></div></td><td>2017 Jeep Wrangler<br><span class="plate">BRGV 331</span></td><td>Brake service</td><td class="num">10:00 AM</td><td><span class="pill ok"><svg class="i xs"><use href="#i-check"/></svg>Ready for pickup</span></td><td><div class="acts-cell"><button class="btn sm dark">Notify</button></div></td></tr>
+                <tr><td class="mono">GP-1040</td><td><div class="who"><span class="ava sm gray">MS</span><div><b>Maria Santos</b><small>Picked up 11:20 AM</small></div></div></td><td>2021 Toyota Corolla<br><span class="plate">CMXD 905</span></td><td>Oil change</td><td class="num">11:00 AM</td><td><span class="pill ok"><svg class="i xs"><use href="#i-check"/></svg>Completed · paid</span></td><td><div class="acts-cell"><button class="btn sm ghost">Invoice</button></div></td></tr>
+                <tr><td class="mono">GP-1044</td><td><div class="who"><span class="ava sm gray">SP</span><div><b>Sam Patel</b><small>Not checked in</small></div></div></td><td>2015 Hyundai Elantra<br><span class="plate">AKPR 662</span></td><td>Safety inspection</td><td class="num">3:15 PM</td><td><span class="pill warn">Pending</span></td><td><div class="acts-cell"><button class="btn sm">Check in</button></div></td></tr>
+                <tr><td class="mono">GP-1045</td><td><div class="who"><span class="ava sm gray">OC</span><div><b>Olivia Chen</b><small>Not checked in</small></div></div></td><td>2022 Tesla Model 3<br><span class="plate">CRZQ 017</span></td><td>Tire swap</td><td class="num">5:00 PM</td><td><span class="pill warn">Pending</span></td><td><div class="acts-cell"><button class="btn sm">Check in</button></div></td></tr>
+              </tbody>
+            </table>
+            </div>
+          </div>
+
+        <div class="grid g3">
+          <div class="card">
+            <div class="card-h"><h3>Bays <small>· 3 of 4 in use</small></h3><button class="link" data-view="emp">Technicians</button></div>
+            <div class="bays">
+              <div class="bay"><span class="num">1</span><div><b>Ford F-150 · Diagnostics</b><small>Marco T. · started 1:10 PM</small><div class="bar steel"><i style="width:35%"></i></div></div><span class="pill steel">2:00</span></div>
+              <div class="bay"><span class="num">2</span><div><b>Honda Civic · Brakes</b><small>Dave R. · waiting on approval</small><div class="bar"><i style="width:20%"></i></div></div><span class="pill act">Paused</span></div>
+              <div class="bay"><span class="num">3</span><div><b>Mazda CX-5 · Tire swap</b><small>Lena K. · started 11:40 AM</small><div class="bar steel"><i style="width:70%"></i></div></div><span class="pill steel">12:30</span></div>
+              <div class="bay free"><span class="num">4</span><div><b>Free</b><small>Next: Elantra inspection at 3:15 PM</small></div><button class="btn sm ghost">Assign</button></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-h"><h3>Today's schedule</h3><button class="link" data-view="appt">Open calendar</button></div>
+            <div class="sched">
+              <div><em>8:00 AM</em><div><b>Civic check-in</b><small>Jordan Lee · brakes</small></div><span class="pill ok"><svg class="i xs"><use href="#i-check"/></svg>Done</span></div>
+              <div><em>9:30 AM</em><div><b>Corolla oil change</b><small>Maria Santos · wait</small></div><span class="pill ok"><svg class="i xs"><use href="#i-check"/></svg>Done</span></div>
+              <div><em>11:00 AM</em><div><b>F-150 diagnostics</b><small>Ahmed Khan · drop off</small></div><span class="pill steel">Now</span></div>
+              <div><em>12:30 PM</em><div><b>CX-5 tire swap</b><small>Chloe Tremblay · wait</small></div><span class="pill steel">Now</span></div>
+              <div><em>3:15 PM</em><div><b>Elantra safety inspection</b><small>Sam Patel · drop off</small></div><span class="pill warn">Pending</span></div>
+              <div><em>5:00 PM</em><div><b>Model 3 tire swap</b><small>Olivia Chen · wait</small></div><span class="pill warn">Pending</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-h"><h3>Quick actions</h3><small>Last used today</small></div>
+            <div class="quick">
+              <a data-view="book" role="button" tabindex="0"><span class="well"><svg class="i"><use href="#i-wrench"/></svg></span><div><b>Booking onboarding</b><small>Walk-in or phone booking in four steps: customer, vehicle, service, time.</small></div></a>
+              <a data-view="cust" role="button" tabindex="0"><span class="well steel"><svg class="i"><use href="#i-user"/></svg></span><div><b>Customer onboarding</b><small>Add a customer and their vehicles by plate or VIN.</small></div></a>
+              <a data-view="appt" role="button" tabindex="0"><span class="well ok"><svg class="i"><use href="#i-cal"/></svg></span><div><b>Add booking</b><small>Drop a job straight onto the calendar and a bay.</small></div></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= BOOKINGS BOARD ================= -->
+      <section class="view" data-view="book" hidden>
+        <div class="ph"><div><h2>Bookings</h2><p>14 open jobs. Drag happens in the real app; here, use the filters.</p></div><div class="acts"><div class="seg" data-filter><button data-filter="all" class="sel">All <span>14</span></button><button data-filter="pend">Pending <span>4</span></button><button data-filter="prog">In progress <span>4</span></button><button data-filter="appr">Awaiting approval <span>3</span></button><button data-filter="done">Completed <span>3</span></button></div><button class="btn"><svg class="i"><use href="#i-plus"/></svg>New booking</button></div></div>
+        <div class="board">
+          <div class="col" data-col="pend">
+            <div class="col-h">Pending <span>4</span></div>
+            <div class="job pend"><div class="j-top"><small>GP-1044</small><span class="pill warn">3:15 PM</span></div><b>Sam Patel · 2015 Hyundai Elantra</b><small>Safety inspection · drop off</small><div class="j-foot"><span class="ava sm gray">SP</span><em>CAD 119.00</em></div></div>
+            <div class="job pend"><div class="j-top"><small>GP-1045</small><span class="pill warn">5:00 PM</span></div><b>Olivia Chen · 2022 Tesla Model 3</b><small>Tire swap · wait</small><div class="j-foot"><span class="ava sm gray">OC</span><em>CAD 79.99</em></div></div>
+            <div class="job pend"><div class="j-top"><small>GP-1046</small><span class="pill">Tomorrow 9:00</span></div><b>Noah Wilson · 2016 Toyota RAV4</b><small>Oil change · drop off</small><div class="j-foot"><span class="ava sm gray">NW</span><em>CAD 69.99</em></div></div>
+            <div class="job pend"><div class="j-top"><small>GP-1047</small><span class="pill">Tomorrow 10:30</span></div><b>Emma Leblanc · 2019 VW Golf</b><small>Brake inspection · wait</small><div class="j-foot"><span class="ava sm gray">EL</span><em>CAD 49.00</em></div></div>
+          </div>
+          <div class="col" data-col="prog">
+            <div class="col-h">In progress <span>4</span></div>
+            <div class="job prog"><div class="j-top"><small>GP-1041</small><span class="pill steel">Bay 1 · 2:00</span></div><b>Ahmed Khan · 2018 Ford F-150</b><small>Diagnostics · Marco T.</small><div class="bar steel"><i style="width:35%"></i></div><div class="j-foot"><span class="ava sm steel">MT</span><em>CAD 89.00</em></div></div>
+            <div class="job prog"><div class="j-top"><small>GP-1043</small><span class="pill steel">Bay 3 · 12:30</span></div><b>Chloe Tremblay · 2020 Mazda CX-5</b><small>Tire swap · Lena K.</small><div class="bar steel"><i style="width:70%"></i></div><div class="j-foot"><span class="ava sm steel">LK</span><em>CAD 79.99</em></div></div>
+            <div class="job prog"><div class="j-top"><small>GP-1038</small><span class="pill steel">Parts · ETA 2:30</span></div><b>Liam Nguyen · 2014 Honda Accord</b><small>Alternator · waiting on part</small><div class="bar steel"><i style="width:50%"></i></div><div class="j-foot"><span class="ava sm steel">MT</span><em>CAD 640.00</em></div></div>
+            <div class="job prog"><div class="j-top"><small>GP-1036</small><span class="pill steel">Lot · tomorrow</span></div><b>Grace Kim · 2017 Nissan Sentra</b><small>Suspension · 2 days</small><div class="bar steel"><i style="width:20%"></i></div><div class="j-foot"><span class="ava sm steel">DR</span><em>CAD 1,120.00</em></div></div>
+          </div>
+          <div class="col" data-col="appr">
+            <div class="col-h">Awaiting approval <span>3</span></div>
+            <div class="job appr"><div class="j-top"><small>GP-1042</small><span class="pill act">Sent 9:06 AM</span></div><b>Jordan Lee · 2019 Honda Civic</b><small>Front pads + rotors · promise 4:30 PM</small><div class="j-foot"><em>CAD 532.50</em><button class="btn sm ghost" data-view="msg">Message</button></div></div>
+            <div class="job appr"><div class="j-top"><small>GP-1037</small><span class="pill act">Sent 8:40 AM</span></div><b>Omar Haddad · 2019 Ford Escape</b><small>Timing cover reseal</small><div class="j-foot"><em>CAD 1,090.00</em><button class="btn sm ghost" data-view="msg">Message</button></div></div>
+            <div class="job appr"><div class="j-top"><small>GP-1035</small><span class="pill act">Sent yesterday</span></div><b>Priya Nair · 2018 Kia Sportage</b><small>Rear shocks</small><div class="j-foot"><em>CAD 289.50</em><button class="btn sm ghost" data-view="msg">Remind</button></div></div>
+          </div>
+          <div class="col" data-col="done">
+            <div class="col-h">Completed <span>3</span></div>
+            <div class="job done"><div class="j-top"><small>GP-1039</small><span class="pill ok">Ready</span></div><b>Daniel Roy · 2017 Jeep Wrangler</b><small>Brake service · notify customer</small><div class="j-foot"><em>CAD 712.30</em><button class="btn sm dark">Notify</button></div></div>
+            <div class="job done"><div class="j-top"><small>GP-1040</small><span class="pill ok">Paid</span></div><b>Maria Santos · 2021 Toyota Corolla</b><small>Oil change · picked up 11:20</small><div class="j-foot"><em>CAD 79.09</em><button class="btn sm ghost">Invoice</button></div></div>
+            <div class="job done"><div class="j-top"><small>GP-1034</small><span class="pill ok">Paid</span></div><b>Ben Fraser · 2020 Subaru Outback</b><small>Safety inspection · yesterday</small><div class="j-foot"><em>CAD 134.47</em><button class="btn sm ghost">Invoice</button></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CUSTOMERS ================= -->
+      <section class="view" data-view="cust" hidden>
+        <div class="ph"><div><h2>Customers</h2><p>312 customers · 418 vehicles on file.</p></div><div class="acts"><button class="btn ghost"><svg class="i"><use href="#i-down"/></svg>Export</button><button class="btn"><svg class="i"><use href="#i-plus"/></svg>Add customer</button></div></div>
+        <div class="grid g32">
+          <div class="card">
+            <div class="card-h"><label class="search" style="height:40px"><svg class="i"><use href="#i-search"/></svg><input id="q-cust" type="search" placeholder="Name, phone or plate"></label><div class="seg"><button class="sel">All</button><button>In shop</button><button>Overdue service</button></div></div>
+            <div class="tbl-wrap">
+            <table class="tbl">
+              <thead><tr><th>Customer</th><th>Phone</th><th>Vehicles</th><th>Last visit</th><th>Lifetime</th><th></th></tr></thead>
+              <tbody>
+                <tr data-cust class="sel"><td><div class="who"><span class="ava sm">JL</span><b>Jordan Lee</b></div></td><td class="mono">+1 416 555 0142</td><td>Civic, RAV4</td><td>Today</td><td class="num">CAD 2,340</td><td><svg class="i xs" style="color:var(--mute)"><use href="#i-chev-r"/></svg></td></tr>
+                <tr data-cust><td><div class="who"><span class="ava sm steel">AK</span><b>Ahmed Khan</b></div></td><td class="mono">+1 647 555 0190</td><td>F-150</td><td>Today</td><td class="num">CAD 3,870</td><td><svg class="i xs" style="color:var(--mute)"><use href="#i-chev-r"/></svg></td></tr>
+                <tr data-cust><td><div class="who"><span class="ava sm gray">DR</span><b>Daniel Roy</b></div></td><td class="mono">+1 905 555 0117</td><td>Wrangler</td><td>Today</td><td class="num">CAD 4,210</td><td><svg class="i xs" style="color:var(--mute)"><use href="#i-chev-r"/></svg></td></tr>
+                <tr data-cust><td><div class="who"><span class="ava sm ok">CT</span><b>Chloe Tremblay</b></div></td><td class="mono">+1 416 555 0164</td><td>CX-5</td><td>Today</td><td class="num">CAD 640</td><td><svg class="i xs" style="color:var(--mute)"><use href="#i-chev-r"/></svg></td></tr>
+                <tr data-cust><td><div class="who"><span class="ava sm gray">MS</span><b>Maria Santos</b></div></td><td class="mono">+1 647 555 0128</td><td>Corolla</td><td>Today</td><td class="num">CAD 1,120</td><td><svg class="i xs" style="color:var(--mute)"><use href="#i-chev-r"/></svg></td></tr>
+                <tr data-cust><td><div class="who"><span class="ava sm gray">SP</span><b>Sam Patel</b></div></td><td class="mono">+1 416 555 0173</td><td>Elantra</td><td>14 Jun</td><td class="num">CAD 910</td><td><svg class="i xs" style="color:var(--mute)"><use href="#i-chev-r"/></svg></td></tr>
+                <tr data-cust><td><div class="who"><span class="ava sm gray">OC</span><b>Olivia Chen</b></div></td><td class="mono">+1 905 555 0152</td><td>Model 3</td><td>2 Mar</td><td class="num">CAD 160</td><td><svg class="i xs" style="color:var(--mute)"><use href="#i-chev-r"/></svg></td></tr>
+                <tr data-cust><td><div class="who"><span class="ava sm gray">NW</span><b>Noah Wilson</b></div></td><td class="mono">+1 416 555 0139</td><td>RAV4</td><td>18 May</td><td class="num">CAD 1,480</td><td><svg class="i xs" style="color:var(--mute)"><use href="#i-chev-r"/></svg></td></tr>
+              </tbody>
+            </table>
+            </div>
+          </div>
+          <div class="card cust-side">
+            <div class="cust-head"><span class="ava" style="width:52px;height:52px;font-size:17px">JL</span><div><b>Jordan Lee</b><small>+1 416 555 0142 · jordan.lee@example.com</small></div><button class="ic sm" aria-label="Edit"><svg class="i xs"><use href="#i-edit"/></svg></button></div>
+            <div class="kv"><div><small>Visits</small><b>7</b></div><div><small>Lifetime</small><b>CAD 2,340</b></div><div><small>Rating given</small><b>4.9</b></div></div>
+            <div><small style="font-weight:700;margin-bottom:6px">Vehicles</small>
+              <div class="vehlist">
+                <div><span class="well steel" style="width:36px;height:36px;border-radius:11px"><svg class="i xs"><use href="#i-car"/></svg></span><span><b>2019 Honda Civic LX</b><small>84,320 km · in shop · GP-1042</small></span><span class="plate">CBPR 412</span></div>
+                <div><span class="well gray" style="width:36px;height:36px;border-radius:11px"><svg class="i xs"><use href="#i-car"/></svg></span><span><b>2016 Toyota RAV4 LE</b><small>142,600 km · inspection overdue</small></span><span class="plate">BMKT 902</span></div>
+              </div>
+            </div>
+            <p class="notes"><b>Notes:</b> Prefers text over calls. Shuttle to Kennedy station. Approved pads + rotors on the Civic at 9:16 AM.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm" data-view="msg"><svg class="i xs"><use href="#i-chat"/></svg>Message</button><button class="btn sm ghost"><svg class="i xs"><use href="#i-phone"/></svg>Call</button><button class="btn sm ghost" data-view="appt">Book</button></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= APPOINTMENTS ================= -->
+      <section class="view" data-view="appt" hidden>
+        <div class="ph"><div><h2>Appointments</h2><p>Week of Oct 5 – 11, 2026 · 4 bays · 8:00 AM to 6:00 PM.</p></div><div class="acts"><div class="seg"><button>Day</button><button class="sel">Week</button><button>Month</button></div><div class="cal-nav"><button class="ic sm" aria-label="Previous week"><svg class="i xs"><use href="#i-chev-l"/></svg></button><button class="btn sm ghost">Today</button><button class="ic sm" aria-label="Next week"><svg class="i xs"><use href="#i-chev-r"/></svg></button></div><button class="btn"><svg class="i"><use href="#i-plus"/></svg>Add booking</button></div></div>
+        <div class="card" style="padding:18px">
+          <div class="week-wrap"><div class="week" id="week"></div></div>
+          <div class="legend"><span class="pend"><i></i>Pending</span><span class="prog"><i></i>In progress</span><span class="done"><i></i>Awaiting approval</span><span style="color:var(--ok)"><i style="background:var(--ok)"></i>Completed</span></div>
+        </div>
+      </section>
+
+      <!-- ================= MESSAGES ================= -->
+      <section class="view" data-view="msg" hidden>
+        <div class="ph"><div><h2>Messages</h2><p>Customers see these in the GaragePal app. Estimates sent here can be approved with one tap.</p></div></div>
+        <div class="inbox">
+          <div class="threads">
+            <label class="search"><svg class="i"><use href="#i-search"/></svg><input id="q-msg" type="search" placeholder="Search messages"></label>
+            <div class="thread sel" data-thread><span class="ava">JL</span><div><b>Jordan Lee <small style="display:inline">· Civic · GP-1042</small></b><p>Okay, approving now 👍</p></div><div class="meta"><small>9:16 AM</small><span class="unread">1</span></div></div>
+            <div class="thread" data-thread><span class="ava steel">GK</span><div><b>Grace Kim <small style="display:inline">· Sentra</small></b><p>Can you do the shocks for less if I wait till next week?</p></div><div class="meta"><small>8:50 AM</small><span class="unread">1</span></div></div>
+            <div class="thread" data-thread><span class="ava gray">OH</span><div><b>Omar Haddad <small style="display:inline">· Escape</small></b><p>Approved. Please keep the old gasket.</p></div><div class="meta"><small>Yesterday</small></div></div>
+            <div class="thread" data-thread><span class="ava gray">MS</span><div><b>Maria Santos <small style="display:inline">· Corolla</small></b><p>Thanks! See you in 6 months.</p></div><div class="meta"><small>Yesterday</small></div></div>
+            <div class="thread" data-thread><span class="ava gray">NW</span><div><b>Noah Wilson <small style="display:inline">· RAV4</small></b><p>Can I move tomorrow to 10?</p></div><div class="meta"><small>Tue</small></div></div>
+            <div class="thread" data-thread><span class="ava gray">BF</span><div><b>Ben Fraser <small style="display:inline">· Outback</small></b><p>Invoice received, thanks.</p></div><div class="meta"><small>Tue</small></div></div>
+          </div>
+          <div class="convo">
+            <div class="convo-h"><span class="ava">JL</span><div><b>Jordan Lee</b><small>2019 Honda Civic · CBPR 412 · GP-1042 · replying as Dave R.</small></div><button class="btn sm ghost" data-view="book">Open job</button><button class="ic sm" aria-label="Call"><svg class="i xs"><use href="#i-phone"/></svg></button></div>
+            <div class="msgs" id="msgs">
+              <span class="day">Today</span>
+              <div class="msg me">Hi Jordan, Dave here. Diagnosis is done on the Civic. The front rotors are below minimum thickness, so new pads alone won't fix the shudder.<small>9:05 AM</small></div>
+              <div class="msg est"><small style="font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--act-fg)">Estimate sent</small><b>CAD 532.50 before tax</b><small>Front pads, rotors and 1.5 h labour · 2 photos attached</small></div>
+              <div class="msg them">Thanks Dave. Is it safe to drive for another week if I wait?<small>9:12 AM</small></div>
+              <div class="msg me">I wouldn't. The inner pad is at 2 mm. If you approve by 11 we can have it ready by 4:30 today.<small>9:14 AM</small></div>
+              <div class="msg them">Okay, approving now 👍<small>9:16 AM</small></div>
+            </div>
+            <div class="canned"><button class="chip"><svg class="i xs"><use href="#i-receipt"/></svg>Send estimate</button><button class="chip"><svg class="i xs"><use href="#i-check"/></svg>Ready for pickup</button><button class="chip"><svg class="i xs"><use href="#i-image"/></svg>Attach photo</button><button class="chip"><svg class="i xs"><use href="#i-clock"/></svg>Running late</button></div>
+            <div class="composer"><label class="search"><input id="msg-in" type="text" placeholder="Reply to Jordan…"></label><button class="ic act" id="msg-send" aria-label="Send"><svg class="i"><use href="#i-send"/></svg></button></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= EMPLOYEES ================= -->
+      <section class="view" data-view="emp" hidden>
+        <div class="ph"><div><h2>Employees</h2><p>5 on shift today · 3 technicians, 1 service advisor, 1 owner.</p></div><div class="acts"><button class="btn ghost"><svg class="i"><use href="#i-cal"/></svg>Shifts</button><button class="btn"><svg class="i"><use href="#i-plus"/></svg>Add employee</button></div></div>
+        <div class="grid g3">
+          <div class="card emp"><div class="emp-h"><span class="ava" style="width:52px;height:52px;font-size:17px">DR</span><div><b>Dave Reyes</b><small>Technician · Bay 2 · 8 yrs</small></div><span class="pill act">Paused</span></div><div class="kv"><div><small>Today</small><b>3 jobs</b></div><div><small>Rating</small><b>4.9</b></div><div><small>Billed</small><b>6.5 h</b></div></div><small>Honda Civic brakes, waiting on approval. Next: Elantra inspection at 3:15.</small><div style="display:flex;gap:8px"><button class="btn sm ghost">Schedule</button><button class="btn sm ghost">Profile</button></div></div>
+          <div class="card emp"><div class="emp-h"><span class="ava steel" style="width:52px;height:52px;font-size:17px">MT</span><div><b>Marco Trudeau</b><small>Technician · Bay 1 · 12 yrs</small></div><span class="pill steel"><span class="dot"></span>Working</span></div><div class="kv"><div><small>Today</small><b>2 jobs</b></div><div><small>Rating</small><b>4.8</b></div><div><small>Billed</small><b>7.0 h</b></div></div><small>F-150 diagnostics now, Accord alternator once the part lands at 2:30.</small><div style="display:flex;gap:8px"><button class="btn sm ghost">Schedule</button><button class="btn sm ghost">Profile</button></div></div>
+          <div class="card emp"><div class="emp-h"><span class="ava ok" style="width:52px;height:52px;font-size:17px">LK</span><div><b>Lena Kowalski</b><small>Apprentice · Bay 3 · 1 yr</small></div><span class="pill steel"><span class="dot"></span>Working</span></div><div class="kv"><div><small>Today</small><b>2 jobs</b></div><div><small>Rating</small><b>4.7</b></div><div><small>Billed</small><b>4.5 h</b></div></div><small>CX-5 tire swap at 70%. Model 3 tire swap at 5:00 PM.</small><div style="display:flex;gap:8px"><button class="btn sm ghost">Schedule</button><button class="btn sm ghost">Profile</button></div></div>
+          <div class="card emp"><div class="emp-h"><span class="ava gray" style="width:52px;height:52px;font-size:17px">PS</span><div><b>Priya Shah</b><small>Service advisor · front desk</small></div><span class="pill ok">On shift</span></div><div class="kv"><div><small>Calls</small><b>14</b></div><div><small>Booked</small><b>6</b></div><div><small>Estimates</small><b>3 sent</b></div></div><small>Owns customer messages and estimate follow-ups.</small><div style="display:flex;gap:8px"><button class="btn sm ghost">Schedule</button><button class="btn sm ghost">Profile</button></div></div>
+          <div class="card emp"><div class="emp-h"><span class="ava" style="width:52px;height:52px;font-size:17px">MD</span><div><b>Mike Dawson</b><small>Owner · licensed technician</small></div><span class="pill ok">On shift</span></div><div class="kv"><div><small>Today</small><b>1 job</b></div><div><small>Rating</small><b>5.0</b></div><div><small>Billed</small><b>1.5 h</b></div></div><small>Covers Bay 4 overflow and final inspections.</small><div style="display:flex;gap:8px"><button class="btn sm ghost">Schedule</button><button class="btn sm ghost">Profile</button></div></div>
+          <button class="card emp" style="border:2px dashed var(--line);background:transparent;box-shadow:none;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-2);min-height:200px"><span class="well gray"><svg class="i"><use href="#i-plus"/></svg></span><b>Add an employee</b><small>Send an invite. They pick a role and a PIN for the bay tablet.</small></button>
+        </div>
+      </section>
+
+      <!-- ================= MY GARAGE ================= -->
+      <section class="view" data-view="garage" hidden>
+        <div class="ph"><div><h2>My garage</h2><p>What customers see in the GaragePal app, and what the shop charges.</p></div><div class="acts"><button class="btn ghost">Preview in app</button><button class="btn">Save changes</button></div></div>
+        <div class="grid g2">
+          <div class="card form">
+            <div class="card-h"><h3>Profile</h3><span class="pill ok"><svg class="i xs"><use href="#i-check"/></svg>Verified business</span></div>
+            <div class="field"><label for="g-name">Garage name</label><input id="g-name" value="Mike's Auto Repair"></div>
+            <div class="field"><label for="g-addr">Address</label><input id="g-addr" value="1480 Kennedy Rd, Scarborough, ON M1P 2L7"></div>
+            <div class="grid g2" style="gap:16px"><div class="field"><label for="g-phone">Phone</label><input id="g-phone" value="+1 416 555 0100"></div><div class="field"><label for="g-bays">Bays</label><input id="g-bays" type="number" value="4"></div></div>
+            <div class="field"><label for="g-about">About</label><textarea id="g-about">Family-run shop in Scarborough since 2009. Brakes, suspension and seasonal tires, with a 12-month / 20,000 km warranty on parts and labour.</textarea></div>
+            <div class="card-h" style="margin-top:4px"><h3>Hours</h3></div>
+            <div class="hours">
+              <div><b>Mon</b><input value="8:00 AM"><input value="6:00 PM"><input class="sw" type="checkbox" checked aria-label="Open Monday"></div>
+              <div><b>Tue</b><input value="8:00 AM"><input value="6:00 PM"><input class="sw" type="checkbox" checked aria-label="Open Tuesday"></div>
+              <div><b>Wed</b><input value="8:00 AM"><input value="6:00 PM"><input class="sw" type="checkbox" checked aria-label="Open Wednesday"></div>
+              <div><b>Thu</b><input value="8:00 AM"><input value="8:00 PM"><input class="sw" type="checkbox" checked aria-label="Open Thursday"></div>
+              <div><b>Fri</b><input value="8:00 AM"><input value="6:00 PM"><input class="sw" type="checkbox" checked aria-label="Open Friday"></div>
+              <div><b>Sat</b><input value="9:00 AM"><input value="2:00 PM"><input class="sw" type="checkbox" checked aria-label="Open Saturday"></div>
+              <div><b>Sun</b><input value="Closed" disabled><input value="Closed" disabled><input class="sw" type="checkbox" aria-label="Open Sunday"></div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:28px;min-width:0">
+            <div class="card">
+              <div class="card-h"><h3>Services &amp; prices</h3><button class="link"><svg class="i xs"><use href="#i-plus"/></svg>Add service</button></div>
+              <div class="tbl-wrap"><table class="tbl price-tbl" style="min-width:0">
+                <thead><tr><th>Service</th><th>Duration</th><th style="text-align:right">Price (CAD)</th></tr></thead>
+                <tbody>
+                  <tr><td><b>Oil change</b><small>Synthetic, up to 5 L</small></td><td>45 min</td><td style="text-align:right"><input value="69.99"></td></tr>
+                  <tr><td><b>Brake inspection</b><small>Credited if repaired here</small></td><td>30 min</td><td style="text-align:right"><input value="49.00"></td></tr>
+                  <tr><td><b>Seasonal tire swap</b><small>On rims</small></td><td>40 min</td><td style="text-align:right"><input value="79.99"></td></tr>
+                  <tr><td><b>Safety inspection</b><small>Ontario SSC</small></td><td>60 min</td><td style="text-align:right"><input value="119.00"></td></tr>
+                  <tr><td><b>Battery test</b><small>Free with replacement</small></td><td>15 min</td><td style="text-align:right"><input value="39.00"></td></tr>
+                  <tr><td><b>Diagnostics</b><small>Scan + road test</small></td><td>60 min</td><td style="text-align:right"><input value="89.00"></td></tr>
+                  <tr><td><b>Labour rate</b><small>Per hour</small></td><td>—</td><td style="text-align:right"><input value="120.00"></td></tr>
+                </tbody>
+              </table></div>
+            </div>
+            <div class="card">
+              <div class="card-h"><h3>Booking settings</h3></div>
+              <div class="toggle-row"><div><b>Online booking</b><small>Customers book from the app without calling</small></div><input class="sw" type="checkbox" checked aria-label="Online booking"></div>
+              <div class="toggle-row"><div><b>Estimate approval in app</b><small>Work starts only after a one-tap approval</small></div><input class="sw" type="checkbox" checked aria-label="Estimate approval"></div>
+              <div class="toggle-row"><div><b>Shuttle service</b><small>Within 8 km · shown on the garage profile</small></div><input class="sw" type="checkbox" checked aria-label="Shuttle"></div>
+              <div class="toggle-row"><div><b>Tax</b><small>HST 13% · Ontario · added at invoice</small></div><button class="btn sm ghost">Edit</button></div>
+              <div class="toggle-row"><div><b>Payments</b><small>Card and wallets in app, cash at the counter</small></div><button class="btn sm ghost">Manage</button></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+    <p class="foot">GaragePal owner web app. Same tokens and type as the customer app. The calendar, chart, repair board and messages are interactive; the garage, staff, customers and jobs are sample data.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const TODAY=new Date(2026,9,9); /* Fri Oct 9, 2026: the dashboard's "today" */
+
+  /* ---- views ---- */
+  function showView(id){
+    $$('.view').forEach(v=>v.hidden=v.dataset.view!==id);
+    $$('.nav a').forEach(a=>a.classList.toggle('on',a.dataset.view===id));
+    window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});
+  }
+  document.addEventListener('click',e=>{
+    const v=e.target.closest('[data-view]'); if(v && !v.classList.contains('view')){e.preventDefault();showView(v.dataset.view);return;}
+    const rng=e.target.closest('[data-range] button'); if(rng){$$('[data-range] button').forEach(b=>b.classList.toggle('sel',b===rng));drawChart(rng.dataset.range);return;}
+    const flt=e.target.closest('[data-filter] button'); if(flt){$$('[data-filter] button').forEach(b=>b.classList.toggle('sel',b===flt));const f=flt.dataset.filter;$$('.board .col').forEach(c=>c.hidden=!(f==='all'||c.dataset.col===f));return;}
+    const row=e.target.closest('tr[data-cust]'); if(row){$$('tr[data-cust]').forEach(r=>r.classList.toggle('sel',r===row));return;}
+    const th=e.target.closest('[data-thread]'); if(th){$$('[data-thread]').forEach(t=>t.classList.toggle('sel',t===th));const u=$('.unread',th);if(u)u.remove();return;}
+    const seg=e.target.closest('.seg:not([data-range]):not([data-filter]) button'); if(seg){[...seg.parentNode.children].forEach(b=>b.classList.toggle('sel',b===seg));return;}
+  });
+  document.addEventListener('keydown',e=>{
+    if(e.key!=='Enter'&&e.key!==' ') return;
+    const t=e.target.closest('a[data-view],.quick a'); if(t){e.preventDefault();t.click();}
+  });
+
+  /* ---- theme ---- */
+  $('#theme-btn').addEventListener('click',()=>{
+    const root=document.documentElement;
+    const dark=root.dataset.theme==='dark'||(!root.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches);
+    root.dataset.theme=dark?'light':'dark';
+  });
+
+  /* ---- sparklines ---- */
+  $$('.spark').forEach(svg=>{
+    const v=svg.dataset.spark.split(',').map(Number), W=200,H=44,P=3;
+    const min=Math.min(...v), max=Math.max(...v), span=(max-min)||1;
+    const pts=v.map((n,i)=>[P+i*(W-2*P)/(v.length-1), H-P-(n-min)/span*(H-2*P)]);
+    const d=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+    svg.setAttribute('viewBox',`0 0 ${W} ${H}`); svg.setAttribute('preserveAspectRatio','none');
+    svg.innerHTML=`<path class="a" d="${d} L${pts[pts.length-1][0].toFixed(1)} ${H} L${pts[0][0].toFixed(1)} ${H} Z"/><path class="l" d="${d}"/>`;
+  });
+
+  /* ---- bookings chart ---- */
+  const DATA={
+    weekly:{labels:['20 Jul','27 Jul','3 Aug','10 Aug','17 Aug','24 Aug','31 Aug','7 Sep','14 Sep','21 Sep','28 Sep','5 Oct'],done:[14,17,15,19,22,18,21,24,20,23,26,19],prog:[4,5,3,6,5,4,6,5,7,6,5,6],pend:[3,2,4,3,2,5,3,4,3,2,4,3]},
+    monthly:{labels:['Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct'],done:[62,70,58,75,81,88,92,97,90,101,106,84],prog:[9,11,8,12,10,12,14,13,12,15,16,12],pend:[6,5,7,6,5,8,7,9,6,7,9,8]},
+    yearly:{labels:['2021','2022','2023','2024','2025','2026'],done:[410,520,640,780,900,1040],prog:[40,52,61,70,84,96],pend:[22,30,35,40,48,55]}
+  };
+  function drawChart(range){
+    const d=DATA[range], svg=$('#chart'); const W=640,H=250,L=40,R=12,T=14,B=34;
+    const max=Math.max(...d.done)*1.12, n=d.labels.length;
+    const x=i=>L+i*(W-L-R)/(n-1), y=v=>T+(H-T-B)-(v/max)*(H-T-B);
+    const steps=4; let grid='',axis='';
+    for(let s=0;s<=steps;s++){const v=Math.round(max/steps*s); const yy=y(v); grid+=`<line x1="${L}" x2="${W-R}" y1="${yy.toFixed(1)}" y2="${yy.toFixed(1)}"/>`; axis+=`<text x="${L-8}" y="${(yy+4).toFixed(1)}" text-anchor="end">${v}</text>`;}
+    d.labels.forEach((l,i)=>{ if(n>8 && i%2) return; axis+=`<text x="${x(i).toFixed(1)}" y="${H-10}" text-anchor="middle">${l}</text>`; });
+    const path=arr=>arr.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');
+    const dots=arr=>arr.map((v,i)=>`<circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="3.5"/>`).join('');
+    const area=`${path(d.done)} L${x(n-1).toFixed(1)} ${y(0).toFixed(1)} L${x(0).toFixed(1)} ${y(0).toFixed(1)} Z`;
+    svg.innerHTML=`<g class="grid">${grid}</g><g class="axis">${axis}</g>
+      <g class="s done"><path class="a" d="${area}"/><path class="l" d="${path(d.done)}"/>${dots(d.done)}</g>
+      <g class="s prog"><path class="l" d="${path(d.prog)}"/>${dots(d.prog)}</g>
+      <g class="s pend"><path class="l" d="${path(d.pend)}"/>${dots(d.pend)}</g>`;
+  }
+  drawChart('weekly');
+
+  /* ---- month calendar ---- */
+  const APPTS={ '2026-10':{1:2,2:3,5:2,6:1,7:3,8:2,9:6,10:1,13:2,14:3,15:1,16:2,19:3,20:2,21:1,22:4,23:2,26:2,27:3,28:1,29:2,30:3}, '2026-11':{2:2,3:1,4:3,6:2,9:1,10:2,12:3,13:2,16:1,18:2,20:3,23:2,25:1,27:2}, '2026-09':{1:2,3:1,8:3,9:2,10:2,14:1,16:3,17:2,21:2,23:1,24:3,28:2,29:1,30:2} };
+  const AGENDA={ '2026-10-09':[['8:00 AM','Civic check-in · Jordan Lee','ok','Done'],['9:30 AM','Corolla oil change · Maria Santos','ok','Done'],['11:00 AM','F-150 diagnostics · Ahmed Khan','steel','Now'],['12:30 PM','CX-5 tire swap · Chloe Tremblay','steel','Now'],['3:15 PM','Elantra inspection · Sam Patel','warn','Pending'],['5:00 PM','Model 3 tire swap · Olivia Chen','warn','Pending']] };
+  let cur=new Date(TODAY.getFullYear(),TODAY.getMonth(),1), selDay=TODAY.getDate();
+  const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  function key(y,m){return `${y}-${String(m+1).padStart(2,'0')}`}
+  function drawCal(){
+    const y=cur.getFullYear(), m=cur.getMonth(), first=new Date(y,m,1).getDay(), days=new Date(y,m+1,0).getDate(), prevDays=new Date(y,m,0).getDate();
+    const ap=APPTS[key(y,m)]||{};
+    $('#cal-title').textContent=`${MONTHS[m]} ${y}`;
+    let h=['Su','Mo','Tu','We','Th','Fr','Sa'].map(d=>`<div class="dow">${d}</div>`).join('');
+    for(let i=first-1;i>=0;i--) h+=`<button class="d out" tabindex="-1">${prevDays-i}</button>`;
+    for(let d=1;d<=days;d++){
+      const isT=y===TODAY.getFullYear()&&m===TODAY.getMonth()&&d===TODAY.getDate();
+      const n=ap[d]||0; const dots=n?`<span class="n">${'<i></i>'.repeat(Math.min(n,3))}</span>`:'';
+      h+=`<button class="d${isT?' today':''}${d===selDay?' sel':''}" data-day="${d}" aria-label="${MONTHS[m]} ${d}, ${n} appointments">${d}${dots}</button>`;
+    }
+    const tail=(7-(first+days)%7)%7; for(let i=1;i<=tail;i++) h+=`<button class="d out" tabindex="-1">${i}</button>`;
+    $('#cal').innerHTML=h; drawAgenda();
+  }
+  function drawAgenda(){
+    const y=cur.getFullYear(), m=cur.getMonth(); const k=`${key(y,m)}-${String(selDay).padStart(2,'0')}`; const n=(APPTS[key(y,m)]||{})[selDay]||0;
+    const list=AGENDA[k]||(n?Array.from({length:Math.min(n,4)},(_,i)=>[['8:30 AM','10:00 AM','1:00 PM','3:30 PM'][i],['Oil change','Brake inspection','Tire swap','Diagnostics'][i]+' · booked','warn','Scheduled']):[]);
+    $('#agenda').innerHTML=`<small style="font-weight:700">${MONTHS[m]} ${selDay} · ${n} appointment${n===1?'':'s'}</small>`+(list.length?list.map(a=>`<div><em>${a[0]}</em><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${a[1]}</span><span class="pill ${a[2]}">${a[3]}</span></div>`).join(''):'<small>Nothing booked. Tap a day with dots to see its jobs.</small>');
+  }
+  $('#cal').addEventListener('click',e=>{const b=e.target.closest('[data-day]'); if(!b) return; selDay=+b.dataset.day; drawCal();});
+  $('#cal-prev').addEventListener('click',()=>{cur=new Date(cur.getFullYear(),cur.getMonth()-1,1);selDay=1;drawCal();});
+  $('#cal-next').addEventListener('click',()=>{cur=new Date(cur.getFullYear(),cur.getMonth()+1,1);selDay=1;drawCal();});
+  $('#cal-today').addEventListener('click',()=>{cur=new Date(TODAY.getFullYear(),TODAY.getMonth(),1);selDay=TODAY.getDate();drawCal();});
+  drawCal();
+
+  /* ---- week view ---- */
+  (function(){
+    const days=['Mon 5','Tue 6','Wed 7','Thu 8','Fri 9','Sat 10','Sun 11'];
+    const EV={ /* day index: [startHour, hours, class, title, sub] */
+      0:[[8,1,'done','Outback inspection','Ben Fraser'],[10,2,'done','Sentra suspension','Grace Kim · Dave'],[13.5,1,'done','Golf oil change','E. Leblanc']],
+      1:[[9,1.5,'done','Escape diagnostics','Omar Haddad'],[11,1,'done','RAV4 oil change','Noah Wilson'],[14,2,'done','Accord alternator','Liam Nguyen']],
+      2:[[8.5,1,'done','Corolla brakes','P. Nair'],[12,1.5,'done','Civic tires','Jordan Lee'],[15,1,'done','Wrangler diag','Daniel Roy']],
+      3:[[9,2,'done','Wrangler brakes','Daniel Roy · Dave'],[13,1,'done','Sportage shocks est.','Priya Nair'],[16,2,'done','Late: F-150 recall','Ahmed Khan']],
+      4:[[8,1,'done','Civic check-in','Jordan Lee'],[9.5,1,'done','Corolla oil change','Maria Santos'],[11,3,'prog','F-150 diagnostics','Ahmed Khan · Bay 1'],[12.5,1,'prog','CX-5 tire swap','Chloe T. · Bay 3'],[14,2.5,'appr','Civic pads + rotors','Jordan Lee · Bay 2'],[15.25,1,'pend','Elantra inspection','Sam Patel'],[17,1,'pend','Model 3 tire swap','Olivia Chen']],
+      5:[[9,1,'pend','RAV4 oil change','Noah Wilson'],[10.5,1,'pend','Golf brake insp.','Emma Leblanc'],[12,1.5,'pend','Sentra shocks','Grace Kim']],
+      6:[]
+    };
+    let h='<div class="wh"></div>'+days.map((d,i)=>`<div class="wh${i===4?' today':''}">${d.split(' ')[0]}<b>${d.split(' ')[1]}</b></div>`).join('');
+    h+='<div class="tcol">'+Array.from({length:10},(_,i)=>`<span>${i+8>12?i-4:i+8}${i+8>=12?' PM':' AM'}</span>`).join('')+'</div>';
+    for(let d=0;d<7;d++){
+      h+='<div class="dcol">'+'<i></i>'.repeat(10);
+      const evs=(EV[d]||[]).map(e=>({s:e[0],e:e[0]+e[1],c:e[2],t:e[3],sub:e[4]})).sort((a,b)=>a.s-b.s||b.e-a.e);
+      let cluster=[], clusterEnd=-1;
+      const flush=()=>{ if(cluster.length){ const n=Math.max(...cluster.map(x=>x.col))+1; cluster.forEach(x=>x.n=n); } cluster=[]; clusterEnd=-1; };
+      evs.forEach(ev=>{ if(ev.s>=clusterEnd) flush(); const used=new Set(cluster.filter(x=>x.e>ev.s).map(x=>x.col)); let col=0; while(used.has(col)) col++; ev.col=col; cluster.push(ev); clusterEnd=Math.max(clusterEnd,ev.e); });
+      flush();
+      evs.forEach(ev=>{ const top=(ev.s-8)*52+2, hgt=(ev.e-ev.s)*52-4, w=100/ev.n, left=ev.col*w; h+=`<div class="ev ${ev.c}" style="top:${top}px;height:${hgt}px;left:calc(${left}% + 4px);width:calc(${w}% - 8px)" title="${ev.t} · ${ev.sub}">${ev.t}<small>${ev.sub}</small></div>`; });
+      if(d===4) h+=`<div class="now" style="top:${(11.3-8)*52}px"></div>`;
+      h+='</div>';
+    }
+    $('#week').innerHTML=h;
+  })();
+
+  /* ---- composer ---- */
+  const inp=$('#msg-in'), send=$('#msg-send'), box=$('#msgs');
+  function sendMsg(){
+    const v=(inp.value||'').trim(); if(!v) return;
+    const d=document.createElement('div'); d.className='msg me';
+    const t=new Date(); const hh=t.getHours()%12||12, mm=String(t.getMinutes()).padStart(2,'0'), ap=t.getHours()<12?'AM':'PM';
+    d.textContent=v; const s=document.createElement('small'); s.textContent=`${hh}:${mm} ${ap}`; d.appendChild(s);
+    box.appendChild(d); inp.value=''; box.scrollTop=box.scrollHeight;
+  }
+  send.addEventListener('click',sendMsg); inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();sendMsg();}});
+  $$('.canned .chip').forEach(c=>c.addEventListener('click',()=>{inp.value=c.textContent.trim()+': ';inp.focus();}));
+})();
+</script>

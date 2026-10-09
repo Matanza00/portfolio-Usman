@@ -1,0 +1,819 @@
+<title>GaragePal Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: a showcase stage of 390×844 phone frames (wrapping row, one column on phones) over a warm stone ground.
+   Inside each frame: white cards on a warm off-white screen, a white tab bar with a dark charcoal active pill,
+   GaragePal coral as the single action colour, steel blue for "in progress", green for done, amber for waiting. */
+:root{
+  color-scheme:light;
+  --ground:#e9e5e1;        /* page behind the phones */
+  --scr:#f6f4f2;           /* app screen background */
+  --card:#ffffff;
+  --card-2:#f1ebe7;        /* tinted wells, inputs, tiles */
+  --line:#e5dfda;
+  --ink:#1e2230;
+  --ink-2:#4b5160;
+  --mute:#7d838f;
+  --act:#ee7a55;           /* GaragePal coral: the one action colour */
+  --act-fg:#d6552f;        /* coral for text and icons on light surfaces */
+  --act-tint:#fde6dd;
+  --steel:#3b6ea8; --steel-tint:#e2ecf8;   /* in the shop / in progress */
+  --ok:#2a9d68; --ok-tint:#dcf3e7;         /* done, paid, open */
+  --warn:#d3941a; --warn-tint:#fbf0d2;     /* waiting on something */
+  --bad:#d6453d; --bad-tint:#fbe3e1;
+  --navbg:#ffffff; --navpill:#1e2230; --navfg:#ffffff;
+  --hero-a:#2b3040; --hero-b:#14171f;      /* vehicle card */
+  --bezel:#f8f6f4; --island:#0b0c10;
+  --map-base:#efece8; --map-road:#ffffff; --map-block:#fbe1d4; --map-park:#dbead8; --map-bldg:#e3ddd7;
+  --shadow:0 10px 30px rgba(30,34,48,.08);
+  --shadow-lg:0 30px 60px rgba(30,34,48,.18);
+  --f-display:'Nunito','Segoe UI',system-ui,sans-serif;
+  --f-body:'DM Sans','Segoe UI',system-ui,sans-serif;
+  --r:22px; --r-sm:16px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#111319; --scr:#171a21; --card:#1f232c; --card-2:#272c37; --line:#323847;
+    --ink:#eceef3; --ink-2:#b9bec9; --mute:#8c92a0;
+    --act:#f4865f; --act-fg:#ff9b7b; --act-tint:#3c2419;
+    --steel:#86abdf; --steel-tint:#1f2d42; --ok:#4cc08a; --ok-tint:#16342a;
+    --warn:#e8b64c; --warn-tint:#3a2e12; --bad:#f06b62; --bad-tint:#3f1e1b;
+    --navbg:#242935; --navpill:#eef0f4; --navfg:#1e2230;
+    --hero-a:#343a4b; --hero-b:#0f1116;
+    --bezel:#20242d; --island:#000;
+    --map-base:#1c2027; --map-road:#2c313c; --map-block:#3b2f2a; --map-park:#1f3129; --map-bldg:#262b35;
+    --shadow:0 10px 30px rgba(0,0,0,.35); --shadow-lg:0 30px 60px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#111319; --scr:#171a21; --card:#1f232c; --card-2:#272c37; --line:#323847;
+  --ink:#eceef3; --ink-2:#b9bec9; --mute:#8c92a0;
+  --act:#f4865f; --act-fg:#ff9b7b; --act-tint:#3c2419;
+  --steel:#86abdf; --steel-tint:#1f2d42; --ok:#4cc08a; --ok-tint:#16342a;
+  --warn:#e8b64c; --warn-tint:#3a2e12; --bad:#f06b62; --bad-tint:#3f1e1b;
+  --navbg:#242935; --navpill:#eef0f4; --navfg:#1e2230;
+  --hero-a:#343a4b; --hero-b:#0f1116;
+  --bezel:#20242d; --island:#000;
+  --map-base:#1c2027; --map-road:#2c313c; --map-block:#3b2f2a; --map-park:#1f3129; --map-bldg:#262b35;
+  --shadow:0 10px 30px rgba(0,0,0,.35); --shadow-lg:0 30px 60px rgba(0,0,0,.5);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--ground);color:var(--ink);font:500 14px/1.45 var(--f-body);-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;font-family:var(--f-display);text-wrap:balance;line-height:1.15}
+p{margin:0}
+button{font:inherit;color:inherit}
+small{display:block;font-size:12px;color:var(--mute);line-height:1.35}
+b{font-weight:700}
+em{font-style:normal;font-family:var(--f-display);font-weight:800;font-variant-numeric:tabular-nums}
+:focus-visible{outline:3px solid var(--act);outline-offset:2px}
+
+/* ---------- page chrome ---------- */
+.wrap{max-width:1360px;margin:0 auto;padding-inline:16px;padding-block:28px 56px}
+.top{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:18px;--logo-cut:var(--ground)}
+.logo-mark{width:72px;height:58px;flex:none}
+.mark{width:56px;height:56px;border-radius:18px;background:var(--act);color:#fff;display:grid;place-items:center;flex:none;box-shadow:var(--shadow)}
+.mark .i{width:30px;height:30px}
+.top-txt{flex:1 1 320px;min-width:0}
+.top-txt h1{font-size:32px;font-weight:900;letter-spacing:-.03em}
+.top-txt h1 span{background:linear-gradient(135deg,#FFB088,#F27A52 55%,#E2512B);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.top-txt p{color:var(--ink-2);max-width:62ch;margin-top:4px}
+.ctl{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.seg{display:inline-flex;background:var(--card-2);border-radius:999px;padding:4px;gap:2px}
+.seg button{border:0;background:transparent;padding:8px 14px;border-radius:999px;font:700 13px var(--f-body);color:var(--ink-2);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.seg button.sel{background:var(--card);color:var(--ink);box-shadow:0 2px 8px rgba(30,34,48,.12)}
+.seg button span{background:var(--card-2);border-radius:999px;padding:0 7px;font-size:11px;line-height:18px}
+.seg button.sel span{background:var(--act-tint);color:var(--act-fg)}
+.jump{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.jump button{border:1px solid var(--line);background:var(--card);color:var(--ink-2);border-radius:999px;padding:7px 13px;font:700 12px var(--f-body);cursor:pointer}
+.jump button.sel{background:var(--navpill);color:var(--navfg);border-color:var(--navpill)}
+.tokens{display:flex;gap:14px 28px;flex-wrap:wrap;align-items:center;background:var(--card);border-radius:var(--r);padding:14px 18px;margin-bottom:28px;box-shadow:var(--shadow)}
+.sw-row{display:flex;gap:14px;flex-wrap:wrap}
+.sw{display:flex;align-items:center;gap:9px}
+.sw i{width:30px;height:30px;border-radius:10px;flex:none}
+.sw b{display:block;font-size:13px;line-height:1.1}
+.sw small{font-size:11px}
+.type-row{display:flex;gap:22px;flex-wrap:wrap;margin-left:auto}
+.type-row>div{line-height:1.1}
+.type-row small{font-size:11px}
+.t-d{font:900 22px var(--f-display);letter-spacing:-.02em}
+.t-b{font:600 18px var(--f-body)}
+.t-n{font:800 22px var(--f-display);font-variant-numeric:tabular-nums}
+.foot{color:var(--mute);font-size:12px;max-width:78ch;margin-top:8px}
+
+/* ---------- stage + phone frame ---------- */
+.stage{display:flex;flex-wrap:wrap;justify-content:center;gap:34px}
+.frame{position:relative;width:390px;max-width:100%;height:844px;border-radius:56px;background:var(--scr);border:10px solid var(--bezel);box-shadow:var(--shadow-lg),0 0 0 1px rgba(30,34,48,.07);overflow:hidden;flex:0 0 auto;font-size:14px}
+.frame::before{content:"";position:absolute;top:12px;left:50%;transform:translateX(-50%);width:118px;height:34px;border-radius:999px;background:var(--island);z-index:6}
+.frame::after{content:"";position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:5px;background:var(--ink);opacity:.8;z-index:6}
+.frame.flash{animation:flash .9s ease}
+@keyframes flash{0%{box-shadow:0 0 0 0 var(--act),var(--shadow-lg)}60%{box-shadow:0 0 0 8px var(--act),var(--shadow-lg)}100%{box-shadow:0 0 0 0 transparent,var(--shadow-lg)}}
+.proto .frame{display:none}
+.proto .frame.active{display:block}
+
+.sb{height:58px;display:flex;align-items:center;justify-content:space-between;padding:12px 30px 0;font:700 15px var(--f-body);position:relative;z-index:3;flex:none}
+.sbi{display:flex;gap:5px;align-items:center}
+.sbi .i{width:18px;height:18px}
+.scroll{position:absolute;top:58px;left:0;right:0;bottom:0;overflow-y:auto;padding:4px 18px 124px;scrollbar-width:none;display:flex;flex-direction:column;gap:14px}
+.scroll::-webkit-scrollbar{display:none}
+.scroll>*{flex:none}
+.scroll.pad-cta{padding-bottom:132px}
+.scroll.under-top{top:112px}
+.fade{position:absolute;left:0;right:0;bottom:0;height:130px;background:linear-gradient(to top,var(--scr) 30%,transparent);pointer-events:none;z-index:3}
+.topbar{position:absolute;top:58px;left:0;right:0;height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:4;gap:10px}
+.topbar h1{font-size:18px;font-weight:800;text-align:center;flex:1;min-width:0}
+.topbar h1 small{font-weight:600}
+
+/* icons */
+.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none;display:inline-block;vertical-align:middle}
+.i.xs{width:14px;height:14px}
+.star{color:var(--warn);fill:currentColor;stroke:none}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 22px;border-radius:999px;border:0;font:800 15px var(--f-body);cursor:pointer;color:#fff;background:var(--act);white-space:nowrap;text-decoration:none;flex:none}
+.btn:hover{filter:brightness(1.05)}
+.btn.dark{background:var(--navpill);color:var(--navfg)}
+.btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.btn.sm{height:40px;padding:0 16px;font-size:13px}
+.btn.wide{width:100%}
+.btn.grow{flex:1}
+.ic{width:44px;height:44px;border-radius:50%;display:inline-grid;place-items:center;background:var(--card);box-shadow:var(--shadow);color:var(--ink);border:0;cursor:pointer;flex:none;position:relative;padding:0}
+.ic.sm{width:38px;height:38px;box-shadow:none;border:1px solid var(--line)}
+.ic.sq{border-radius:16px;width:48px;height:48px}
+.ic.ok{background:var(--ok);color:#fff}
+.ic.act{background:var(--act);color:#fff;box-shadow:none}
+.ic.glass{background:rgba(255,255,255,.16);color:#fff;box-shadow:none;backdrop-filter:blur(6px)}
+.ic .ndot{position:absolute;top:10px;right:11px;width:8px;height:8px;border-radius:50%;background:var(--act);border:2px solid var(--card)}
+.link{border:0;background:none;padding:0;color:var(--act-fg);font:700 13px var(--f-body);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.link.mute{color:var(--mute)}
+.link.bad{color:var(--bad)}
+.pill{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:999px;font:700 12px var(--f-body);background:var(--card-2);color:var(--ink-2);white-space:nowrap}
+.pill.ok{background:var(--ok-tint);color:var(--ok)}
+.pill.steel{background:var(--steel-tint);color:var(--steel)}
+.pill.act{background:var(--act);color:#fff}
+.pill.acttint{background:var(--act-tint);color:var(--act-fg)}
+.pill.warn{background:var(--warn-tint);color:var(--warn)}
+.pill.bad{background:var(--bad-tint);color:var(--bad)}
+.pill.soon{background:var(--card-2);color:var(--mute);height:24px;font-size:11px}
+.pill.glass{background:rgba(255,255,255,.16);color:#fff}
+.dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex:none;animation:ping 1.6s ease-out infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 color-mix(in srgb,currentColor 55%,transparent)}100%{box-shadow:0 0 0 9px transparent}}
+.card{background:var(--card);border-radius:var(--r);padding:16px}
+.well{width:48px;height:48px;border-radius:16px;background:var(--act-tint);color:var(--act-fg);display:grid;place-items:center;flex:none}
+.well.sm{width:40px;height:40px;border-radius:13px;font:800 12px var(--f-display)}
+.well.lg{width:56px;height:56px;border-radius:18px}
+.well.steel{background:var(--steel-tint);color:var(--steel)}
+.well.ok{background:var(--ok-tint);color:var(--ok)}
+.well .i{width:22px;height:22px}
+.ava{width:46px;height:46px;border-radius:50%;background:var(--act-tint);color:var(--act-fg);display:grid;place-items:center;font:800 15px var(--f-display);flex:none;letter-spacing:.02em;position:relative}
+.ava.lg{width:54px;height:54px;font-size:17px}
+.ava.xl{width:76px;height:76px;font-size:24px}
+.ava.steel{background:var(--steel-tint);color:var(--steel)}
+.vbadge{position:absolute;right:-2px;bottom:-2px;width:22px;height:22px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;border:3px solid var(--card)}
+.vbadge .i{width:11px;height:11px;stroke-width:3}
+.lbl{font:800 15px var(--f-display);color:var(--ink);margin-top:4px}
+.eyebrow{font:700 11px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--act-fg)}
+.sec{display:flex;align-items:baseline;justify-content:space-between;margin-top:4px}
+.sec h3{font-size:18px;font-weight:800}
+.sec button{font:700 13px var(--f-body);color:var(--act-fg);cursor:pointer;background:none;border:0;padding:0}
+.in{display:flex;align-items:center;gap:10px;flex:1;min-width:0;height:48px;padding:0 16px;border-radius:16px;background:var(--card);color:var(--mute);box-shadow:var(--shadow)}
+.in input{border:0;background:none;flex:1;min-width:0;font:600 14px var(--f-body);color:var(--ink);outline:0}
+.in input::placeholder{color:var(--mute)}
+.in.pillin{border-radius:999px;height:44px;color:var(--ink);font-weight:700}
+.in.center{justify-content:center}
+.ta{width:100%;min-height:80px;border:1px solid var(--line);background:var(--card);border-radius:var(--r-sm);padding:12px 14px;font:500 13px/1.45 var(--f-body);color:var(--ink);resize:none;outline:0}
+.ta:focus{border-color:var(--act)}
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.chips::-webkit-scrollbar{display:none}
+.chips.wrap{flex-wrap:wrap;overflow:visible}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink-2);border-radius:999px;height:38px;padding:0 14px;font:700 13px var(--f-body);cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;flex:none}
+.chip.sel{background:var(--navpill);color:var(--navfg);border-color:var(--navpill)}
+.chips.wrap .chip.sel{background:var(--act-tint);color:var(--act-fg);border-color:var(--act-tint)}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;align-items:center;gap:12px;background:var(--card);border:2px solid transparent;border-radius:var(--r-sm);padding:12px 14px;cursor:pointer}
+.opt>div{flex:1;min-width:0}
+.opt b{font-size:14px;display:block}
+.opt em{font-size:15px}
+.opt em small{display:inline;font-size:11px;font-family:var(--f-body);font-weight:600}
+.opt.sel{border-color:var(--act)}
+.opt.off{opacity:.55;cursor:default}
+.rad{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);flex:none;display:grid;place-items:center}
+.opt.sel .rad{border-color:var(--act)}
+.opt.sel .rad::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--act)}
+.stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stats3>div{background:var(--card-2);border-radius:var(--r-sm);padding:10px 12px}
+.stats3 b{display:block;font:800 17px var(--f-display);font-variant-numeric:tabular-nums}
+.bar{height:6px;border-radius:6px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:6px;background:var(--ok)}
+.bar.warn i{background:var(--warn)}
+.plate{display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:6px;background:#fff;color:#1b3f8a;font:800 12px var(--f-body);letter-spacing:.08em;border:1.5px solid #c9d2e4}
+
+/* tab bar */
+.nav{position:absolute;left:16px;right:16px;bottom:24px;height:66px;background:var(--navbg);border-radius:999px;box-shadow:0 14px 34px rgba(30,34,48,.18);display:flex;align-items:center;justify-content:space-between;padding:6px;z-index:5}
+.nav a{display:inline-flex;align-items:center;gap:8px;height:54px;padding:0 17px;border-radius:999px;color:var(--ink);text-decoration:none;font:800 14px var(--f-body);cursor:pointer;position:relative}
+.nav a .i{width:22px;height:22px}
+.nav a span{display:none}
+.nav a.on{background:var(--navpill);color:var(--navfg);padding:0 20px}
+.nav a.on span{display:inline}
+.nav a .badge{position:absolute;top:10px;right:12px;min-width:16px;height:16px;border-radius:8px;background:var(--act);color:#fff;font:800 10px/16px var(--f-body);text-align:center;padding:0 4px}
+
+/* bottom action bar */
+.cta{position:absolute;left:0;right:0;bottom:0;padding:14px 20px 36px;background:var(--card);border-radius:28px 28px 0 0;box-shadow:0 -12px 30px rgba(30,34,48,.10);display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:5}
+.cta b{font:800 22px var(--f-display);font-variant-numeric:tabular-nums;display:block;line-height:1.1}
+.cta b span{font:600 12px var(--f-body);color:var(--mute)}
+
+/* ---------- Home ---------- */
+.hh{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:4px}
+.hh h1{font-size:26px;font-weight:900;letter-spacing:-.02em}
+.who{display:flex;align-items:center;gap:11px;min-width:0}
+.who b{font:800 18px var(--f-display);display:block;line-height:1.1}
+.live{display:flex;align-items:center;gap:12px;background:var(--steel-tint);border-radius:var(--r-sm);padding:10px 12px 10px 16px;text-decoration:none;color:var(--ink);cursor:pointer}
+.live>div{flex:1;min-width:0}
+.live b{font-size:14px;display:block}
+.live small{color:var(--steel)}
+.live .dot{color:var(--steel)}
+.hero{position:relative;border-radius:var(--r);padding:16px;min-height:196px;color:#fff;background:radial-gradient(120% 90% at 100% 0%,rgba(255,255,255,.14),transparent 55%),linear-gradient(140deg,var(--hero-a),var(--hero-b));display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;overflow:hidden}
+.hero-top{display:flex;justify-content:space-between;align-items:center}
+.hero-car{position:absolute;right:-26px;top:54px;width:250px;height:100px;opacity:.22;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hero h2{font-size:23px;font-weight:800;letter-spacing:-.01em;max-width:72%}
+.hero .sub{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:12px;opacity:.9}
+.hero-stats{display:flex;gap:8px;margin-top:12px}
+.hero-stats div{flex:1;background:rgba(255,255,255,.12);border-radius:12px;padding:7px 10px;backdrop-filter:blur(4px)}
+.hero-stats small{color:rgba(255,255,255,.7);font-size:10px}
+.hero-stats b{font:800 14px var(--f-display);font-variant-numeric:tabular-nums}
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.quick a{display:flex;flex-direction:column;align-items:center;gap:7px;text-decoration:none;color:var(--ink);font:700 11px var(--f-body);cursor:pointer;text-align:center}
+.quick .ic{box-shadow:none;background:var(--card);width:52px;height:52px;border-radius:18px;color:var(--act-fg)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tile{background:var(--card);border-radius:18px;padding:12px 10px 11px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;text-decoration:none;color:var(--ink);cursor:pointer;min-width:0}
+.tile b{font-size:13px;line-height:1.1}
+.tile small{font-size:11px}
+.garage{display:flex;align-items:center;gap:12px}
+.garage>div{flex:1;min-width:0}
+.garage b{display:block;font-size:14px}
+.garage .rate{display:inline-flex;align-items:center;gap:4px;font:700 11px var(--f-body);color:var(--ink-2)}
+
+/* ---------- Vehicles ---------- */
+.veh{display:flex;flex-direction:column;gap:12px;border:2px solid transparent}
+.veh.sel{border-color:var(--act)}
+.veh-top{display:flex;align-items:center;gap:12px}
+.veh-top>div{flex:1;min-width:0}
+.veh-top b{font:800 16px var(--f-display);display:block}
+.veh-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.veh-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.veh-row small{font-weight:600;flex:1;min-width:0}
+.veh-row .link{white-space:nowrap}
+.veh-row .num{font:800 13px var(--f-body);font-variant-numeric:tabular-nums;color:var(--ink)}
+.dashed{border:2px dashed var(--line);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:12px;color:var(--ink-2);background:transparent;cursor:pointer;text-align:left}
+.dashed b{display:block;color:var(--ink)}
+.rem{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.rem:first-child{border-top:0;padding-top:0}
+.rem>div{flex:1;min-width:0}
+.rem b{display:block;font-size:13px}
+.rem em{font-size:13px;color:var(--ink-2);font-family:var(--f-body);font-weight:700}
+
+/* ---------- Book ---------- */
+.gcard{display:flex;align-items:center;gap:12px;padding:12px 14px}
+.gcard>div{flex:1;min-width:0}
+.gcard b{display:block;font-size:14px}
+
+/* ---------- Track ---------- */
+.order{display:flex;align-items:center;gap:12px}
+.order>div{flex:1;min-width:0}
+.order h2{font-size:19px;font-weight:800}
+.promise{background:var(--act-tint);color:var(--act-fg);border-radius:18px;padding:8px 14px;text-align:center;flex:none}
+.promise b{display:block;font:800 22px/1 var(--f-display);font-variant-numeric:tabular-nums}
+.promise small{color:var(--act-fg);font-weight:700;font-size:11px}
+.tl{list-style:none;margin:0;padding:0 0 0 4px;display:flex;flex-direction:column}
+.tl li{position:relative;display:flex;gap:14px;padding:0 0 16px 0}
+.tl li::before{content:"";position:absolute;left:9px;top:22px;bottom:-2px;width:3px;background:var(--line);border-radius:3px}
+.tl li:last-child::before{display:none}
+.tl li.done::before{background:var(--ok)}
+.tl li:last-child{padding-bottom:0}
+.tl i{width:21px;height:21px;border-radius:50%;background:var(--card);border:3px solid var(--line);flex:none;display:grid;place-items:center;z-index:1;margin-top:1px}
+.tl li.done i{background:var(--ok);border-color:var(--ok)}
+.tl li.now i{background:var(--act);border-color:var(--card);box-shadow:0 0 0 3px var(--act)}
+.tl li>div{flex:1;min-width:0}
+.tl b{display:block;font-size:14px}
+.tl li.now b{color:var(--act-fg)}
+.tl li:not(.done):not(.now) b{color:var(--mute)}
+.est{border:2px solid var(--act);display:flex;flex-direction:column;gap:10px}
+.est .row{display:flex;justify-content:space-between;gap:10px;font-size:13px}
+.est .row em{font-size:13px}
+.est .total{border-top:1px solid var(--line);padding-top:10px;align-items:center}
+.est .total b{font:800 15px var(--f-display)}
+.est .total em{font-size:20px}
+.quote{font-size:12px;color:var(--ink-2);background:var(--card-2);border-radius:12px;padding:10px 12px}
+.quote b{color:var(--ink)}
+.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.photos div{aspect-ratio:1;border-radius:14px;background:linear-gradient(145deg,var(--card-2),var(--line));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--mute);font:700 11px var(--f-body)}
+
+/* ---------- Map ---------- */
+.map{position:absolute;top:0;left:0;right:0;height:410px;background:var(--map-base);overflow:hidden}
+.map svg.mp-svg,.mini svg.mp-svg{position:absolute;inset:0;width:100%;height:100%}
+.mb{fill:var(--map-block)} .mp{fill:var(--map-park)} .mg{fill:var(--map-bldg)}
+.mr path,.mr circle{fill:none;stroke:var(--map-road);stroke-width:16;stroke-linecap:round}
+.mr2 path{fill:none;stroke:var(--map-road);stroke-width:7;stroke-linecap:round}
+.mp-base{fill:var(--map-base)}
+.pin rect{fill:var(--card);filter:drop-shadow(0 4px 8px rgba(30,34,48,.18))}
+.pin text{font:800 12px var(--f-body);fill:var(--ink);text-anchor:middle}
+.pin .st{fill:var(--warn)}
+.pin.on rect{fill:var(--act)}
+.pin.on text,.pin.on .st{fill:#fff}
+.you{fill:var(--steel);stroke:var(--card);stroke-width:3}
+.map .sb{position:relative}
+.map-top{position:absolute;top:60px;left:16px;right:16px;display:flex;gap:10px;align-items:center;z-index:3}
+.locate{position:absolute;right:16px;bottom:26px;z-index:3}
+.sheet{position:absolute;left:0;right:0;top:396px;bottom:0;background:var(--card);border-radius:30px 30px 0 0;padding:8px 20px 36px;display:flex;flex-direction:column;gap:12px;box-shadow:0 -14px 34px rgba(30,34,48,.14);z-index:2}
+.sheet>*{flex:none}
+.grab{width:44px;height:5px;border-radius:5px;background:var(--line);align-self:center}
+.sh-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.sh-head h2{font-size:22px;font-weight:800;letter-spacing:-.01em}
+.badges{display:flex;gap:6px;flex-wrap:wrap}
+.desc{font-size:13px;color:var(--ink-2)}
+.sh-cta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto}
+.sh-cta b{font:800 22px var(--f-display);font-variant-numeric:tabular-nums;display:block;line-height:1.1}
+.sh-cta b span{font:600 12px var(--f-body);color:var(--mute)}
+
+/* ---------- Invoice ---------- */
+.done-head{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;padding-top:6px}
+.check{width:64px;height:64px;border-radius:50%;background:var(--ok-tint);color:var(--ok);display:grid;place-items:center}
+.check .i{width:30px;height:30px;stroke-width:3}
+.done-head h2{font-size:24px;font-weight:800}
+.bill{display:flex;flex-direction:column;gap:11px}
+.bill .row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.bill .row>div{flex:1;min-width:0}
+.bill .row b{font-size:14px}
+.bill em{font-size:15px;flex:none}
+.bill .sub{border-top:1px solid var(--line);padding-top:10px;color:var(--ink-2)}
+.bill .sub em{font-size:13px;color:var(--ink-2)}
+.bill .total{align-items:center}
+.bill .total b{font:800 16px var(--f-display)}
+.bill .total em{font-size:24px}
+.ok-txt{color:var(--ok);font-weight:700}
+.note{display:flex;gap:12px;align-items:flex-start;background:var(--ok-tint);border-radius:var(--r-sm);padding:12px 14px;color:var(--ok)}
+.note .i{width:22px;height:22px;margin-top:1px}
+.note p{font-size:12px;color:var(--ink-2)}
+.note p b{color:var(--ink)}
+
+/* ---------- Chat ---------- */
+.chat{gap:10px}
+.day{align-self:center;font:700 11px var(--f-body);color:var(--mute);background:var(--card-2);border-radius:999px;padding:4px 10px}
+.msg{max-width:82%;border-radius:18px;padding:10px 14px;font-size:13px;line-height:1.4;position:relative}
+.msg.them{align-self:flex-start;background:var(--card);border-bottom-left-radius:6px}
+.msg.me{align-self:flex-end;background:var(--navpill);color:var(--navfg);border-bottom-right-radius:6px}
+.msg small{margin-top:4px;font-size:10px}
+.msg.me small{color:color-mix(in srgb,var(--navfg) 65%,transparent)}
+.msg.est-card{background:var(--card);border:2px solid var(--act);padding:12px 14px;display:flex;flex-direction:column;gap:6px;align-self:flex-start}
+.msg.est-card b{font:800 15px var(--f-display)}
+.msg.photo{padding:6px;background:var(--card)}
+.msg.photo div{width:180px;height:120px;border-radius:14px;background:linear-gradient(145deg,var(--card-2),var(--line));display:grid;place-items:center;color:var(--mute);font:700 11px var(--f-body)}
+.composer{position:absolute;left:0;right:0;bottom:0;padding:10px 16px 34px;background:var(--scr);display:flex;align-items:center;gap:8px;z-index:5}
+.composer .in{box-shadow:none;border:1px solid var(--line)}
+.sub-h{display:flex;flex-direction:column;align-items:center;line-height:1.1}
+.sub-h small{display:inline-flex;align-items:center;gap:5px}
+.sub-h small::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok)}
+
+/* ---------- Bookings ---------- */
+.list{display:flex;flex-direction:column;gap:12px}
+.bk{display:flex;flex-direction:column;gap:12px}
+.bk-top{display:flex;justify-content:space-between;align-items:center}
+.bk-mid{display:flex;align-items:center;gap:12px}
+.bk-mid>div{flex:1;min-width:0}
+.bk-mid b{display:block;font-size:14px}
+.bk-mid em{font-size:15px}
+.bk-act{display:flex;gap:8px;align-items:center}
+.bk-act .link{margin-left:auto}
+.stars-sm{display:inline-flex;gap:1px;color:var(--warn)}
+.stars-sm .i{width:12px;height:12px;fill:currentColor;stroke:none}
+
+@media (max-width:460px){
+  .frame{height:auto;min-height:760px;aspect-ratio:390/844;border-width:7px;border-radius:44px}
+  .type-row{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){
+  .dot{animation:none}
+  .frame.flash{animation:none;box-shadow:0 0 0 6px var(--act),var(--shadow-lg)}
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 20z"/><path d="M9.5 21.5v-7h5v7"/></symbol>
+  <symbol id="i-car" viewBox="0 0 24 24"><path d="M5 11l1.6-4.2A2 2 0 0 1 8.5 5.5h7a2 2 0 0 1 1.9 1.3L19 11"/><path d="M3 11h18a1 1 0 0 1 1 1v4.5a1 1 0 0 1-1 1h-1.5M3 11a1 1 0 0 0-1 1v4.5a1 1 0 0 0 1 1h1.5M9 17.5h6"/><circle cx="6.5" cy="17.5" r="2"/><circle cx="17.5" cy="17.5" r="2"/><path d="M6 13.5h1M17 13.5h1"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="17" rx="3"/><path d="M16 2.5v4M8 2.5v4M3 10h18"/><path d="M8 15h.01M12 15h.01M16 15h.01"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2.5 21.5z"/><path d="M8 10h8M8 13.5h5"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7.5" r="4"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><path d="m21 21-4.6-4.6"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1.5 14h5M9.5 8h5M17.5 16h5"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8.5a6 6 0 0 1 12 0c0 6.5 2.5 8 2.5 8h-17S6 15 6 8.5"/><path d="M10.3 21a2 2 0 0 0 3.4 0"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19.5 13.5c1.4-1.4 2.5-3 2.5-5A5 5 0 0 0 17 3.5c-1.8 0-3.5 1-5 2.5-1.5-1.5-3.2-2.5-5-2.5a5 5 0 0 0-5 5c0 2 1.1 3.6 2.5 5L12 21z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z"/></symbol>
+  <symbol id="i-chev-l" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-chev-d" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.9.6 2.8.7a2 2 0 0 1 1.7 2z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 6.5V12l3.5 2"/></symbol>
+  <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.9-7.9z"/></symbol>
+  <symbol id="i-oil" viewBox="0 0 24 24"><path d="M12 2.7c-3 3.7-6 7.2-6 10.3a6 6 0 0 0 12 0c0-3.1-3-6.6-6-10.3z"/><path d="M9.5 14.5a2.5 2.5 0 0 0 2 2.4"/></symbol>
+  <symbol id="i-brake" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M18.4 5.6l-1.8 1.8M7.4 16.6l-1.8 1.8"/></symbol>
+  <symbol id="i-tire" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v5M12 16.5v5M2.5 12h5M16.5 12h5"/></symbol>
+  <symbol id="i-clip" viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="18" rx="2.5"/><path d="M9 3.5V2h6v1.5"/><path d="m9 13 2 2 4-4"/></symbol>
+  <symbol id="i-batt" viewBox="0 0 24 24"><rect x="2" y="7" width="18" height="10" rx="3"/><rect x="4" y="9" width="13" height="6" rx="1.5" fill="currentColor" stroke="none"/><path d="M22 10.5v3"/></symbol>
+  <symbol id="i-battery" viewBox="0 0 24 24"><rect x="2.5" y="7" width="17" height="10" rx="2.5"/><path d="M22 10.5v3M7 12h4M9 10v4M14 12h2.5"/></symbol>
+  <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M22 12h-4l-3 8-6-16-3 8H2"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M10 17h4V5H2v12h3"/><path d="M20 17h2v-3.3a1 1 0 0 0-.3-.7l-2.6-2.7a1 1 0 0 0-.7-.3H14v7h1"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></symbol>
+  <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M4.5 18a9 9 0 1 1 15 0"/><path d="m12 14 3.5-4.5"/><circle cx="12" cy="15" r="1.6"/></symbol>
+  <symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-8 9"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-cash" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></symbol>
+  <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V5a1 1 0 0 0-1-1H5.5a2.5 2.5 0 0 0 0 5H20a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2V6.5"/><path d="M16 13.5h5v4h-5a2 2 0 0 1 0-4z"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20M6 15h4"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-nav" viewBox="0 0 24 24"><path d="M3 11 22 2l-9 19-2-8z"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 16v-4.5M12 8h.01"/></symbol>
+  <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M4 3h16v18l-2.7-1.5-2.6 1.5-2.7-1.5L9.4 21l-2.7-1.5L4 21z"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M11 3l1.9 5.6L18.5 10.5l-5.6 1.9L11 18l-1.9-5.6L3.5 10.5l5.6-1.9z"/><path d="M19 15l.8 2.2 2.2.8-2.2.8L19 21l-.8-2.2-2.2-.8 2.2-.8z"/></symbol>
+  <symbol id="i-signal" viewBox="0 0 24 24"><path d="M3 20h2.5v-4H3zM8 20h2.5v-8H8zM13 20h2.5V8H13zM18 20h2.5V4H18z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M4.5 11.5a11 11 0 0 1 15 0M8 15a6 6 0 0 1 8 0M12 18.5h.01" stroke-width="2.4"/></symbol>
+</svg>
+
+<div class="wrap">
+  <header class="top">
+    <svg class="logo-mark" viewBox="0 0 120 96" aria-hidden="true"><defs><linearGradient id="gpG" gradientUnits="userSpaceOnUse" x1="10" y1="8" x2="112" y2="94"><stop offset="0" stop-color="#FFB088"/><stop offset=".55" stop-color="#F27A52"/><stop offset="1" stop-color="#E2512B"/></linearGradient><linearGradient id="gpS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><g transform="translate(0 0) scale(1)"><g fill="url(#gpG)"><path d="M29 52 L36 22 Q38.5 12 48 12 H72 Q81.5 12 84 22 L91 52 Z"/><rect x="4" y="42" width="112" height="42" rx="16"/><rect x="14" y="76" width="24" height="16" rx="7"/><rect x="82" y="76" width="24" height="16" rx="7"/></g><g fill="var(--logo-cut,#fff)"><path d="M40.5 24 Q41.5 20 45.5 20 H74.5 Q78.5 20 79.5 24 L84 44 H36 Z"/><circle cx="23" cy="63" r="7.5"/><circle cx="97" cy="63" r="7.5"/><rect x="47" y="59" width="26" height="8" rx="4"/></g><g fill="url(#gpS)"><path d="M20 42 H100 a16 16 0 0 1 16 16 H4 a16 16 0 0 1 16-16 Z"/></g></g></svg>
+    <div class="top-txt">
+      <h1>Garage<span>Pal</span></h1>
+      <p>The customer app for GaragePal, in the same treatment as Karighar: warm off-white screens, white cards, a dark pill tab bar and your coral as the one action colour. Vehicles, booking, live repair status, estimate approval, invoices and chat with the garage.</p>
+    </div>
+    <div class="ctl">
+      <div class="seg" data-mode role="group" aria-label="View mode">
+        <button class="sel" data-mode="all">All screens</button>
+        <button data-mode="proto">Prototype</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="jump" aria-label="Screens">
+    <button data-go="home" class="sel">Home</button>
+    <button data-go="garage">My garage</button>
+    <button data-go="book">Book</button>
+    <button data-go="track">Repair status</button>
+    <button data-go="map">Find a garage</button>
+    <button data-go="pay">Invoice</button>
+    <button data-go="chat">Messages</button>
+    <button data-go="bookings">Bookings</button>
+  </nav>
+
+  <section class="tokens" aria-label="Design tokens">
+    <div class="sw-row">
+      <div class="sw"><i style="background:var(--act)"></i><div><b>Coral</b><small>GaragePal brand · actions</small></div></div>
+      <div class="sw"><i style="background:var(--navpill)"></i><div><b>Charcoal</b><small>text · vehicle card · tab pill</small></div></div>
+      <div class="sw"><i style="background:var(--steel)"></i><div><b>Steel</b><small>in the shop · in progress</small></div></div>
+      <div class="sw"><i style="background:var(--ok)"></i><div><b>Mint</b><small>done · paid · open now</small></div></div>
+      <div class="sw"><i style="background:var(--scr);border:1px solid var(--line)"></i><div><b>Stone</b><small>screen ground</small></div></div>
+    </div>
+    <div class="type-row">
+      <div class="t-d">Nunito<small>display · 700–900</small></div>
+      <div class="t-b">DM Sans<small>body · 400–700</small></div>
+      <div class="t-n">CAD 615.29<small>tabular numerals</small></div>
+    </div>
+  </section>
+
+  <main class="stage" id="stage">
+
+    <!-- ================= HOME ================= -->
+    <article class="frame active" data-screen="home" aria-label="Home screen">
+      <div class="sb"><span>9:41</span><span class="sbi"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><svg class="i"><use href="#i-batt"/></svg></span></div>
+      <div class="scroll">
+        <header class="hh">
+          <div class="who"><span class="ava">JL</span><div><small>Good morning</small><b>Jordan Lee</b></div></div>
+          <button class="ic" aria-label="Notifications, 2 new"><svg class="i"><use href="#i-bell"/></svg><i class="ndot"></i></button>
+        </header>
+        <a class="live" data-go="track" role="button" tabindex="0"><span class="dot"></span><div><b>Your Civic is in the shop</b><small>Brake service · estimate waiting for your approval</small></div><span class="btn sm dark">View</span></a>
+        <section class="hero" data-go="garage" role="button" tabindex="0" aria-label="2019 Honda Civic, primary vehicle">
+          <div class="hero-top"><span class="pill glass"><svg class="i xs"><use href="#i-car"/></svg>Primary vehicle</span><span class="plate">CBPR 412</span></div>
+          <svg class="hero-car" viewBox="0 0 250 100" aria-hidden="true"><path d="M14 66 L30 44 Q48 26 86 26 L136 26 Q166 26 186 44 L214 50 Q230 54 230 66 L230 76 L14 76 Z"/><path d="M60 44 L80 30 L130 30 L150 44 Z"/><path d="M30 66h200"/><circle cx="60" cy="76" r="13"/><circle cx="60" cy="76" r="5"/><circle cx="186" cy="76" r="13"/><circle cx="186" cy="76" r="5"/></svg>
+          <div>
+            <h2>2019 Honda Civic LX</h2>
+            <div class="sub"><svg class="i xs"><use href="#i-gauge"/></svg>84,320 km · Winter tires on</div>
+            <div class="hero-stats"><div><small>Next service in</small><b>1,180 km</b></div><div><small>Last visit</small><b>12 Aug</b></div><div><small>Health</small><b>Good</b></div></div>
+          </div>
+        </section>
+        <div class="quick">
+          <a data-go="book" role="button" tabindex="0"><span class="ic"><svg class="i"><use href="#i-wrench"/></svg></span>Book service</a>
+          <a data-go="map" role="button" tabindex="0"><span class="ic"><svg class="i"><use href="#i-pin"/></svg></span>Find a garage</a>
+          <a data-go="chat" role="button" tabindex="0"><span class="ic"><svg class="i"><use href="#i-receipt"/></svg></span>Get an estimate</a>
+          <a role="button" tabindex="0"><span class="ic"><svg class="i"><use href="#i-truck"/></svg></span>Roadside</a>
+        </div>
+        <div class="sec"><h3>Services</h3><button data-go="book">See all</button></div>
+        <div class="grid3">
+          <a class="tile" data-go="book" role="button" tabindex="0"><span class="well"><svg class="i"><use href="#i-oil"/></svg></span><b>Oil change</b><small>From CAD 69.99</small></a>
+          <a class="tile" data-go="book" role="button" tabindex="0"><span class="well"><svg class="i"><use href="#i-brake"/></svg></span><b>Brakes</b><small>Inspection CAD 49</small></a>
+          <a class="tile" data-go="book" role="button" tabindex="0"><span class="well"><svg class="i"><use href="#i-tire"/></svg></span><b>Tires</b><small>Swap CAD 79.99</small></a>
+          <a class="tile" data-go="book" role="button" tabindex="0"><span class="well"><svg class="i"><use href="#i-clip"/></svg></span><b>Inspection</b><small>Safety CAD 119</small></a>
+          <a class="tile" data-go="book" role="button" tabindex="0"><span class="well"><svg class="i"><use href="#i-battery"/></svg></span><b>Battery</b><small>Test CAD 39</small></a>
+          <a class="tile" data-go="book" role="button" tabindex="0"><span class="well"><svg class="i"><use href="#i-pulse"/></svg></span><b>Diagnostics</b><small>From CAD 89</small></a>
+        </div>
+        <div class="sec"><h3>Your garage</h3><button data-go="map">Change</button></div>
+        <div class="garage card"><span class="well steel"><svg class="i"><use href="#i-home"/></svg></span><div><b>Mike's Auto Repair</b><small>2.1 km · Open until 6 PM</small><span class="rate"><svg class="i xs star"><use href="#i-star"/></svg>4.8 · 214 reviews</span></div><button class="ic sm" aria-label="Call garage"><svg class="i"><use href="#i-phone"/></svg></button><button class="ic sm" data-go="chat" aria-label="Message garage"><svg class="i"><use href="#i-chat"/></svg></button></div>
+      </div>
+      <div class="fade"></div>
+      <nav class="nav" aria-label="Tabs">
+        <a class="on" data-go="home" role="button" tabindex="0"><svg class="i"><use href="#i-home"/></svg><span>Home</span></a>
+        <a data-go="garage" role="button" tabindex="0" aria-label="My garage"><svg class="i"><use href="#i-car"/></svg><span>Garage</span></a>
+        <a data-go="bookings" role="button" tabindex="0" aria-label="Bookings"><svg class="i"><use href="#i-cal"/></svg><span>Bookings</span></a>
+        <a data-go="chat" role="button" tabindex="0" aria-label="Inbox, 1 unread"><svg class="i"><use href="#i-chat"/></svg><span>Inbox</span><i class="badge">1</i></a>
+      </nav>
+    </article>
+
+    <!-- ================= MY GARAGE ================= -->
+    <article class="frame" data-screen="garage" aria-label="My garage screen">
+      <div class="sb"><span>9:41</span><span class="sbi"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><svg class="i"><use href="#i-batt"/></svg></span></div>
+      <div class="scroll">
+        <header class="hh"><h1>My garage</h1><button class="btn sm dark"><svg class="i xs"><use href="#i-plus"/></svg>Add vehicle</button></header>
+        <div class="veh card sel">
+          <div class="veh-top"><span class="well"><svg class="i"><use href="#i-car"/></svg></span><div><b>2019 Honda Civic LX</b><div class="veh-meta"><span class="plate">CBPR 412</span><small>84,320 km</small></div></div><span class="pill steel"><span class="dot"></span>In the shop</span></div>
+          <div><div class="veh-row"><small>Next oil change</small><span class="num">1,180 km left</span></div><div class="bar" style="margin-top:6px"><i style="width:78%"></i></div></div>
+          <div class="veh-row"><small>Winter tires on since 12 Nov · Service history</small><button class="link">7 visits<svg class="i xs"><use href="#i-chev-r"/></svg></button></div>
+        </div>
+        <div class="veh card">
+          <div class="veh-top"><span class="well steel"><svg class="i"><use href="#i-car"/></svg></span><div><b>2016 Toyota RAV4 LE</b><div class="veh-meta"><span class="plate">BMKT 902</span><small>142,600 km</small></div></div><span class="pill warn">Inspection due</span></div>
+          <div><div class="veh-row"><small>Next oil change</small><span class="num">overdue by 320 km</span></div><div class="bar warn" style="margin-top:6px"><i style="width:100%"></i></div></div>
+          <div class="veh-row"><small>Safety inspection expired 30 Sep</small><button class="link" data-go="book">Book now<svg class="i xs"><use href="#i-chev-r"/></svg></button></div>
+        </div>
+        <button class="dashed"><span class="well sm"><svg class="i"><use href="#i-scan"/></svg></span><div><b>Add a vehicle</b><small>Scan the VIN or type the plate and we fill in the rest</small></div></button>
+        <div class="sec"><h3>Reminders</h3><button>Edit</button></div>
+        <div class="card" style="padding:12px 16px">
+          <div class="rem"><span class="well sm"><svg class="i"><use href="#i-oil"/></svg></span><div><b>Oil change · Civic</b><small>Every 8,000 km or 6 months</small></div><em>Nov 2</em></div>
+          <div class="rem"><span class="well sm steel"><svg class="i"><use href="#i-tire"/></svg></span><div><b>Winter tire swap · RAV4</b><small>Book before the first snow</small></div><em>Nov 15</em></div>
+          <div class="rem"><span class="well sm ok"><svg class="i"><use href="#i-clip"/></svg></span><div><b>Plate renewal · Civic</b><small>Ontario sticker expires</small></div><em>Dec 1</em></div>
+        </div>
+      </div>
+      <div class="fade"></div>
+      <nav class="nav" aria-label="Tabs">
+        <a data-go="home" role="button" tabindex="0" aria-label="Home"><svg class="i"><use href="#i-home"/></svg><span>Home</span></a>
+        <a class="on" data-go="garage" role="button" tabindex="0"><svg class="i"><use href="#i-car"/></svg><span>Garage</span></a>
+        <a data-go="bookings" role="button" tabindex="0" aria-label="Bookings"><svg class="i"><use href="#i-cal"/></svg><span>Bookings</span></a>
+        <a data-go="chat" role="button" tabindex="0" aria-label="Inbox, 1 unread"><svg class="i"><use href="#i-chat"/></svg><span>Inbox</span><i class="badge">1</i></a>
+      </nav>
+    </article>
+
+    <!-- ================= BOOK ================= -->
+    <article class="frame" data-screen="book" aria-label="Book a service screen">
+      <div class="sb"><span>9:41</span><span class="sbi"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><svg class="i"><use href="#i-batt"/></svg></span></div>
+      <div class="topbar"><button class="ic" data-go="home" aria-label="Back"><svg class="i"><use href="#i-chev-l"/></svg></button><h1>Book a service</h1><button class="ic" aria-label="Help"><svg class="i"><use href="#i-info"/></svg></button></div>
+      <div class="scroll under-top pad-cta">
+        <h3 class="lbl">Which vehicle?</h3>
+        <div class="chips" data-group><button class="chip sel"><svg class="i xs"><use href="#i-car"/></svg>Honda Civic · CBPR 412</button><button class="chip"><svg class="i xs"><use href="#i-car"/></svg>Toyota RAV4</button></div>
+        <h3 class="lbl">What does it need?</h3>
+        <div class="opts" data-group>
+          <div class="opt sel" role="radio" aria-checked="true" tabindex="0"><span class="rad"></span><span class="well sm"><svg class="i"><use href="#i-oil"/></svg></span><div><b>Oil change</b><small>Synthetic, up to 5 L, filter included</small></div><em>CAD 69.99</em></div>
+          <div class="opt" role="radio" aria-checked="false" tabindex="0"><span class="rad"></span><span class="well sm"><svg class="i"><use href="#i-brake"/></svg></span><div><b>Brake inspection</b><small>Pads, rotors, fluid · credited if you repair</small></div><em>CAD 49.00</em></div>
+          <div class="opt" role="radio" aria-checked="false" tabindex="0"><span class="rad"></span><span class="well sm"><svg class="i"><use href="#i-tire"/></svg></span><div><b>Seasonal tire swap</b><small>On rims, balancing extra</small></div><em>CAD 79.99</em></div>
+          <div class="opt" role="radio" aria-checked="false" tabindex="0"><span class="rad"></span><span class="well sm"><svg class="i"><use href="#i-pulse"/></svg></span><div><b>Something else</b><small>Describe the problem and get an estimate first</small></div><em>Quote</em></div>
+        </div>
+        <h3 class="lbl">Where?</h3>
+        <div class="gcard card"><span class="well steel"><svg class="i"><use href="#i-home"/></svg></span><div><b>Mike's Auto Repair</b><small>2.1 km · 4.8 rating · shuttle available</small></div><button class="link" data-go="map">Change</button></div>
+        <h3 class="lbl">When?</h3>
+        <div class="chips" data-group><button class="chip sel">Tomorrow, 9:00 AM</button><button class="chip">Tomorrow, 1:30 PM</button><button class="chip">Thu, 10:00 AM</button><button class="chip"><svg class="i xs"><use href="#i-clock"/></svg>Pick a time</button></div>
+        <div class="chips" data-group><button class="chip sel">Drop off</button><button class="chip">Wait at the garage</button><button class="chip">Shuttle home</button></div>
+        <h3 class="lbl">Anything the technician should know?</h3>
+        <textarea id="note-book" class="ta" placeholder="e.g. Squeal from the front when braking, worse in the cold."></textarea>
+      </div>
+      <div class="cta"><div><small>Estimate · tax added at pickup</small><b>CAD 69.99</b></div><button class="btn" data-go="track">Book service<svg class="i"><use href="#i-arrow"/></svg></button></div>
+    </article>
+
+    <!-- ================= TRACK ================= -->
+    <article class="frame" data-screen="track" aria-label="Repair status screen">
+      <div class="sb"><span>9:41</span><span class="sbi"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><svg class="i"><use href="#i-batt"/></svg></span></div>
+      <div class="topbar"><button class="ic" data-go="bookings" aria-label="Back"><svg class="i"><use href="#i-chev-l"/></svg></button><h1>Order GP-1042</h1><button class="ic" data-go="chat" aria-label="Message the garage"><svg class="i"><use href="#i-chat"/></svg></button></div>
+      <div class="scroll under-top">
+        <div class="order">
+          <div><span class="eyebrow">Brake service</span><h2>2019 Honda Civic</h2><small>Mike's Auto Repair · Bay 2 · Technician Dave R.</small></div>
+          <div class="promise"><small>Ready by</small><b>4:30</b><small>PM today</small></div>
+        </div>
+        <div class="card">
+          <ol class="tl" aria-label="Repair progress">
+            <li class="done"><i><svg class="i xs" style="stroke:#fff;stroke-width:3"><use href="#i-check"/></svg></i><div><b>Checked in</b><small>8:12 AM · Keys and plate photo on file</small></div></li>
+            <li class="done"><i><svg class="i xs" style="stroke:#fff;stroke-width:3"><use href="#i-check"/></svg></i><div><b>Diagnosed</b><small>9:05 AM · Front rotors below minimum thickness</small></div></li>
+            <li class="now"><i></i><div><b>Waiting for your approval</b><small>Estimate sent 9:06 AM · work starts once you approve</small></div></li>
+            <li><i></i><div><b>In progress</b><small>About 1.5 h of labour</small></div></li>
+            <li><i></i><div><b>Ready for pickup</b><small>We'll message you and send the invoice</small></div></li>
+          </ol>
+        </div>
+        <div class="est card">
+          <div class="bk-top"><span class="pill warn"><svg class="i xs"><use href="#i-alert"/></svg>Estimate needs approval</span><small>Valid today</small></div>
+          <div class="row"><span>Front brake pads · ceramic</span><em>CAD 142.50</em></div>
+          <div class="row"><span>Front rotors · pair</span><em>CAD 210.00</em></div>
+          <div class="row"><span>Labour · 1.5 h × CAD 120</span><em>CAD 180.00</em></div>
+          <div class="row total"><b>Total before tax</b><em>CAD 532.50</em></div>
+          <p class="quote"><b>Dave:</b> Rotors are below minimum thickness, so pads alone won't fix the shudder. Photos are below.</p>
+          <div class="bk-act"><button class="btn grow" data-go="pay">Approve CAD 532.50</button><button class="btn ghost" data-go="chat">Ask Dave</button></div>
+        </div>
+        <div class="sec"><h3>Technician photos</h3><button>3 photos</button></div>
+        <div class="photos"><div><svg class="i"><use href="#i-image"/></svg>Rotor wear</div><div><svg class="i"><use href="#i-image"/></svg>Pad · 2 mm</div><div><svg class="i"><use href="#i-image"/></svg>Caliper</div></div>
+      </div>
+    </article>
+
+    <!-- ================= MAP ================= -->
+    <article class="frame" data-screen="map" aria-label="Find a garage map screen">
+      <div class="map" data-map="nearby">
+        <div class="sb"><span>9:41</span><span class="sbi"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><svg class="i"><use href="#i-batt"/></svg></span></div>
+        <div class="map-top"><button class="ic" data-go="home" aria-label="Back"><svg class="i"><use href="#i-chev-l"/></svg></button><div class="in pillin"><svg class="i"><use href="#i-search"/></svg><span>Brake service near me</span></div><button class="ic" aria-label="Filters"><svg class="i"><use href="#i-sliders"/></svg></button></div>
+        <button class="ic locate" aria-label="My location"><svg class="i"><use href="#i-nav"/></svg></button>
+      </div>
+      <div class="sheet">
+        <span class="grab"></span>
+        <div class="sh-head"><div><h2>Mike's Auto Repair</h2><small>2.1 km · 7 min drive · open until 6 PM</small></div><button class="ic sm" aria-label="Save garage"><svg class="i"><use href="#i-heart"/></svg></button></div>
+        <div class="badges"><span class="pill ok"><svg class="i xs"><use href="#i-shield"/></svg>Licensed technicians</span><span class="pill"><svg class="i xs star"><use href="#i-star"/></svg>4.8 (214)</span><span class="pill">Shuttle</span><span class="pill">OEM parts</span></div>
+        <div class="stats3"><div><small>Jobs done</small><b>1,900</b></div><div><small>Avg. wait</small><b>35 min</b></div><div><small>Come back</small><b>62%</b></div></div>
+        <p class="desc">Family-run shop in Scarborough since 2009. Brakes, suspension and seasonal tires, with a 12-month / 20,000 km warranty on parts and labour.</p>
+        <div class="sh-cta"><div><small>Brake inspection</small><b>CAD 49 <span>credited if you repair</span></b></div><button class="btn" data-go="book">Book here</button></div>
+      </div>
+    </article>
+
+    <!-- ================= INVOICE ================= -->
+    <article class="frame" data-screen="pay" aria-label="Invoice and payment screen">
+      <div class="sb"><span>9:41</span><span class="sbi"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><svg class="i"><use href="#i-batt"/></svg></span></div>
+      <div class="topbar"><button class="ic" data-go="track" aria-label="Back"><svg class="i"><use href="#i-chev-l"/></svg></button><h1>Invoice INV-2211</h1><button class="ic" aria-label="Download receipt"><svg class="i"><use href="#i-receipt"/></svg></button></div>
+      <div class="scroll under-top pad-cta">
+        <div class="done-head"><span class="check"><svg class="i"><use href="#i-check"/></svg></span><h2>Ready for pickup</h2><small>Brake service · Honda Civic · Mike's Auto Repair · Today, 4:10 PM</small></div>
+        <div class="bill card">
+          <div class="row"><div><b>Front brake pads · ceramic</b><small>Part 45022-TBA-A01 · 1 set</small></div><em>CAD 142.50</em></div>
+          <div class="row"><div><b>Front rotors · pair</b><small>Part 45251-TBA-A00 · 2</small></div><em>CAD 210.00</em></div>
+          <div class="row"><div><b>Labour</b><small>1.5 h × CAD 120 · Dave R.</small></div><em>CAD 180.00</em></div>
+          <div class="row"><div><b>Shop supplies</b><small>Brake cleaner, grease</small></div><em>CAD 12.00</em></div>
+          <div class="row sub"><span>Subtotal</span><em>CAD 544.50</em></div>
+          <div class="row sub" style="border-top:0;padding-top:0"><span>HST 13%</span><em>CAD 70.79</em></div>
+          <div class="row total"><b>Total</b><em>CAD 615.29</em></div>
+        </div>
+        <h3 class="lbl">Pay with</h3>
+        <div class="opts" data-group>
+          <div class="opt sel" role="radio" aria-checked="true" tabindex="0"><span class="rad"></span><span class="well sm"><svg class="i"><use href="#i-card"/></svg></span><div><b>Visa ···· 4242</b><small>Expires 08/28 · default</small></div></div>
+          <div class="opt" role="radio" aria-checked="false" tabindex="0"><span class="rad"></span><span class="well sm steel"><svg class="i"><use href="#i-wallet"/></svg></span><div><b>Apple Pay or Google Pay</b><small>Pay with your phone</small></div></div>
+          <div class="opt" role="radio" aria-checked="false" tabindex="0"><span class="rad"></span><span class="well sm ok"><svg class="i"><use href="#i-cash"/></svg></span><div><b>Pay at the counter</b><small>Debit, credit or cash at pickup</small></div></div>
+        </div>
+        <div class="note"><svg class="i"><use href="#i-shield"/></svg><p><b>12-month / 20,000 km warranty</b> on parts and labour. The invoice and warranty are saved to your Civic's service history.</p></div>
+      </div>
+      <div class="cta"><div><small>Visa ···· 4242</small><b>CAD 615.29</b></div><button class="btn" data-go="bookings">Pay now<svg class="i"><use href="#i-check"/></svg></button></div>
+    </article>
+
+    <!-- ================= CHAT ================= -->
+    <article class="frame" data-screen="chat" aria-label="Messages screen">
+      <div class="sb"><span>9:41</span><span class="sbi"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><svg class="i"><use href="#i-batt"/></svg></span></div>
+      <div class="topbar"><button class="ic" data-go="home" aria-label="Back"><svg class="i"><use href="#i-chev-l"/></svg></button><h1><div class="sub-h">Mike's Auto Repair<small>Dave R. · technician · online</small></div></h1><button class="ic" aria-label="Call"><svg class="i"><use href="#i-phone"/></svg></button></div>
+      <div class="scroll under-top chat" style="padding-bottom:110px">
+        <span class="day">Today</span>
+        <div class="msg them">Hi Jordan, Dave here. Diagnosis is done on the Civic. The front rotors are below minimum thickness, so new pads alone won't fix the shudder.<small>9:05 AM</small></div>
+        <div class="msg est-card"><span class="eyebrow">Estimate</span><b>CAD 532.50 before tax</b><small>Front pads, rotors and 1.5 h labour</small><button class="link" data-go="track">View and approve<svg class="i xs"><use href="#i-chev-r"/></svg></button></div>
+        <div class="msg photo"><div><svg class="i"><use href="#i-image"/></svg>&nbsp;Rotor wear</div></div>
+        <div class="msg me">Thanks Dave. Is it safe to drive for another week if I wait?<small>9:12 AM</small></div>
+        <div class="msg them">I wouldn't. The inner pad is at 2 mm. If you approve by 11 we can have it ready by 4:30 today.<small>9:14 AM</small></div>
+        <div class="msg me">Okay, approving now 👍<small>9:16 AM</small></div>
+        <div class="chips" style="margin-top:4px"><button class="chip" data-go="track">Approve estimate</button><button class="chip">Call me</button><button class="chip">I'll pick up at 5</button></div>
+      </div>
+      <div class="composer"><button class="ic sm" aria-label="Attach photo"><svg class="i"><use href="#i-plus"/></svg></button><label class="in"><input id="msg-in" type="text" placeholder="Message Dave…"></label><button class="ic act" aria-label="Send"><svg class="i"><use href="#i-send"/></svg></button></div>
+    </article>
+
+    <!-- ================= BOOKINGS ================= -->
+    <article class="frame" data-screen="bookings" aria-label="Bookings screen">
+      <div class="sb"><span>9:41</span><span class="sbi"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><svg class="i"><use href="#i-batt"/></svg></span></div>
+      <div class="scroll">
+        <header class="hh"><h1>Bookings</h1><button class="ic" data-go="book" aria-label="New booking"><svg class="i"><use href="#i-plus"/></svg></button></header>
+        <div class="seg" data-tabs role="tablist"><button class="sel" data-tab="up" role="tab" aria-selected="true">Upcoming <span>2</span></button><button data-tab="past" role="tab" aria-selected="false">Past <span>5</span></button></div>
+        <div class="list" data-pane="up">
+          <div class="bk card">
+            <div class="bk-top"><span class="pill steel"><span class="dot"></span>In the shop</span><small>Today · dropped off 8:00 AM</small></div>
+            <div class="bk-mid"><span class="well"><svg class="i"><use href="#i-brake"/></svg></span><div><b>Brake service · Honda Civic</b><small>Mike's Auto Repair · ready by 4:30 PM · GP-1042</small></div><em>CAD 532.50</em></div>
+            <div class="bk-act"><button class="btn sm dark" data-go="track">Repair status</button><button class="ic sm" data-go="chat" aria-label="Message"><svg class="i"><use href="#i-chat"/></svg></button><button class="ic sm" aria-label="Call"><svg class="i"><use href="#i-phone"/></svg></button></div>
+          </div>
+          <div class="bk card">
+            <div class="bk-top"><span class="pill warn">Scheduled</span><small>Tomorrow · 9:00 AM</small></div>
+            <div class="bk-mid"><span class="well"><svg class="i"><use href="#i-oil"/></svg></span><div><b>Oil change · Honda Civic</b><small>Mike's Auto Repair · drop off · GP-1051</small></div><em>CAD 69.99</em></div>
+            <div class="bk-act"><button class="btn sm ghost">Reschedule</button><button class="link mute">Cancel</button></div>
+          </div>
+        </div>
+        <div class="list" data-pane="past" hidden>
+          <div class="bk card">
+            <div class="bk-top"><span class="pill ok"><svg class="i xs"><use href="#i-check"/></svg>Paid</span><small>12 Aug · 2:00 PM</small></div>
+            <div class="bk-mid"><span class="well"><svg class="i"><use href="#i-tire"/></svg></span><div><b>Tire swap · Toyota RAV4</b><small>Mike's Auto Repair · INV-2140</small></div><em>CAD 90.39</em></div>
+            <div class="bk-act"><button class="btn sm">Rate your visit</button><button class="link">Receipt</button></div>
+          </div>
+          <div class="bk card">
+            <div class="bk-top"><span class="pill ok"><svg class="i xs"><use href="#i-check"/></svg>Paid</span><small>3 Jun · 10:30 AM</small></div>
+            <div class="bk-mid"><span class="well"><svg class="i"><use href="#i-clip"/></svg></span><div><b>Safety inspection · Honda Civic</b><small>Mike's Auto Repair · you rated <span class="stars-sm"><svg class="i"><use href="#i-star"/></svg><svg class="i"><use href="#i-star"/></svg><svg class="i"><use href="#i-star"/></svg><svg class="i"><use href="#i-star"/></svg><svg class="i"><use href="#i-star"/></svg></span></small></div><em>CAD 134.47</em></div>
+            <div class="bk-act"><button class="btn sm ghost" data-go="book">Book again</button><button class="link">Receipt</button></div>
+          </div>
+          <div class="bk card">
+            <div class="bk-top"><span class="pill bad">Cancelled</span><small>20 Apr · 4:00 PM</small></div>
+            <div class="bk-mid"><span class="well"><svg class="i"><use href="#i-battery"/></svg></span><div><b>Battery test · Toyota RAV4</b><small>Cancelled by you · no charge</small></div><em>—</em></div>
+          </div>
+        </div>
+      </div>
+      <div class="fade"></div>
+      <nav class="nav" aria-label="Tabs">
+        <a data-go="home" role="button" tabindex="0" aria-label="Home"><svg class="i"><use href="#i-home"/></svg><span>Home</span></a>
+        <a data-go="garage" role="button" tabindex="0" aria-label="My garage"><svg class="i"><use href="#i-car"/></svg><span>Garage</span></a>
+        <a class="on" data-go="bookings" role="button" tabindex="0"><svg class="i"><use href="#i-cal"/></svg><span>Bookings</span></a>
+        <a data-go="chat" role="button" tabindex="0" aria-label="Inbox, 1 unread"><svg class="i"><use href="#i-chat"/></svg><span>Inbox</span><i class="badge">1</i></a>
+      </nav>
+    </article>
+
+  </main>
+
+  <p class="foot">Flow: Home → Book → Repair status → Approve estimate → Invoice → Bookings, with Messages reachable from any step. Service names, statuses and CAD pricing follow the GaragePal owner dashboard; the customer, vehicles, garage and technician are sample data. Switch to Prototype to tap through on one phone.</p>
+</div>
+
+<script>
+(function(){
+  const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- map drawing ---- */
+  function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+  function mapSVG(kind){
+    let bldg='', r=rng(23);
+    for(let i=0;i<40;i++){const x=r()*380,y=r()*400,w=9+r()*18,h=9+r()*16;bldg+=`<rect class="mg" x="${x|0}" y="${y|0}" width="${w|0}" height="${h|0}" rx="2"/>`;}
+    const base=`<rect class="mp-base" x="-20" y="-20" width="430" height="450"/>
+      <path class="mb" d="M150 -10 L245 -10 L232 78 L158 96 Z"/><path class="mb" d="M285 118 L400 96 L400 236 L300 228 Z"/><path class="mb" d="M-10 290 L120 300 L140 420 L-10 420 Z"/>
+      <path class="mp" d="M-10 158 L78 182 L66 242 L-10 232 Z"/><path class="mp" d="M296 300 L400 322 L400 420 L310 420 Z"/><path class="mp" d="M170 300 L240 312 L236 372 L178 362 Z"/>
+      ${bldg}
+      <g class="mr"><path d="M-10 118 C80 108 140 132 230 92 S370 62 410 42"/><path d="M92 -10 L138 420"/><path d="M-10 250 L410 300"/><path d="M252 -10 C240 120 304 220 262 420"/><circle cx="120" cy="150" r="30"/></g>
+      <g class="mr2"><path d="M182 206 L400 184"/><path d="M200 300 L228 420"/><path d="M-10 332 L152 362"/><path d="M20 40 L160 60"/><path d="M300 60 L330 180"/></g>`;
+    const pin=(x,y,t,on)=>`<g class="pin${on?' on':''}" transform="translate(${x} ${y})"><rect x="-27" y="-15" width="54" height="30" rx="15"/><path class="st" d="M-13-5.5l1.6 3.3 3.6.5-2.6 2.5.6 3.6-3.2-1.7-3.2 1.7.6-3.6-2.6-2.5 3.6-.5z"/><text x="5" y="4.5">${t}</text></g>`;
+    let extra='';
+    if(kind==='nearby'){
+      extra = `<circle class="you" cx="150" cy="268" r="8"/>` + pin(70,205,'4.6',false)+pin(218,120,'4.3',false)+pin(258,232,'4.8',true)+pin(118,330,'4.7',false)+pin(330,330,'4.5',false);
+    }
+    return `<svg class="mp-svg" viewBox="0 0 390 410" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${base}${extra}</svg>`;
+  }
+  $$('[data-map]').forEach(el=>el.insertAdjacentHTML('afterbegin',mapSVG(el.dataset.map)));
+
+  /* ---- view mode ---- */
+  const body=document.body;
+  function setMode(m){
+    body.classList.toggle('proto',m==='proto');
+    $$('[data-mode] button').forEach(b=>b.classList.toggle('sel',b.dataset.mode===m));
+    try{localStorage.setItem('gp-mode',m)}catch(e){}
+  }
+  let saved=null; try{saved=localStorage.getItem('gp-mode')}catch(e){}
+  setMode(saved==='proto'?'proto':'all');
+
+  /* ---- navigation ---- */
+  function show(id){
+    const f=$(`.frame[data-screen="${id}"]`); if(!f) return;
+    $$('.jump button').forEach(b=>b.classList.toggle('sel',b.dataset.go===id));
+    if(body.classList.contains('proto')){
+      $$('.frame').forEach(x=>x.classList.toggle('active',x===f));
+      const sc=$('.scroll',f); if(sc) sc.scrollTop=0;
+      if($('.jump').getBoundingClientRect().top<0) $('.jump').scrollIntoView({behavior:reduce?'auto':'smooth'});
+    }else{
+      f.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center',inline:'center'});
+      f.classList.remove('flash'); void f.offsetWidth; f.classList.add('flash');
+    }
+  }
+
+  document.addEventListener('click',e=>{
+    const mode=e.target.closest('[data-mode] button'); if(mode){setMode(mode.dataset.mode);return;}
+    const go=e.target.closest('[data-go]'); if(go){e.preventDefault();show(go.dataset.go);return;}
+    const tab=e.target.closest('[data-tab]');
+    if(tab){
+      const seg=tab.closest('[data-tabs]'), frame=tab.closest('.frame');
+      $$('[data-tab]',seg).forEach(b=>{const on=b===tab;b.classList.toggle('sel',on);b.setAttribute('aria-selected',on);});
+      $$('[data-pane]',frame).forEach(p=>p.hidden=p.dataset.pane!==tab.dataset.tab);
+      return;
+    }
+    const pick=e.target.closest('[data-group] > *');
+    if(pick && !pick.classList.contains('off')){
+      [...pick.parentNode.children].forEach(x=>{const on=x===pick;x.classList.toggle('sel',on);if(x.hasAttribute('aria-checked'))x.setAttribute('aria-checked',on);});
+      return;
+    }
+  });
+  document.addEventListener('keydown',e=>{
+    if(e.key!=='Enter'&&e.key!==' ') return;
+    const t=e.target.closest('[data-go],[role="radio"]'); if(t&&t.tagName!=='BUTTON'){e.preventDefault();t.click();}
+  });
+
+  /* ---- chat composer: sending adds a bubble ---- */
+  const inp=$('#msg-in'), send=$('.composer .ic.act');
+  function sendMsg(){
+    const v=(inp.value||'').trim(); if(!v) return;
+    const chat=$('.frame[data-screen="chat"] .chat'), chips=$('.chips',chat);
+    const d=document.createElement('div'); d.className='msg me';
+    const t=new Date(); const hh=t.getHours()%12||12, mm=String(t.getMinutes()).padStart(2,'0'), ap=t.getHours()<12?'AM':'PM';
+    d.textContent=v; const s=document.createElement('small'); s.textContent=`${hh}:${mm} ${ap}`; d.appendChild(s);
+    chat.insertBefore(d,chips); inp.value=''; chat.scrollTop=chat.scrollHeight;
+  }
+  if(inp&&send){ send.addEventListener('click',sendMsg); inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();sendMsg();}}); }
+})();
+</script>

@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What I build — switcher prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0b0d; --surface:#111317; --surface-2:#191c21;
+    --ink:#edece8; --muted:#9297a0; --line:rgba(237,236,232,.10);
+    --accent:#7ea2ff;
+    --f:'Geist','Segoe UI',system-ui,sans-serif;
+    --fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--bg); color:var(--ink); font-family:var(--f);
+    -webkit-font-smoothing:antialiased; line-height:1.5;
+    /* the "+" cursor, same as the site */
+    cursor:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%3E%3Cpath%20d='M12%205V19M5%2012H19'%20stroke='%237ea2ff'%20stroke-width='2.6'%20stroke-linecap='round'/%3E%3C/svg%3E") 12 12, auto;
+  }
+  a,button{cursor:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%3E%3Cpath%20d='M12%205V19M5%2012H19'%20stroke='%237ea2ff'%20stroke-width='2.6'%20stroke-linecap='round'/%3E%3C/svg%3E") 12 12, pointer}
+
+  .wrap{max-width:1180px; margin:0 auto; padding:72px clamp(20px,5vw,64px) 96px}
+  .label{font-family:var(--fm); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted)}
+  .label .plus{color:var(--accent)}
+  h2{font-size:clamp(2rem,4.6vw,3.4rem); line-height:1.02; letter-spacing:-.045em; font-weight:650; margin:14px 0 0; max-width:18ch}
+  .lede{margin:18px 0 0; max-width:54ch; color:rgba(237,236,232,.8); font-size:17px}
+
+  /* segmented switcher */
+  .tabs{position:relative; display:flex; margin:40px 0 0; padding:5px; gap:0;
+    width:min(100%,560px); border:1px solid var(--line); border-radius:999px; background:var(--surface)}
+  .ind{position:absolute; top:5px; bottom:5px; left:5px; width:calc((100% - 10px)/3);
+    border-radius:999px; background:rgba(237,236,232,.07); border:1px solid var(--line);
+    box-shadow:0 1px 0 rgba(255,255,255,.04) inset;
+    transition:transform .5s cubic-bezier(.16,1,.3,1)}
+  .tab{flex:1 1 0; position:relative; z-index:1; min-width:0; appearance:none; background:none; border:0;
+    padding:11px 10px; border-radius:999px; font:600 14.5px/1 var(--f); color:var(--muted);
+    transition:color .3s; white-space:nowrap}
+  .tab.on{color:var(--ink)}
+
+  .panels{position:relative; margin:44px 0 0}
+  .panel{display:none}
+  .panel.active{display:block}
+  .blurb{color:rgba(237,236,232,.82); font-size:16.5px; max-width:60ch; margin:0 0 30px; min-height:48px}
+  .blurb b{color:var(--ink); font-weight:600}
+
+  .cards{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:26px}
+  @media (max-width:860px){.cards{grid-template-columns:1fr; gap:34px; max-width:440px}}
+  .card{min-width:0}
+  .card .meta h4{margin:16px 0 0; font-size:18px; letter-spacing:-.02em; font-weight:650}
+  .card .meta p{margin:5px 0 0; color:var(--muted); font-size:14.5px; line-height:1.45}
+  .chips{display:flex; flex-wrap:wrap; gap:7px; margin:12px 0 0}
+  .chips span{font-family:var(--fm); font-size:11.5px; color:rgba(237,236,232,.72);
+    border:1px solid var(--line); background:rgba(237,236,232,.04); padding:4px 9px; border-radius:999px}
+
+  /* browser frame */
+  .browser{border:1px solid var(--line); border-radius:13px; overflow:hidden; background:var(--surface);
+    box-shadow:0 30px 70px -40px rgba(0,0,0,.9); transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .35s,box-shadow .35s}
+  .browser .bar{display:flex; align-items:center; gap:9px; height:30px; padding:0 12px;
+    border-bottom:1px solid var(--line); background:var(--surface-2)}
+  .dots{display:inline-flex; gap:5px}
+  .dots i{width:8px; height:8px; border-radius:50%; background:rgba(237,236,232,.16)}
+  .bar .url{font-family:var(--fm); font-size:11px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .browser .shot{aspect-ratio:16/10; overflow:hidden; background:#fff}
+  .browser .shot img{width:100%; height:100%; object-fit:cover; object-position:top; display:block}
+
+  /* phone frame */
+  .phonewrap{display:flex; justify-content:center}
+  .phone{width:min(74%,220px); background:#15171c; border-radius:30px; padding:6px;
+    box-shadow:0 30px 70px -40px rgba(0,0,0,.95); outline:1px solid rgba(255,255,255,.14);
+    transition:transform .35s cubic-bezier(.16,1,.3,1)}
+  .phone .shot{position:relative; aspect-ratio:390/844; overflow:hidden; border-radius:24px; background:#fff}
+  .phone .shot img{width:100%; height:100%; object-fit:cover; object-position:top; display:block}
+  .phone .island{position:absolute; top:3.2%; left:50%; transform:translateX(-50%); width:30%; height:3.4%; border-radius:999px; background:#000}
+
+  .card:hover .browser,.card:hover .phone{transform:translateY(-6px)}
+  .card:hover .browser{border-color:rgba(126,162,255,.5); box-shadow:0 40px 80px -40px rgba(0,0,0,.95),0 0 0 1px rgba(126,162,255,.25)}
+
+  /* enter transition, re-triggered on each tab switch */
+  @media (prefers-reduced-motion:no-preference){
+    .panel.active .blurb{animation:rise .5s both}
+    .panel.active .card{animation:rise .6s both}
+    .panel.active .card:nth-child(1){animation-delay:.07s}
+    .panel.active .card:nth-child(2){animation-delay:.15s}
+    .panel.active .card:nth-child(3){animation-delay:.23s}
+  }
+  @keyframes rise{from{opacity:0; transform:translateY(18px)} to{opacity:1; transform:none}}
+
+  .foot{margin:64px 0 0; padding-top:20px; border-top:1px solid var(--line);
+    font-family:var(--fm); font-size:12px; color:var(--muted)}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="label"><span class="plus">+</span>&nbsp; What I build</p>
+    <h2>Three ways I ship software.</h2>
+    <p class="lede">From bespoke internal systems to multi-tenant SaaS and native-feel mobile apps. Pick a lane.</p>
+
+    <div class="tabs" role="tablist" aria-label="Type of software">
+      <span class="ind" aria-hidden="true"></span>
+      <button class="tab on" role="tab" aria-selected="true" data-i="0">Custom Software</button>
+      <button class="tab" role="tab" aria-selected="false" data-i="1">SaaS App</button>
+      <button class="tab" role="tab" aria-selected="false" data-i="2">Mobile App</button>
+    </div>
+
+    <div class="panels">
+      <!-- CUSTOM SOFTWARE -->
+      <section class="panel active" role="tabpanel" data-i="0">
+        <p class="blurb">Bespoke systems for how a business actually runs — <b>fleets, facilities, operations</b>. Role-based access, real-time dashboards, and reporting that replaces the spreadsheets.</p>
+        <div class="cards">
+          <article class="card">
+            <div class="browser"><div class="bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">fleet · internal</span></div><div class="shot"><img src="public/work/_cat/fleet.jpg" alt="Fleet Management System"></div></div>
+            <div class="meta"><h4>Fleet Management System</h4><p>Real-time tracking with AI route, fuel and maintenance insights — 580+ vehicles.</p><div class="chips"><span>Next.js</span><span>Node</span><span>MySQL</span></div></div>
+          </article>
+          <article class="card">
+            <div class="browser"><div class="bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">saudipak · internal</span></div><div class="shot"><img src="public/work/_cat/facility.jpg" alt="Facility Management System"></div></div>
+            <div class="meta"><h4>Facility Management System</h4><p>SaudiPak ops: assets, maintenance scheduling and analytics for 260+ users.</p><div class="chips"><span>Next.js</span><span>Supabase</span></div></div>
+          </article>
+          <article class="card">
+            <div class="browser"><div class="bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">egcellent · internal</span></div><div class="shot"><img src="public/work/_cat/egcellent.png" alt="EgCellent"></div></div>
+            <div class="meta"><h4>EgCellent</h4><p>Ledger-based finance for poultry farms, built for non-technical users.</p><div class="chips"><span>React</span><span>Supabase</span></div></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- SAAS APP -->
+      <section class="panel" role="tabpanel" data-i="1" hidden>
+        <p class="blurb">Multi-tenant web products with <b>onboarding, billing and admin</b>. Stripe subscriptions, analytics, and AI woven into the everyday workflow.</p>
+        <div class="cards">
+          <article class="card">
+            <div class="browser"><div class="bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">obyect.io</span></div><div class="shot"><img src="public/work/obyect/01-library.png" alt="Obyect"></div></div>
+            <div class="meta"><h4>Obyect</h4><p>AI ad-insights library of top-performing DTC creative.</p><div class="chips"><span>React</span><span>Supabase</span><span>Node</span></div></div>
+          </article>
+          <article class="card">
+            <div class="browser"><div class="bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">zestlead</span></div><div class="shot"><img src="public/work/zestlead/01-dashboard.png" alt="ZestLead"></div></div>
+            <div class="meta"><h4>ZestLead</h4><p>Real-estate lead marketplace with Stripe-powered plans.</p><div class="chips"><span>Next.js</span><span>Stripe</span></div></div>
+          </article>
+          <article class="card">
+            <div class="browser"><div class="bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">garagepal.ca</span></div><div class="shot"><img src="public/work/garagepal/web/01-dash.jpg" alt="GaragePal web console"></div></div>
+            <div class="meta"><h4>GaragePal</h4><p>Auto-service marketplace — the garage-owner console.</p><div class="chips"><span>Next.js</span><span>MySQL</span><span>Prisma</span></div></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- MOBILE APP -->
+      <section class="panel" role="tabpanel" data-i="2" hidden>
+        <p class="blurb">Native-feel apps from the first screen to release — <b>real-time data, maps, payments and push</b>, on iOS and Android.</p>
+        <div class="cards">
+          <article class="card">
+            <div class="phonewrap"><div class="phone"><div class="shot"><span class="island"></span><img src="public/work/karighar/01-home.png" alt="Karighar"></div></div></div>
+            <div class="meta"><h4>Karighar</h4><p>Home-services booking with a live map and cash-first checkout.</p><div class="chips"><span>UI/UX</span><span>Prototype</span></div></div>
+          </article>
+          <article class="card">
+            <div class="phonewrap"><div class="phone"><div class="shot"><span class="island"></span><img src="public/work/ifund/app/01-splash.jpg" alt="iFund"></div></div></div>
+            <div class="meta"><h4>iFund</h4><p>Two-sided funding marketplace — scored matches, chat, billing.</p><div class="chips"><span>React Native</span><span>Supabase</span></div></div>
+          </article>
+          <article class="card">
+            <div class="phonewrap"><div class="phone"><div class="shot"><span class="island"></span><img src="public/work/garagepal/mobile/01-home.jpg" alt="GaragePal customer app"></div></div></div>
+            <div class="meta"><h4>GaragePal</h4><p>The customer app: book service, track the job, pay.</p><div class="chips"><span>Mobile</span><span>Booking</span></div></div>
+          </article>
+        </div>
+      </section>
+    </div>
+
+    <p class="foot">Prototype · not wired into the site · tabs switch with a sliding indicator + staggered reveal</p>
+  </div>
+
+<script>
+  const tabs = [...document.querySelectorAll('.tab')];
+  const panels = [...document.querySelectorAll('.panel')];
+  const ind = document.querySelector('.ind');
+
+  function show(i){
+    tabs.forEach((t,k)=>{ const on = k===i; t.classList.toggle('on',on); t.setAttribute('aria-selected', on?'true':'false'); });
+    ind.style.transform = `translateX(${i*100}%)`;
+    panels.forEach((p,k)=>{ const on = k===i; p.classList.toggle('active',on); p.toggleAttribute('hidden',!on); });
+    // re-trigger the staggered enter animation
+    const ap = panels[i];
+    const els = ap.querySelectorAll('.blurb,.card');
+    els.forEach(el=>{ el.style.animation='none'; });
+    void ap.offsetWidth;
+    els.forEach(el=>{ el.style.animation=''; });
+  }
+
+  tabs.forEach(t => t.addEventListener('click', () => show(+t.dataset.i)));
+  tabs.forEach((t,i) => t.addEventListener('keydown', e=>{
+    if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+      e.preventDefault();
+      const n = (i + (e.key==='ArrowRight'?1:2)) % 3;
+      tabs[n].focus(); show(n);
+    }
+  }));
+</script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  One dark theme. Neutral surfaces, warm off-white ink, and a single accent
+  that each project section overrides with its own colour (--accent).
+  Shape rule: controls are 10px, media frames 14px, chips are pills.
+*/
+:root {
+  color-scheme: dark;
+  --bg: 10 11 13;
+  --surface: 17 19 23;
+  --surface-2: 25 28 33;
+  --ink: 237 236 232;
+  --muted: 146 151 160;
+  --accent: 126 162 255;
+  --gx: clamp(20px, 5vw, 72px);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 72px;
+  }
+  body {
+    background: rgb(var(--bg));
+    color: rgb(var(--ink));
+    font-family: var(--font-geist), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+  ::selection {
+    background: rgb(var(--accent) / 0.35);
+  }
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p,
+  li {
+    text-wrap: pretty;
+  }
+  /* no double-tap zoom delay on controls */
+  a,
+  button {
+    touch-action: manipulation;
+  }
+  /* sections receive focus after a jump so keyboard and screen-reader users
+     continue from there; they are not controls, so no ring */
+  [data-jump]:focus {
+    outline: none;
+  }
+}
+
+@layer components {
+  .wrap {
+    @apply mx-auto w-full max-w-wrap;
+    padding-left: var(--gx);
+    padding-right: var(--gx);
+  }
+
+  /* small mono label used for section and project metadata */
+  .label {
+    @apply font-mono text-[12px] uppercase leading-none tracking-[0.14em] text-muted;
+  }
+
+  .btn {
+    @apply inline-flex h-11 select-none items-center justify-center gap-2 whitespace-nowrap rounded-[10px] px-5 text-[15px] font-medium transition-[background-color,color,border-color,transform] duration-150 ease-snap active:scale-[0.97];
+  }
+  .btn-primary {
+    @apply bg-ink text-bg hover:bg-ink/85;
+  }
+  .btn-ghost {
+    @apply border border-ink/15 text-ink hover:border-ink/35 hover:bg-ink/[0.05];
+  }
+  .btn-accent {
+    @apply border border-accent/40 bg-accent/10 text-ink hover:bg-accent/20;
+  }
+  /* 44px on touch layouts, compact from md up where a mouse is likely */
+  .btn-sm {
+    @apply h-11 px-4 text-sm md:h-9 md:px-3.5;
+  }
+
+  .chip {
+    @apply inline-flex items-center rounded-full border border-ink/10 bg-ink/[0.04] px-3 py-1 font-mono text-[12px] text-ink/75;
+  }
+
+  .kbd {
+    @apply inline-flex h-[22px] min-w-[22px] items-center justify-center rounded-[6px] border border-ink/15 bg-ink/[0.06] px-1.5 font-mono text-[12px] text-ink/70;
+  }
+
+  .rule {
+    @apply border-t border-ink/10;
+  }
+
+  /* "+" bullets, kept from the original build-log identity */
+  .plus-list > li {
+    @apply relative pl-6;
+  }
+  .plus-list > li::before {
+    content: "+";
+    @apply absolute left-0 top-0 font-mono font-semibold text-accent;
+  }
+
+  /* browser chrome around site captures */
+  .browser {
+    @apply overflow-hidden rounded-[14px] border border-ink/10 bg-surface;
+    box-shadow: 0 50px 120px -50px rgb(0 0 0 / 0.9);
+  }
+  .browser-bar {
+    @apply flex h-9 items-center gap-3 border-b border-ink/10 bg-surface-2 px-3.5;
+  }
+}
+
+dialog.palette::backdrop {
+  background: rgb(5 6 8 / 0.72);
+}
+
+/* the palette arrives quickly instead of snapping in */
+@keyframes palette-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+}
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  dialog.palette[open] {
+    animation: palette-in 160ms cubic-bezier(0.2, 0, 0, 1);
+  }
+  dialog.palette[open]::backdrop {
+    animation: backdrop-in 160ms linear;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Code window: an accent light sweeps around the border. The card face sits
+   above the ring, so only a glowing edge and its bloom show around it. */
+@property --codeangle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+.codewin {
+  position: relative;
+  border-radius: 14px;
+}
+.codewin::before,
+.codewin::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 15px;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--codeangle),
+    transparent 0deg 212deg,
+    rgb(var(--accent) / 0.9) 288deg,
+    #ffffff 320deg,
+    rgb(var(--accent) / 0) 350deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.codewin::after {
+  padding: 3px;
+  filter: blur(13px);
+  opacity: 0.85;
+}
+.codewin-face {
+  --spot: 0;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid rgb(var(--ink) / 0.08);
+  background: rgb(var(--surface));
+  box-shadow: 0 40px 100px -50px rgb(0 0 0 / 0.9);
+}
+/* the spotlight layers: a blurred pool, a bright core and a lit edge, all
+   centred on --mx/--my and shown while the pointer is over the window */
+.codewin-spot {
+  opacity: var(--spot);
+  transition: opacity 0.3s ease;
+}
+.codewin-edge {
+  padding: 1.5px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .codewin::before,
+  .codewin::after {
+    animation: codesweep 4.8s linear infinite;
+  }
+}
+@keyframes codesweep {
+  to {
+    --codeangle: 360deg;
+  }
+}
+
+/* custom "+" cursor: a glyph follows the pointer (CursorPlus.js). The native
+   cursor is hidden on fine pointers, but kept on touch, in text fields and in
+   the command palette so typing and selection still feel right. */
+.cursor-plus {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 70;
+  opacity: 0;
+  pointer-events: none;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-weight: 600;
+  font-size: 21px;
+  line-height: 1;
+  color: rgb(var(--accent));
+  will-change: transform;
+  transition: opacity 0.18s ease;
+}
+@media (pointer: fine) {
+  html.cursor-plus-on,
+  html.cursor-plus-on * {
+    cursor: none;
+  }
+  html.cursor-plus-on input,
+  html.cursor-plus-on textarea,
+  html.cursor-plus-on [contenteditable="true"],
+  html.cursor-plus-on dialog,
+  html.cursor-plus-on dialog * {
+    cursor: auto;
+  }
+}
+/* a soft pool of accent light that trails just behind the "+" */
+.cursor-glow {
+  position: fixed;
+  left: -110px;
+  top: -110px;
+  z-index: 69;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(circle, rgb(var(--accent) / 0.36), rgb(var(--accent) / 0.12) 38%, transparent 70%);
+  filter: blur(18px);
+  will-change: transform;
+  transition: opacity 0.25s ease;
+}
+@media (pointer: coarse), (pointer: none) {
+  .cursor-plus,
+  .cursor-glow {
+    display: none;
+  }
+}
+
+/* A light browser window, for light-theme captures on the dark page. */
+.browser--light {
+  background: #ffffff;
+  border-color: rgb(255 255 255 / 0.14);
+}
+.browser--light .browser-bar {
+  background: #eef0f3;
+  border-color: rgb(0 0 0 / 0.08);
+}
+.browser--light .browser-bar > span:first-child > span {
+  background: rgb(0 0 0 / 0.14);
+}
+.browser--light .browser-bar .text-muted {
+  color: #5b6170;
+}
+
+/* Particle dashboard (ParticleBoard.js): the sharp capture opens around the
+   pointer, a hole in its mask, so the points underneath show through; it
+   fades out while one screen dissolves into the next. */
+@property --hole {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+.pboard {
+  --hole: 0;
+}
+.pboard-sharp {
+  transition:
+    opacity 0.45s ease,
+    --hole 0.4s ease;
+  -webkit-mask-image: radial-gradient(
+    circle calc(var(--hole) * 170px) at var(--mx, -999px) var(--my, -999px),
+    transparent 0 55%,
+    #000 100%
+  );
+  mask-image: radial-gradient(
+    circle calc(var(--hole) * 170px) at var(--mx, -999px) var(--my, -999px),
+    transparent 0 55%,
+    #000 100%
+  );
+}

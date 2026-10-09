@@ -1,0 +1,849 @@
+{
+  "profileUrl": "https://www.upwork.com/freelancers/~013bc8de08c7ceca5b",
+  "freelancer": "Usman N.",
+  "scrapedAt": "2026-10-09",
+  "fileBaseUrl": "https://www.upwork.com/att/download/portfolio/persons/uid/1714044357788184576/profile/projects/files/",
+  "totalPublished": 9,
+  "totalDrafts": 0,
+  "note": "projectUrl (the Upwork 'Project link' field) is empty on every item. inferredLiveLink is derived from descriptions or screenshot filenames and is NOT set on Upwork.",
+  "projects": [
+    {
+      "uid": "2006435751031656448",
+      "title": "Obyect",
+      "rank": 9,
+      "role": "Full Stack Developer",
+      "createdOnUpwork": "2025-12-31T18:42:15.475Z",
+      "description": "Obyect is an AI-Powered Insights platform similar to Facebook Meta Ads Library, designed to give users transparent, actionable information about ads, campaigns, and market trends. The goal of this platform is to help users analyze, learn, and make data-driven decisions in their advertising strategies.",
+      "skills": [
+        "React",
+        "Supabase",
+        "Node.js",
+        "AI Data Analytics",
+        "AI Implementation"
+      ],
+      "projectUrl": null,
+      "inferredLiveLink": "https://obyect.io",
+      "videoUrl": null,
+      "thumbnailFileUid": "3c2b250a-b2af-4fa1-9a42-50ed73ab82d4",
+      "attachments": [
+        {
+          "rank": 1,
+          "uid": "2006435751031656449",
+          "name": "main page.png",
+          "size": 1257669,
+          "fileUid": "267ab681-8878-4ae0-9967-a757f79f69d4",
+          "localFile": "01-main page.png",
+          "downloadedBytes": 1257669,
+          "sizeMatches": true
+        },
+        {
+          "rank": 2,
+          "uid": "2006435751031656450",
+          "name": "login.png",
+          "size": 290090,
+          "fileUid": "cfaacd0f-9b7c-48dd-8256-422f03292147",
+          "localFile": "02-login.png",
+          "downloadedBytes": 290090,
+          "sizeMatches": true
+        },
+        {
+          "rank": 3,
+          "uid": "2006435751031656451",
+          "name": "ad-page.png",
+          "size": 636050,
+          "fileUid": "966a0761-9b5a-4fe5-a615-5138bc4d307e",
+          "localFile": "03-ad-page.png",
+          "downloadedBytes": 636050,
+          "sizeMatches": true
+        },
+        {
+          "rank": 4,
+          "uid": "2006435751031656452",
+          "name": "ad-request.png",
+          "size": 350780,
+          "fileUid": "cebf5289-0523-4402-8ee8-b96911865640",
+          "localFile": "04-ad-request.png",
+          "downloadedBytes": 350780,
+          "sizeMatches": true
+        },
+        {
+          "rank": 5,
+          "uid": "2006435751031656453",
+          "name": "Admin-dash.png",
+          "size": 263131,
+          "fileUid": "3abca924-d419-4fad-b40d-e393261afd96",
+          "localFile": "05-Admin-dash.png",
+          "downloadedBytes": 263131,
+          "sizeMatches": true
+        },
+        {
+          "rank": 6,
+          "uid": "2006435751031656454",
+          "name": "Ad-management.png",
+          "size": 351165,
+          "fileUid": "6d64a514-6f79-4359-8173-94cbca443b87",
+          "localFile": "06-Ad-management.png",
+          "downloadedBytes": 351165,
+          "sizeMatches": true
+        },
+        {
+          "rank": 7,
+          "uid": "2006435751031656455",
+          "name": "admin-Analytics.png",
+          "size": 334386,
+          "fileUid": "efb4258f-c73e-4d14-812a-ec2d216b401f",
+          "localFile": "07-admin-Analytics.png",
+          "downloadedBytes": 334386,
+          "sizeMatches": true
+        }
+      ],
+      "thumbnailLocalFile": "_thumbnail.jpg",
+      "localFolder": "01 - Obyect"
+    },
+    {
+      "uid": "1947491919385772032",
+      "title": "ZestLead",
+      "rank": 8,
+      "role": "Full Stack Developer",
+      "createdOnUpwork": "2025-07-22T03:00:30.887Z",
+      "description": "ZestLead is a dynamic real-estate leads marketplace that helps agents discover, purchase, and manage high-quality property leads in one intuitive portal. With powerful filters, AI-driven insights, and built-in audio previews, it streamlines lead qualification and outreach, so you spend less time searching and more time closing deals.",
+      "skills": [
+        "SaaS Development",
+        "Stripe",
+        "Automation",
+        "Admin Panel Setup",
+        "Web Application Development"
+      ],
+      "projectUrl": null,
+      "inferredLiveLink": null,
+      "videoUrl": null,
+      "thumbnailFileUid": "b3670a23-3077-4dfb-ae84-4f7757a82c80",
+      "attachments": [
+        {
+          "rank": 1,
+          "uid": "1947491919385772033",
+          "name": "Dashboard.png",
+          "size": 363026,
+          "fileUid": "6a45e7c5-bb31-4afa-9965-226326f390a1",
+          "localFile": "01-Dashboard.png",
+          "downloadedBytes": 363026,
+          "sizeMatches": true
+        },
+        {
+          "rank": 2,
+          "uid": "1947491919385772034",
+          "name": "Lead Marketplace-List.png",
+          "size": 625579,
+          "fileUid": "2adb055c-2b4d-4293-868f-3b2919f66cf7",
+          "localFile": "02-Lead Marketplace-List.png",
+          "downloadedBytes": 625579,
+          "sizeMatches": true
+        },
+        {
+          "rank": 3,
+          "uid": "1947491919385772035",
+          "name": "Lead Preview.png",
+          "size": 685319,
+          "fileUid": "3ca43dfe-7b0b-4d64-aadf-ae9a1524fb6d",
+          "localFile": "03-Lead Preview.png",
+          "downloadedBytes": 685319,
+          "sizeMatches": true
+        },
+        {
+          "rank": 4,
+          "uid": "1947491919385772036",
+          "name": "Lead Marketplace-Grid.png",
+          "size": 912784,
+          "fileUid": "703d9ffb-8216-4d9d-95d3-7527bbe5153d",
+          "localFile": "04-Lead Marketplace-Grid.png",
+          "downloadedBytes": 912784,
+          "sizeMatches": true
+        },
+        {
+          "rank": 5,
+          "uid": "1947491919385772037",
+          "name": "Subscription Page - Main.png",
+          "size": 651785,
+          "fileUid": "c5d51059-e330-49c8-a654-dbd52194792d",
+          "localFile": "05-Subscription Page - Main.png",
+          "downloadedBytes": 651785,
+          "sizeMatches": true
+        },
+        {
+          "rank": 6,
+          "uid": "1947491919385772038",
+          "name": "Subscription Page - Upgrade.png",
+          "size": 1354441,
+          "fileUid": "8386cd89-acf2-4f28-9461-a468aaa88191",
+          "localFile": "06-Subscription Page - Upgrade.png",
+          "downloadedBytes": 1354441,
+          "sizeMatches": true
+        }
+      ],
+      "thumbnailLocalFile": "_thumbnail.jpg",
+      "localFolder": "02 - ZestLead"
+    },
+    {
+      "uid": "1913346446982074368",
+      "title": "GaragePal",
+      "rank": 7,
+      "role": "Lead Full Stack Developer",
+      "createdOnUpwork": "2025-04-18T21:38:35.874Z",
+      "description": "GaragePal is an online platform designed to connect drivers with trusted automotive service providers. It offers an access to a network of vetted garages. Users can search for nearby service providers, book appointments, and manage their vehicle maintenance through the platform.\nAdditionally, GaragePal has a presence in Qatar and Canada, where it operates as the first garage e-marketplace in the country. \nNextJs, NodeJs, Tailwind , Material UI , My SQL , Prisma , CMS , Admin Dashboard , Admin Panel , API Integration , Google Map Integration , Google OAuth , Google 2FA, Node Mailer, Chat Bot.",
+      "skills": [
+        "Next.js",
+        "MySQL",
+        "Admin Panel Setup",
+        "Node.js",
+        "API Integration"
+      ],
+      "projectUrl": null,
+      "inferredLiveLink": "https://garagepal.ca",
+      "videoUrl": null,
+      "thumbnailFileUid": "6962b9e1-91cf-445f-b1ad-2cc190ff1ec5",
+      "attachments": [
+        {
+          "rank": 1,
+          "uid": "1913346446982074369",
+          "name": "GaragePal-Home.png",
+          "size": 1728410,
+          "fileUid": "eef9d1e4-77cf-4f9d-b06d-82c69fa65a87",
+          "localFile": "01-GaragePal-Home.png",
+          "downloadedBytes": 1728410,
+          "sizeMatches": true
+        },
+        {
+          "rank": 2,
+          "uid": "1913346446982074370",
+          "name": "screencapture-garagepal-ca-garages-2025-04-18-05_29_14.png",
+          "size": 1480361,
+          "fileUid": "f4879f53-c7cc-4b68-bdae-5705244efa55",
+          "localFile": "02-screencapture-garagepal-ca-garages-2025-04-18-05_29_14.png",
+          "downloadedBytes": 1480361,
+          "sizeMatches": true
+        },
+        {
+          "rank": 3,
+          "uid": "1913346446982074371",
+          "name": "screencapture-garagepal-ca-profile-2025-04-18-05_33_02.png",
+          "size": 91021,
+          "fileUid": "adc9f4a0-8397-4f6c-964e-a8c816fb797e",
+          "localFile": "03-screencapture-garagepal-ca-profile-2025-04-18-05_33_02.png",
+          "downloadedBytes": 91021,
+          "sizeMatches": true
+        },
+        {
+          "rank": 4,
+          "uid": "1913346446982074372",
+          "name": "screencapture-garagepal-ca-provider-garages-2025-04-19-02_33_41.png",
+          "size": 95488,
+          "fileUid": "e7d46af3-bfc9-4b6a-b91a-2bab9b1852b5",
+          "localFile": "04-screencapture-garagepal-ca-provider-garages-2025-04-19-02_33_41.png",
+          "downloadedBytes": 95488,
+          "sizeMatches": true
+        },
+        {
+          "rank": 5,
+          "uid": "1913346446982074373",
+          "name": "screencapture-garagepal-ca-provider-appointment-2025-04-19-02_34_36.png",
+          "size": 136033,
+          "fileUid": "443e2737-b314-4d9d-8203-cc23d5969b5f",
+          "localFile": "05-screencapture-garagepal-ca-provider-appointment-2025-04-19-02_34_36.png",
+          "downloadedBytes": 136033,
+          "sizeMatches": true
+        },
+        {
+          "rank": 6,
+          "uid": "1913346446982074374",
+          "name": "screencapture-garagepal-ca-provider-appointment-2025-04-19-02_34_49.png",
+          "size": 132287,
+          "fileUid": "0ec91c86-cb89-407d-8039-ffa0c975fe0e",
+          "localFile": "06-screencapture-garagepal-ca-provider-appointment-2025-04-19-02_34_49.png",
+          "downloadedBytes": 132287,
+          "sizeMatches": true
+        },
+        {
+          "rank": 7,
+          "uid": "1913346446982074375",
+          "name": "Capture-Garapal-Bookings.PNG",
+          "size": 61154,
+          "fileUid": "8b722f6e-ef28-4ec6-be00-0b4ae2906e5b",
+          "localFile": "07-Capture-Garapal-Bookings.png",
+          "downloadedBytes": 61154,
+          "sizeMatches": true
+        },
+        {
+          "rank": 8,
+          "uid": "1913346446982074376",
+          "name": "Capture-Garagepal-Messages.PNG",
+          "size": 63371,
+          "fileUid": "69062f24-22b8-4342-be88-042e06e93bc5",
+          "localFile": "08-Capture-Garagepal-Messages.png",
+          "downloadedBytes": 63371,
+          "sizeMatches": true
+        }
+      ],
+      "thumbnailLocalFile": "_thumbnail.jpg",
+      "localFolder": "03 - GaragePal"
+    },
+    {
+      "uid": "2011883763513368576",
+      "title": "EgCellent",
+      "rank": 6,
+      "role": "Full Stack Developer",
+      "createdOnUpwork": "2026-01-15T19:30:42.870Z",
+      "description": "This project simplifies farm financial management by providing an easy, ledger-based system designed specifically for farmers. It allows farm managers to track egg sales, feed, medicines, transport costs, and payments from a single, user-friendly dashboard.\n\nThe system replaces complex accounting terms with simple actions, guided onboarding, and quick input buttons, making it easy even for non-technical users. The result is clearer finances, fewer errors, and faster daily operations for farms.",
+      "skills": [
+        "Supabase",
+        "React",
+        "Next.js",
+        "Analytics Dashboard",
+        "Financial Reporting"
+      ],
+      "projectUrl": null,
+      "inferredLiveLink": null,
+      "videoUrl": null,
+      "thumbnailFileUid": "2634efa3-3d97-4fb6-85c4-8d4d674f9ed8",
+      "attachments": [
+        {
+          "rank": 1,
+          "uid": "2011883763513368577",
+          "name": "Dashboard.png",
+          "size": 182612,
+          "fileUid": "3bf264e5-9f56-48ec-9500-de2c8f19b8af",
+          "localFile": "01-Dashboard.png",
+          "downloadedBytes": 182612,
+          "sizeMatches": true
+        },
+        {
+          "rank": 2,
+          "uid": "2011883763513368578",
+          "name": "Quick-Action.png",
+          "size": 90982,
+          "fileUid": "f7eebb70-e137-46c7-8327-c245c0470e96",
+          "localFile": "02-Quick-Action.png",
+          "downloadedBytes": 90982,
+          "sizeMatches": true
+        },
+        {
+          "rank": 3,
+          "uid": "2011883763513368579",
+          "name": "Egg-Sale.png",
+          "size": 96073,
+          "fileUid": "31b98e70-0d3f-4975-a99f-1aced1b8a756",
+          "localFile": "03-Egg-Sale.png",
+          "downloadedBytes": 96073,
+          "sizeMatches": true
+        },
+        {
+          "rank": 4,
+          "uid": "2011883763513368580",
+          "name": "Ledger.png",
+          "size": 110051,
+          "fileUid": "b5d8f3b2-b532-47fb-99ed-bde560a067c3",
+          "localFile": "04-Ledger.png",
+          "downloadedBytes": 110051,
+          "sizeMatches": true
+        },
+        {
+          "rank": 5,
+          "uid": "2011883763513368581",
+          "name": "Feed-Buy.png",
+          "size": 91939,
+          "fileUid": "a70c94b1-60f2-430a-bcbe-b17dd58f3b36",
+          "localFile": "05-Feed-Buy.png",
+          "downloadedBytes": 91939,
+          "sizeMatches": true
+        },
+        {
+          "rank": 6,
+          "uid": "2011883763513368582",
+          "name": "Medicine-Purchase.png",
+          "size": 81321,
+          "fileUid": "b1af34ed-81e4-4c62-ac5b-8e073a31b8b5",
+          "localFile": "06-Medicine-Purchase.png",
+          "downloadedBytes": 81321,
+          "sizeMatches": true
+        },
+        {
+          "rank": 7,
+          "uid": "2011883763513368583",
+          "name": "Transport.png",
+          "size": 80996,
+          "fileUid": "52b50f98-29b3-4791-9ae5-fd5ca2d121b6",
+          "localFile": "07-Transport.png",
+          "downloadedBytes": 80996,
+          "sizeMatches": true
+        },
+        {
+          "rank": 8,
+          "uid": "2011883763513368584",
+          "name": "Money-transfer.png",
+          "size": 93281,
+          "fileUid": "fb879a59-17a9-4515-8ba3-b644f4b79683",
+          "localFile": "08-Money-transfer.png",
+          "downloadedBytes": 93281,
+          "sizeMatches": true
+        },
+        {
+          "rank": 9,
+          "uid": "2011883763513368585",
+          "name": "Setting.png",
+          "size": 142023,
+          "fileUid": "c34c4985-e9c6-482b-aa14-161882e2ea86",
+          "localFile": "09-Setting.png",
+          "downloadedBytes": 142023,
+          "sizeMatches": true
+        }
+      ],
+      "thumbnailLocalFile": "_thumbnail.jpg",
+      "localFolder": "04 - EgCellent"
+    },
+    {
+      "uid": "1890019571623415808",
+      "title": "Fleet Management System",
+      "rank": 5,
+      "role": "Full Stack Developer",
+      "createdOnUpwork": "2025-02-13T12:45:55.396Z",
+      "description": "Fleet management system designed to provide real-time vehicle tracking, operational efficiency, and AI-driven insights. Built with Next.js and Tailwind CSS, it offers a seamless and responsive user experience for managing fleets at scale. The platform leverages AI-powered automation to optimize route planning, fuel efficiency, and predictive maintenance, ensuring cost-effective fleet operations. With Nodejs, MySQL, Prisma as the backend, it delivers secure data storage, real-time API interactions, and scalable performance, making fleet management smarter, faster, and more efficient.",
+      "skills": [
+        "Software Development",
+        "React",
+        "Node.js",
+        "MySQL",
+        "Enterprise Software"
+      ],
+      "projectUrl": null,
+      "inferredLiveLink": null,
+      "videoUrl": null,
+      "thumbnailFileUid": "16365fd3-8889-4c8d-af8d-3950b476d38d",
+      "attachments": [
+        {
+          "rank": 1,
+          "uid": "1890019571623415809",
+          "name": "fms-1.JPG",
+          "size": 117844,
+          "fileUid": "e5a36eff-6b46-47b0-8ad1-07a052ee0d15",
+          "localFile": "01-fms-1.jpg",
+          "downloadedBytes": 117844,
+          "sizeMatches": true
+        },
+        {
+          "rank": 2,
+          "uid": "1890019571623415810",
+          "name": "fms-2.JPG",
+          "size": 76612,
+          "fileUid": "3dc3f69b-4fbf-4ff5-b4ed-8ccc1417e244",
+          "localFile": "02-fms-2.jpg",
+          "downloadedBytes": 76612,
+          "sizeMatches": true
+        },
+        {
+          "rank": 3,
+          "uid": "1890019571623415811",
+          "name": "fms-3.JPG",
+          "size": 92964,
+          "fileUid": "6c984ed6-188e-45e7-8529-87428f12d1af",
+          "localFile": "03-fms-3.jpg",
+          "downloadedBytes": 92964,
+          "sizeMatches": true
+        },
+        {
+          "rank": 4,
+          "uid": "1890019571623415812",
+          "name": "fms-4.JPG",
+          "size": 68111,
+          "fileUid": "d7218294-ca55-4dd9-9dbd-543fc2c6cc12",
+          "localFile": "04-fms-4.jpg",
+          "downloadedBytes": 68111,
+          "sizeMatches": true
+        },
+        {
+          "rank": 5,
+          "uid": "1890019571623415813",
+          "name": "fms-5.JPG",
+          "size": 71841,
+          "fileUid": "ef019e9b-17ad-4bd3-b24c-3675bad0f9f7",
+          "localFile": "05-fms-5.jpg",
+          "downloadedBytes": 71841,
+          "sizeMatches": true
+        }
+      ],
+      "thumbnailLocalFile": "_thumbnail.jpg",
+      "localFolder": "05 - Fleet Management System"
+    },
+    {
+      "uid": "1890018872832888832",
+      "title": "Facility Management System",
+      "rank": 4,
+      "role": "Full Stack Developer",
+      "createdOnUpwork": "2025-02-13T12:43:08.791Z",
+      "description": "SaudiPak Management System is a comprehensive facility management platform designed to streamline operations, optimize resource allocation, and enhance efficiency. It features a dynamic and responsive UI built with Next.js and Tailwind CSS, ensuring a seamless user experience. The platform integrates AI-powered automation to track assets, manage maintenance schedules, and provide real-time analytics. With robust backend support using Supabase, it ensures secure data storage, smooth API interactions, and scalable performance, making facility management more efficient and data-driven.",
+      "skills": [
+        "Next.js",
+        "React",
+        "MySQL",
+        "Management Development",
+        "Software Development"
+      ],
+      "projectUrl": null,
+      "inferredLiveLink": null,
+      "videoUrl": null,
+      "thumbnailFileUid": "9ed8395c-ac08-4d26-8218-396948c442fd",
+      "attachments": [
+        {
+          "rank": 1,
+          "uid": "1890018872832888833",
+          "name": "sp-1.JPG",
+          "size": 71617,
+          "fileUid": "a878d5c8-f75e-473a-852c-60b2f76a71a4",
+          "localFile": "01-sp-1.jpg",
+          "downloadedBytes": 71617,
+          "sizeMatches": true
+        },
+        {
+          "rank": 2,
+          "uid": "1890018872832888834",
+          "name": "sp-2.JPG",
+          "size": 67095,
+          "fileUid": "c96abf89-b1c7-4006-96f0-78dd281ab47e",
+          "localFile": "02-sp-2.jpg",
+          "downloadedBytes": 67095,
+          "sizeMatches": true
+        },
+        {
+          "rank": 3,
+          "uid": "1890018872832888835",
+          "name": "sp-3.JPG",
+          "size": 80555,
+          "fileUid": "115c9cd5-8c4b-49df-9a4e-8981f3d4b171",
+          "localFile": "03-sp-3.jpg",
+          "downloadedBytes": 80555,
+          "sizeMatches": true
+        },
+        {
+          "rank": 4,
+          "uid": "1890018872832888836",
+          "name": "sp-4.JPG",
+          "size": 84282,
+          "fileUid": "b4a1d586-ca48-4ca3-8b34-0991057874ee",
+          "localFile": "04-sp-4.jpg",
+          "downloadedBytes": 84282,
+          "sizeMatches": true
+        },
+        {
+          "rank": 5,
+          "uid": "1890018872832888837",
+          "name": "sp-5.JPG",
+          "size": 101902,
+          "fileUid": "3ccfd941-2bba-461e-85f5-95d73f027cce",
+          "localFile": "05-sp-5.jpg",
+          "downloadedBytes": 101902,
+          "sizeMatches": true
+        },
+        {
+          "rank": 6,
+          "uid": "1890018872832888838",
+          "name": "sp-6.JPG",
+          "size": 67190,
+          "fileUid": "1d9a50a4-7fff-46dc-a1a2-77c96f16bd9b",
+          "localFile": "06-sp-6.jpg",
+          "downloadedBytes": 67190,
+          "sizeMatches": true
+        },
+        {
+          "rank": 7,
+          "uid": "1890018872832888839",
+          "name": "sp-7.JPG",
+          "size": 61419,
+          "fileUid": "85c6cab6-a925-4573-b650-81932e793422",
+          "localFile": "07-sp-7.jpg",
+          "downloadedBytes": 61419,
+          "sizeMatches": true
+        }
+      ],
+      "thumbnailLocalFile": "_thumbnail.jpg",
+      "localFolder": "06 - Facility Management System"
+    },
+    {
+      "uid": "1913348999442874368",
+      "title": "NXCSOL",
+      "rank": 3,
+      "role": "Lead Front-End Developer",
+      "createdOnUpwork": "2025-04-18T21:48:44.429Z",
+      "description": "NXCSOL is a creative software company that builds modern web and mobile applications, AI-powered tools, and custom business solutions. We specialize in turning bold ideas into functional, user-friendly products — from startup MVPs to enterprise platforms.\n\nIf you are interested in NXCSOL services , visit their website on https://nxcsol.com\n\nNextJs, React , Tailwind UI , framer motion , Material UI ,  Landing Page , 3d Animations , SEO Optimized, Best Practices , Accessibility , Performance.",
+      "skills": [
+        "Front-End Development",
+        "Next.js",
+        "Tailwind UI",
+        "Material UI",
+        "App Development"
+      ],
+      "projectUrl": null,
+      "inferredLiveLink": "https://nxcsol.com",
+      "videoUrl": null,
+      "thumbnailFileUid": "945c6c67-244e-41c5-aadc-53461d71938c",
+      "attachments": [
+        {
+          "rank": 1,
+          "uid": "1913348999442874369",
+          "name": "screencapture-nxcsol-services-web-development-2025-04-19-02_40_32.png",
+          "size": 317395,
+          "fileUid": "6739a897-0e42-4475-a9e7-ef7cec676118",
+          "localFile": "01-screencapture-nxcsol-services-web-development-2025-04-19-02_40_32.png",
+          "downloadedBytes": 317395,
+          "sizeMatches": true
+        },
+        {
+          "rank": 2,
+          "uid": "1913348999442874370",
+          "name": "screencapture-nxcsol-services-mobile-apps-2025-04-19-02_40_45.png",
+          "size": 968370,
+          "fileUid": "0acf8ad0-88b1-4732-a0eb-c69b6da8e588",
+          "localFile": "02-screencapture-nxcsol-services-mobile-apps-2025-04-19-02_40_45.png",
+          "downloadedBytes": 968370,
+          "sizeMatches": true
+        },
+        {
+          "rank": 3,
+          "uid": "1913348999442874371",
+          "name": "screencapture-nxcsol-services-saas-platforms-2025-04-19-02_40_58.png",
+          "size": 612111,
+          "fileUid": "b6c8abaa-1164-4566-8f41-826c371b017d",
+          "localFile": "03-screencapture-nxcsol-services-saas-platforms-2025-04-19-02_40_58.png",
+          "downloadedBytes": 612111,
+          "sizeMatches": true
+        },
+        {
+          "rank": 4,
+          "uid": "1913348999442874372",
+          "name": "screencapture-nxcsol-services-ai-integration-2025-04-19-02_41_09.png",
+          "size": 496304,
+          "fileUid": "5af73a99-7db9-45c0-a949-2973bf78aff8",
+          "localFile": "04-screencapture-nxcsol-services-ai-integration-2025-04-19-02_41_09.png",
+          "downloadedBytes": 496304,
+          "sizeMatches": true
+        },
+        {
+          "rank": 5,
+          "uid": "1913348999442874373",
+          "name": "screencapture-nxcsol-services-3d-experiences-2025-04-19-02_41_21.png",
+          "size": 774660,
+          "fileUid": "ffad9517-3258-4c52-b5c9-0d12003bcc6a",
+          "localFile": "05-screencapture-nxcsol-services-3d-experiences-2025-04-19-02_41_21.png",
+          "downloadedBytes": 774660,
+          "sizeMatches": true
+        },
+        {
+          "rank": 6,
+          "uid": "1913348999442874374",
+          "name": "screencapture-nxcsol-getstarted-2025-04-19-02_42_21.png",
+          "size": 134248,
+          "fileUid": "16e6b4ef-2fa0-4102-9e4f-c7da1495d439",
+          "localFile": "06-screencapture-nxcsol-getstarted-2025-04-19-02_42_21.png",
+          "downloadedBytes": 134248,
+          "sizeMatches": true
+        },
+        {
+          "rank": 7,
+          "uid": "1913348999442874375",
+          "name": "screencapture-nxcsol-2025-04-19-02_39_39.png",
+          "size": 753465,
+          "fileUid": "da4eca21-55d9-47cb-8b7d-9f4e30e7b6c3",
+          "localFile": "07-screencapture-nxcsol-2025-04-19-02_39_39.png",
+          "downloadedBytes": 753465,
+          "sizeMatches": true
+        },
+        {
+          "rank": 8,
+          "uid": "1913352460816121856",
+          "name": "screencapture-pagespeed-web-dev-analysis-https-nxcsol-com-twokwlc7z6-2025-04-19-02_59_38.png",
+          "size": 474058,
+          "fileUid": "f9a6e785-8c67-4cb5-9a1c-144e353dcbb7",
+          "localFile": "08-screencapture-pagespeed-web-dev-analysis-https-nxcsol-com-twokwlc7z6-2025-04-19-02_59_38.png",
+          "downloadedBytes": 474058,
+          "sizeMatches": true
+        }
+      ],
+      "thumbnailLocalFile": "_thumbnail.jpg",
+      "localFolder": "07 - NXCSOL"
+    },
+    {
+      "uid": "1935110411226083328",
+      "title": "AI Graphic Directory Website",
+      "rank": 2,
+      "role": "Full Stack Developer",
+      "createdOnUpwork": "2025-06-17T23:00:49.306Z",
+      "description": "The project consist on designing and developing a directory website that would hold the tools related to graphic designing or helping them . The application would search the web for new ai tools relased that could help my client in assisting his work as a graphic designer. \nLook for new ai tools on the market and add them to the directory and update it .\n",
+      "skills": [
+        "n8n",
+        "Supabase",
+        "Next.js",
+        "Node.js",
+        "Automation"
+      ],
+      "projectUrl": null,
+      "inferredLiveLink": "https://dir.nxcsol.com",
+      "videoUrl": null,
+      "thumbnailFileUid": "1c36b60e-8768-44e5-ade4-1905d226d0a3",
+      "attachments": [
+        {
+          "rank": 1,
+          "uid": "1935110411226083329",
+          "name": "screencapture-dir-nxcsol-tools-cineocean-ai-2025-06-17-23_16_49.png",
+          "size": 1367347,
+          "fileUid": "23f1236d-4f7b-44ed-9265-ca7c91a1c85d",
+          "localFile": "01-screencapture-dir-nxcsol-tools-cineocean-ai-2025-06-17-23_16_49.png",
+          "downloadedBytes": 1367347,
+          "sizeMatches": true
+        },
+        {
+          "rank": 2,
+          "uid": "1935110411226083330",
+          "name": "screencapture-dir-nxcsol-2025-06-03-04_29_023.png",
+          "size": 1014307,
+          "fileUid": "b3d2d25a-9503-4bd1-a186-e7c1b18fda88",
+          "localFile": "02-screencapture-dir-nxcsol-2025-06-03-04_29_023.png",
+          "downloadedBytes": 1014307,
+          "sizeMatches": true
+        }
+      ],
+      "thumbnailLocalFile": "_thumbnail.jpg",
+      "localFolder": "08 - AI Graphic Directory Website"
+    },
+    {
+      "uid": "1842917917229625344",
+      "title": "Management Software",
+      "rank": 1,
+      "role": "Full Stack Developer",
+      "createdOnUpwork": "2024-10-06T13:20:45.882Z",
+      "description": "Fleet Management Software , Fuel Module Software , Payroll Management Software , Clinic Management Software , Inventory Management Software",
+      "skills": [
+        "Operations Management Software",
+        "Inventory Management",
+        "Fleet Management Software",
+        "Management Information System",
+        "React"
+      ],
+      "projectUrl": null,
+      "inferredLiveLink": null,
+      "videoUrl": null,
+      "thumbnailFileUid": "003eeae5-5b4a-4198-be3d-57bd515c3a77",
+      "attachments": [
+        {
+          "rank": 1,
+          "uid": "1842917917229625350",
+          "name": "Dashboard.JPG",
+          "size": 51903,
+          "fileUid": "08098ba3-2f34-4335-96d1-2fbbb8264b99",
+          "localFile": "01-Dashboard.jpg",
+          "downloadedBytes": 41909,
+          "sizeMatches": false
+        },
+        {
+          "rank": 2,
+          "uid": "1842917917229625351",
+          "name": "Payroll_Table.JPG",
+          "size": 70211,
+          "fileUid": "d56fd29c-ba76-4c4a-be74-6c55b6a42f93",
+          "localFile": "02-Payroll_Table.jpg",
+          "downloadedBytes": 61022,
+          "sizeMatches": false
+        },
+        {
+          "rank": 3,
+          "uid": "1842917917229625352",
+          "name": "Invoice_GenerationForm.JPG",
+          "size": 33008,
+          "fileUid": "4d55ef34-b326-4b97-87cc-68603be204ca",
+          "localFile": "03-Invoice_GenerationForm.jpg",
+          "downloadedBytes": 27395,
+          "sizeMatches": false
+        },
+        {
+          "rank": 4,
+          "uid": "1842917917229625353",
+          "name": "Invoice_Printed.JPG",
+          "size": 33181,
+          "fileUid": "89359935-90cc-4d99-a03b-62bd7818bdb4",
+          "localFile": "04-Invoice_Printed.jpg",
+          "downloadedBytes": 28339,
+          "sizeMatches": false
+        },
+        {
+          "rank": 5,
+          "uid": "1842917917229625346",
+          "name": "FMS-Roles.PNG",
+          "size": 73845,
+          "fileUid": "be042874-2a90-4c56-bb9b-89537ac74ba6",
+          "localFile": "05-FMS-Roles.png",
+          "downloadedBytes": 88805,
+          "sizeMatches": false
+        },
+        {
+          "rank": 6,
+          "uid": "1842917917229625345",
+          "name": "FMS.PNG",
+          "size": 522171,
+          "fileUid": "5f91a6ea-e6ef-4806-a943-54c2588c0ad8",
+          "localFile": "06-FMS.png",
+          "downloadedBytes": 488647,
+          "sizeMatches": false
+        },
+        {
+          "rank": 7,
+          "uid": "1842917917229625347",
+          "name": "daisy.PNG",
+          "size": 131030,
+          "fileUid": "d017bd6e-6b9c-46f3-9ea4-800fd469d191",
+          "localFile": "07-daisy.png",
+          "downloadedBytes": 150568,
+          "sizeMatches": false
+        },
+        {
+          "rank": 8,
+          "uid": "1842917917229625348",
+          "name": "acme.PNG",
+          "size": 94828,
+          "fileUid": "b83af2ac-9d0f-46d6-9bdd-774aeaf17457",
+          "localFile": "08-acme.png",
+          "downloadedBytes": 120492,
+          "sizeMatches": false
+        },
+        {
+          "rank": 9,
+          "uid": "1842917917229625349",
+          "name": "windster.PNG",
+          "size": 94777,
+          "fileUid": "6f3a0a48-fc78-4a9c-bafd-d29d234110ba",
+          "localFile": "09-windster.png",
+          "downloadedBytes": 116350,
+          "sizeMatches": false
+        },
+        {
+          "rank": 10,
+          "uid": "1842917917229625354",
+          "name": "Add_Users.JPG",
+          "size": 30147,
+          "fileUid": "5bc6f8ac-2bad-452b-a153-e21996b18046",
+          "localFile": "10-Add_Users.jpg",
+          "downloadedBytes": 25650,
+          "sizeMatches": false
+        },
+        {
+          "rank": 11,
+          "uid": "1842917917229625355",
+          "name": "Tax_SlabParameters.JPG",
+          "size": 69767,
+          "fileUid": "1012b887-d341-4954-8521-ee45b94cf045",
+          "localFile": "11-Tax_SlabParameters.jpg",
+          "downloadedBytes": 57059,
+          "sizeMatches": false
+        }
+      ],
+      "thumbnailLocalFile": "_thumbnail.jpg",
+      "localFolder": "09 - Management Software"
+    }
+  ],
+  "downloadNote": "All 63 attachments + 9 thumbnails downloaded and validated as images. 52 attachments match Upwork's recorded byte size exactly. The 11 files in 'Management Software' (uploaded Oct 2024) are served by Upwork re-encoded, so their byte sizes differ from the recorded upload size; the 'original' variant was still the largest/best copy available (the 'large' variant is smaller)."
+}
