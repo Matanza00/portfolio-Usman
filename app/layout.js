@@ -1,14 +1,20 @@
-import { Geist, Geist_Mono } from "next/font/google";
-import "lenis/dist/lenis.css";
+import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import SmoothScroll from "@/components/motion/SmoothScroll";
-import CursorPlus from "@/components/site/CursorPlus";
+import "./pf.css";
 import { MotionProvider } from "@/components/motion/useReduced";
 import { SITE_URL } from "@/lib/site";
 
 const geist = Geist({
   subsets: ["latin"],
   variable: "--font-geist",
+  display: "swap",
+});
+
+// the portfolio's own face; Geist stays for the case-study pages
+const bricolage = Bricolage_Grotesque({
+  subsets: ["latin"],
+  variable: "--font-bricolage",
+  axes: ["opsz", "wdth"],
   display: "swap",
 });
 
@@ -45,12 +51,12 @@ export const metadata = {
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0A0B0D",
+  themeColor: "#F3F4F7",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable} ${bricolage.variable}`}>
       <body>
         {/* without JavaScript nothing animates in, so show everything */}
         <noscript>
@@ -62,8 +68,6 @@ export default function RootLayout({ children }) {
         >
           Skip to content
         </a>
-        <SmoothScroll />
-        <CursorPlus />
         <MotionProvider>{children}</MotionProvider>
       </body>
     </html>

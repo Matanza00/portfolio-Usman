@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SiteHeader from "@/components/pf/SiteHeader";
 
 export const metadata = {
   title: "Page not found | Usman Nadeem",
@@ -6,20 +7,17 @@ export const metadata = {
 
 export default function NotFound() {
   return (
-    <main className="wrap grid min-h-[100dvh] place-content-center py-24">
-      <p className="label">Error 404</p>
-      <h1 className="mt-4 max-w-[16ch] text-[clamp(2.4rem,6vw,4.5rem)] font-semibold leading-[1] tracking-[-0.045em]">
-        This page doesn&apos;t exist.
-      </h1>
-      <p className="mt-5 max-w-[44ch] text-lg text-muted">
-        The link may be old or mistyped. The work, experience and contact details are
-        all on the home page.
-      </p>
-      <div className="mt-9">
-        <Link href="/" className="btn btn-primary">
-          Back to the home page
-        </Link>
-      </div>
-    </main>
+    <div className="pf">
+      <SiteHeader />
+      <main id="main" className="pf-wrap grid min-h-[80dvh] content-center py-24">
+        <h1 className="pf-display max-w-[14ch] text-[clamp(2.6rem,6.5vw,4.8rem)]">This page doesn&apos;t exist.</h1>
+        <p className="pf-lead mt-5">The link may be old or mistyped. The live sites, case studies and contact details are all on the home page.</p>
+        <div className="mt-9">
+          <Link href="/" className="pf-btn pf-btn--ink">
+            Go to the home page
+          </Link>
+        </div>
+      </main>
+    </div>
   );
 }

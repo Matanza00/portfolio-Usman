@@ -1,69 +1,66 @@
-import { PROJECTS } from "@/lib/projects";
-import Field from "@/components/field/Field";
-import Header from "@/components/site/Header";
-import Hero from "@/components/site/Hero";
-import ProjectRail from "@/components/site/ProjectRail";
-import CommandPalette from "@/components/site/CommandPalette";
-import { About, Contact, Footer, Path, WorkGroup, WorkIntro } from "@/components/site/Sections";
-import Skills3D from "@/components/site/Skills3D";
-import PhoneScrub from "@/components/showcase/PhoneScrub";
-import PhoneDeck from "@/components/showcase/PhoneDeck";
-import BrowserScrub from "@/components/showcase/BrowserScrub";
-import BrowserFlatten from "@/components/showcase/BrowserFlatten";
-import StackPeel from "@/components/showcase/StackPeel";
-import WipeReveal from "@/components/showcase/WipeReveal";
-import ParticleBoard from "@/components/showcase/ParticleBoard";
-import Shutters from "@/components/showcase/Shutters";
-
-const project = (slug) => PROJECTS.find((p) => p.slug === slug);
+import Link from "next/link";
+import { LIVE_SITES } from "@/lib/live";
+import { CASE_STUDIES, caseMeta } from "@/lib/caseStudies";
+import SiteHeader from "@/components/pf/SiteHeader";
+import Deck from "@/components/pf/Deck";
+import LiveSites from "@/components/pf/LiveSites";
+import CaseList from "@/components/pf/CaseList";
+import { About, Contact, SiteFooter } from "@/components/pf/Sections";
 
 export default function Home() {
+  const cases = CASE_STUDIES.map((c) => ({
+    slug: c.slug,
+    name: c.name,
+    kind: c.kind,
+    year: c.year,
+    phone: c.platform === "mobile",
+    shot: c.hero.shot ?? c.hero.shots[1] ?? c.hero.shots[0],
+    accent: caseMeta(c).accent,
+  }));
+
   return (
-    <>
-      {/* particle field: fixed behind everything, never over the work */}
-      <Field />
-      <div className="relative z-10">
-        <Header />
-        <ProjectRail />
-        <main id="main">
-          <Hero />
-          <WorkIntro />
-          {/* grouped by type, newest first within each group; each project has
-              its own way of being shown */}
-          <WorkGroup
-            first
-            label="Mobile apps"
-            title="Native-feel apps, from the first screen to release."
-            blurb="Real-time data, maps, payments and push, on iOS and Android."
-          />
-          <PhoneScrub project={project("karighar")} />
-          <PhoneDeck project={project("ifund")} />
+    <div className="pf">
+      <SiteHeader />
+      <main id="main" tabIndex={-1}>
+        <section aria-labelledby="hero-title" className="overflow-x-clip pb-20 pt-10 sm:pt-16 lg:pb-28">
+          <div className="pf-wrap grid items-center gap-x-14 gap-y-12 lg:grid-cols-[1fr_1.12fr]">
+            <div>
+              <h1 id="hero-title" className="pf-display text-[clamp(2.7rem,6.1vw,5rem)]">
+                I build websites and apps people use every day.
+              </h1>
+              <p className="pf-lead mt-7">
+                Senior full-stack developer in Kalispell, Montana. {LIVE_SITES.filter((s) => s.status === "live").length} of my sites are live right
+                now, from 3D storefronts to a news site that runs itself. Pick one up and look.
+              </p>
+              <div className="mt-9 flex flex-wrap gap-3">
+                <Link className="pf-btn pf-btn--ink" href="#live">
+                  See every live site
+                </Link>
+                <Link className="pf-btn pf-btn--line" href="#cases">
+                  Read the case studies
+                </Link>
+              </div>
+            </div>
+            <Deck sites={LIVE_SITES} />
+          </div>
+        </section>
 
-          <WorkGroup
-            label="Web and SaaS"
-            title="Multi-tenant products with billing, admin and AI."
-            blurb="Onboarding, subscriptions and analytics, with AI woven into the everyday workflow."
-          />
-          <BrowserFlatten project={project("atomic-muscles")} />
-          <BrowserScrub project={project("obyect")} />
-          <StackPeel project={project("subyect")} />
-          <WipeReveal project={project("zestlead")} />
+        <LiveSites sites={LIVE_SITES} />
 
-          <WorkGroup
-            label="Custom software"
-            title="Bespoke systems for how a business actually runs."
-            blurb="Fleets, facilities and operations: role-based access, real-time dashboards and reporting that replaces the spreadsheets."
-          />
-          <ParticleBoard project={project("fleet")} />
-          <Shutters project={project("facility")} />
-          <About />
-          <Skills3D />
-          <Path />
-          <Contact />
-        </main>
-        <Footer />
-      </div>
-      <CommandPalette />
-    </>
+        <section id="cases" aria-labelledby="cases-title" className="scroll-mt-20 border-t border-[var(--rule)] py-24 sm:py-32">
+          <div className="pf-wrap">
+            <h2 id="cases-title" className="pf-h2">Case studies</h2>
+            <p className="pf-lead mt-4">The problem, the process and every screen, for {cases.length} products I designed and built.</p>
+            <div className="mt-12">
+              <CaseList cases={cases} />
+            </div>
+          </div>
+        </section>
+
+        <About />
+        <Contact />
+      </main>
+      <SiteFooter />
+    </div>
   );
 }
