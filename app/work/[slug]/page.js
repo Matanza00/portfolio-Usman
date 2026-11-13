@@ -9,6 +9,7 @@ import SiteHeader from "@/components/pf/SiteHeader";
 import { SiteFooter } from "@/components/pf/Sections";
 import CopyButton from "@/components/pf/CopyButton";
 import { FeatureSwitch, HeroDevices, ScreenViewer, Swatches } from "@/components/pf/CaseBits";
+import { CountUp, Reveal, Words } from "@/components/pf/Motion";
 
 export const dynamicParams = false;
 
@@ -37,7 +38,7 @@ function Section({ id, title, children, className = "" }) {
   return (
     <section aria-labelledby={`${id}-title`} className={`border-t border-[var(--rule)] py-20 sm:py-28 ${className}`}>
       <div className="pf-wrap">
-        <h2 id={`${id}-title`} className="pf-h2 max-w-[18ch]">{title}</h2>
+        <Words as="h2" id={`${id}-title`} className="pf-h2 max-w-[18ch]" text={title} />
         {children}
       </div>
     </section>
@@ -80,10 +81,8 @@ export default async function CaseStudyPage({ params }) {
             </div>
             <div className="mt-10 grid gap-x-16 gap-y-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
               <div>
-                <h1 id="case-title" className="pf-display text-[clamp(3rem,8.4vw,6.6rem)]">
-                  {c.name}
-                </h1>
-                <p className="pf-lead mt-6 max-w-[58ch]">{c.overview}</p>
+                <Words as="h1" id="case-title" className="pf-display text-[clamp(3rem,8.4vw,6.6rem)]" text={c.name} stagger={0.08} />
+                <Reveal as="p" delay={0.25} className="pf-lead mt-6 max-w-[58ch]">{c.overview}</Reveal>
               </div>
               <div>
                 <dl className="grid grid-cols-2 gap-x-6 gap-y-5">
@@ -135,9 +134,7 @@ export default async function CaseStudyPage({ params }) {
                 <div key={label} className="bg-[var(--card)] p-6 sm:p-8">
                   <dt className="sr-only">{label}</dt>
                   <dd>
-                    <span className="block text-[44px] font-bold leading-none tracking-[-0.03em]" style={{ fontVariationSettings: '"opsz" 72, "wdth" 90' }}>
-                      {n}
-                    </span>
+                    <CountUp value={n} className="block text-[44px] font-bold leading-none tracking-[-0.03em] tabular-nums" style={{ fontVariationSettings: '"opsz" 72, "wdth" 90' }} />
                     <span className="pf-small mt-3 block max-w-[28ch]">{label}</span>
                   </dd>
                 </div>
@@ -151,11 +148,11 @@ export default async function CaseStudyPage({ params }) {
           <Section id="process" title="How it came together">
             <ol className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
               {c.process.map(([step, text], k) => (
-                <li key={step} className="pf-step pf-draw">
+                <Reveal as="li" key={step} delay={k * 0.1} y={28} className="pf-step pf-draw">
                   <span className="pf-step-n tabular-nums">{k + 1}</span>
                   <h3 className="mt-4 text-[18px] font-semibold">{step}</h3>
                   <p className="pf-small mt-2 text-[15px]">{text}</p>
-                </li>
+                </Reveal>
               ))}
             </ol>
           </Section>

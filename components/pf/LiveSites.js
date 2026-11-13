@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "@phosphor-icons/react";
 import { LIVE_FILTERS } from "@/lib/live";
+import { Reveal, Settle, Words } from "./Motion";
 
 const STATUS = { live: "Live", review: "In client review", concept: "Concept" };
 
@@ -40,13 +41,15 @@ function Scrub({ site }) {
 function SiteCard({ site }) {
   return (
     <article className="min-w-0" style={{ "--site": site.accent }}>
-      <div className="pf-browser pf-settle">
+      <Settle>
+      <div className="pf-browser">
         <div className="pf-browser-bar" aria-hidden="true">
           <i /><i /><i />
           <span>{site.domain}</span>
         </div>
         <Scrub site={site} />
       </div>
+      </Settle>
       <div className="mt-5 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <h3 className="text-[22px] font-semibold tracking-[-0.015em]">{site.name}</h3>
         <span className="pf-status" data-kind={site.status}>
@@ -98,10 +101,10 @@ export default function LiveSites({ sites }) {
       <div className="pf-wrap">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
-            <h2 id="live-title" className="pf-h2">Live on the web</h2>
-            <p className="pf-lead mt-4">
+            <Words as="h2" id="live-title" className="pf-h2" text="Live on the web" />
+            <Reveal as="p" delay={0.15} className="pf-lead mt-4">
               Every site here is running right now. Move across a screenshot to scrub down the page, or open the real thing.
-            </p>
+            </Reveal>
           </div>
           <div className="flex flex-wrap gap-2" role="group" aria-label="Filter sites">
             {LIVE_FILTERS.map(([key, label]) => {

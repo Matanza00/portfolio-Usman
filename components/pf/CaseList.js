@@ -26,8 +26,15 @@ export default function CaseList({ cases }) {
   return (
     <div onPointerMove={move} onPointerLeave={() => setHover(null)}>
       <ul>
-        {cases.map((c) => (
-          <li key={c.slug}>
+        {cases.map((c, i) => (
+          <motion.li
+            key={c.slug}
+            data-reveal=""
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "0px 0px -8% 0px" }}
+            transition={{ type: "spring", stiffness: 90, damping: 18, delay: (i % 5) * 0.06 }}
+          >
             <Link
               href={`/work/${c.slug}`}
               className="pf-row group"
@@ -49,7 +56,7 @@ export default function CaseList({ cases }) {
                 <ArrowRight size={20} weight="bold" aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1" />
               </div>
             </Link>
-          </li>
+          </motion.li>
         ))}
       </ul>
 

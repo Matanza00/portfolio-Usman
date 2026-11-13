@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { ArrowLeft, ArrowRight, Check } from "@phosphor-icons/react";
 import { BrowserFrame, Frame, PhoneFrame } from "./Frames";
 import { isPhone, labelOf } from "@/lib/shots";
+import { Settle } from "./Motion";
 
 const spring = { type: "spring", stiffness: 140, damping: 20, mass: 0.9 };
 
@@ -88,7 +89,8 @@ export function FeatureSwitch({ f, domain, flip }) {
           </p>
         )}
       </div>
-      <div className={`pf-panel pf-settle ${phone ? "pf-panel--phone" : ""}`}>
+      <Settle tilt={12}>
+      <div className={`pf-panel ${phone ? "pf-panel--phone" : ""}`}>
         <Frame
           srcs={shots}
           on={shotOf(on)}
@@ -98,6 +100,7 @@ export function FeatureSwitch({ f, domain, flip }) {
           sizes={phone ? "280px" : "(min-width: 1024px) 680px, 92vw"}
         />
       </div>
+      </Settle>
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { EMAIL } from "@/lib/site";
+import { ScrollProgress } from "./Motion";
 
 const NAV = [
   ["Live sites", "/#live"],
@@ -38,8 +39,8 @@ export default function SiteHeader({ dark = false }) {
           Email me
         </a>
       </div>
-      {/* how far down the page you are; CSS scroll timeline, nothing when unsupported */}
-      <span className="pf-progress" aria-hidden="true" />
+      {/* how far down the page you are */}
+      <ScrollProgress />
     </header>
   );
 }

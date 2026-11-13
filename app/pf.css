@@ -795,21 +795,10 @@ html[data-voice="connecting"] .pf-vavatar::after {
   width: 100%;
   background: var(--site);
   transform-origin: 0 50%;
-  transform: scaleX(0);
 }
-@supports (animation-timeline: scroll()) {
+@supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .pf-progress {
-      animation: pf-grow linear both;
-      animation-timeline: scroll(root);
-    }
-    /* screens tip back and settle flat as they come up the page */
-    .pf-settle {
-      animation: pf-settle linear both;
-      animation-timeline: view();
-      animation-range: entry 5% cover 35%;
-    }
-    /* each process step's rule draws across as it arrives */
+    /* each process step's rule draws across as it arrives (Chromium; elsewhere the rule is just there) */
     .pf-draw {
       border-top-color: transparent;
       background: linear-gradient(var(--ink), var(--ink)) 0 0 / 0 3px no-repeat;
@@ -819,20 +808,17 @@ html[data-voice="connecting"] .pf-vavatar::after {
     }
   }
 }
-@keyframes pf-grow {
-  to {
-    transform: scaleX(1);
-  }
+/* headline words rise out of a mask */
+.pf-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
 }
-@keyframes pf-settle {
-  from {
-    opacity: 0.35;
-    transform: perspective(1400px) rotateX(18deg) translateY(56px) scale(0.94);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+.pf-word-in {
+  display: inline-block;
+  transform-origin: 0 100%;
 }
 @keyframes pf-draw {
   to {
