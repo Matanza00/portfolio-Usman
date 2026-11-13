@@ -40,7 +40,7 @@ function Scrub({ site }) {
 function SiteCard({ site }) {
   return (
     <article className="min-w-0" style={{ "--site": site.accent }}>
-      <div className="pf-browser">
+      <div className="pf-browser pf-settle">
         <div className="pf-browser-bar" aria-hidden="true">
           <i /><i /><i />
           <span>{site.domain}</span>
@@ -80,6 +80,10 @@ export default function LiveSites({ sites }) {
   useEffect(() => {
     const f = new URLSearchParams(window.location.search).get("sites");
     if (LIVE_FILTERS.some(([k]) => k === f)) setFilter(f);
+    // the voice assistant filters the list with this event
+    const on = (e) => LIVE_FILTERS.some(([k]) => k === e.detail) && choose(e.detail);
+    window.addEventListener("pf:filter", on);
+    return () => window.removeEventListener("pf:filter", on);
   }, []);
   const choose = (key) => {
     setFilter(key);

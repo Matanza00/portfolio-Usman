@@ -23,7 +23,8 @@ export default function SiteHeader({ dark = false }) {
   return (
     <header className={`pf-head${dark ? " pf-head--dark" : ""}`} data-stuck={stuck}>
       <div className="pf-wrap flex h-[68px] items-center gap-6">
-        <Link href="/" className="mr-auto text-[17px] font-semibold tracking-[-0.01em]" aria-label="Usman Nadeem, home">
+        <Link href="/" className="pf-brand mr-auto" aria-label="Usman Nadeem, home">
+          <img src="/me/navy-sm.webp" alt="" width={30} height={30} />
           Usman Nadeem
         </Link>
         <nav aria-label="Main" className="pf-nav hidden items-center gap-7 md:flex">
@@ -37,6 +38,8 @@ export default function SiteHeader({ dark = false }) {
           Email me
         </a>
       </div>
+      {/* how far down the page you are; CSS scroll timeline, nothing when unsupported */}
+      <span className="pf-progress" aria-hidden="true" />
     </header>
   );
 }

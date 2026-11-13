@@ -39,6 +39,12 @@ My portfolio: every site I have running on the web, and case studies for the pro
 
 The 14 sites are listed in `lib/live.js`: Resham, the system-arch Claude Code skill, anime.support, Dr Solar, Kesh Atelier, NXCSOL, Portal Rewards, The Derma Club, Atomic Muscles, Horizon Analytical, HRMS, iFund, Obyect and Subyect.
 
+## Me, and a voice assistant
+
+- **The photo** in About leans toward the pointer, and a tap repaints the wall behind me from navy to grey (and back) in a circle that grows from where you touched. Scrolling past, the photo drifts inside its frame.
+- **The voice assistant** is an ElevenLabs agent (`lib/voice.js`, `components/pf/VoiceDock.js`). Start it from the dock in the corner, the About section or Contact. It talks about my work and moves the page while it talks: it can scroll to a section, filter the live sites and open a case study. Its allowlist only accepts this site's domain. While it talks, a ring around my photo moves with its voice.
+- **Scroll moments:** a progress line under the header, screens that tip back and settle flat as they come up the page, and process steps whose rule draws across. They use CSS scroll timelines and are skipped with reduced motion.
+
 ## Case studies
 
 <table>

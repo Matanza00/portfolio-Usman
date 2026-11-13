@@ -1,11 +1,16 @@
 import { ABOUT, EDUCATION, ROLES, SKILL_GROUPS } from "@/lib/profile";
 import { EMAIL, GITHUB_URL, LINKEDIN_URL, PHONE, PHONE_HREF } from "@/lib/site";
 import CopyButton from "./CopyButton";
+import Portrait from "./Portrait";
+import { VoiceButton } from "./VoiceButton";
 
 export function About() {
   return (
-    <section id="about" aria-labelledby="about-title" className="scroll-mt-20 border-t border-[var(--rule)] py-24 sm:py-32">
-      <div className="pf-wrap grid gap-14 lg:grid-cols-[1.1fr_1fr]">
+    <section id="about" aria-labelledby="about-title" className="scroll-mt-20 overflow-x-clip border-t border-[var(--rule)] py-24 sm:py-32">
+      <div className="pf-wrap grid items-start gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+        <div className="lg:sticky lg:top-24">
+          <Portrait />
+        </div>
         <div>
           <h2 id="about-title" className="pf-h2 max-w-[16ch]">{ABOUT.heading}</h2>
           <div className="mt-8 space-y-5 text-[17px] leading-[1.65] text-[var(--sub)]">
@@ -24,10 +29,8 @@ export function About() {
               </div>
             ))}
           </dl>
-        </div>
 
-        <div>
-          <h3 className="text-[19px] font-semibold">Experience</h3>
+          <h3 className="mt-16 text-[19px] font-semibold">Experience</h3>
           <ol className="mt-5">
             {ROLES.map((r) => (
               <li key={r.org} className="border-t border-[var(--rule)] py-5">
@@ -82,6 +85,7 @@ export function Contact() {
             {EMAIL}
           </a>
           <CopyButton text={EMAIL} />
+          <VoiceButton />
         </div>
         <ul className="mt-14 flex flex-wrap gap-x-8 gap-y-3 text-[15px] text-white/70">
           <li><a className="underline-offset-4 hover:text-white hover:underline" href={LINKEDIN_URL} target="_blank" rel="noopener">LinkedIn</a></li>

@@ -151,7 +151,7 @@ export default async function CaseStudyPage({ params }) {
           <Section id="process" title="How it came together">
             <ol className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
               {c.process.map(([step, text], k) => (
-                <li key={step} className="pf-step">
+                <li key={step} className="pf-step pf-draw">
                   <span className="pf-step-n tabular-nums">{k + 1}</span>
                   <h3 className="mt-4 text-[18px] font-semibold">{step}</h3>
                   <p className="pf-small mt-2 text-[15px]">{text}</p>

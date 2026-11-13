@@ -25,6 +25,10 @@ export default function Home() {
         <section aria-labelledby="hero-title" className="overflow-x-clip pb-20 pt-10 sm:pt-16 lg:pb-28">
           <div className="pf-wrap grid items-center gap-x-14 gap-y-12 lg:grid-cols-[1fr_1.12fr]">
             <div>
+              <Link href="#about" className="pf-hello mb-7">
+                <img src="/me/gray-sm.webp" alt="" width={36} height={36} />
+                Hi, I'm Usman
+              </Link>
               <h1 id="hero-title" className="pf-display text-[clamp(2.7rem,6.1vw,5rem)]">
                 I build websites and apps people use every day.
               </h1>

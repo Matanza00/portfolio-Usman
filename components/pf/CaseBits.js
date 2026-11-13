@@ -88,7 +88,7 @@ export function FeatureSwitch({ f, domain, flip }) {
           </p>
         )}
       </div>
-      <div className={`pf-panel ${phone ? "pf-panel--phone" : ""}`}>
+      <div className={`pf-panel pf-settle ${phone ? "pf-panel--phone" : ""}`}>
         <Frame
           srcs={shots}
           on={shotOf(on)}

@@ -573,6 +573,273 @@ body:has(.pf) {
   color: var(--next);
 }
 
+/* ---------- me, and the voice assistant ---------- */
+.pf-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.pf-brand img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 25%;
+}
+.pf-hello {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 16px 4px 4px;
+  border-radius: 999px;
+  background: var(--card);
+  box-shadow: 0 0 0 1px var(--rule);
+  font-size: 15px;
+  font-weight: 600;
+  transition: box-shadow 0.15s;
+}
+.pf-hello:hover {
+  box-shadow: 0 0 0 1.5px var(--ink);
+}
+.pf-hello img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 25%;
+}
+
+.pf-portrait-wrap {
+  position: relative;
+  max-width: 460px;
+  perspective: 900px;
+}
+.pf-portrait {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 28px;
+  background: #1c2a4a;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  box-shadow: 0 40px 70px -40px rgb(19 26 46 / 0.65);
+  touch-action: manipulation;
+  user-select: none;
+}
+.pf-portrait-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+}
+/* the ring that moves with the assistant's voice */
+.pf-portrait-ring {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  aspect-ratio: 4 / 5;
+  border-radius: 34px;
+  margin: -8px;
+  border: 2px solid var(--site);
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.3s, transform 0.12s linear;
+  pointer-events: none;
+}
+.pf-portrait-ring[data-live="true"] {
+  opacity: 0.9;
+  transform: scale(calc(0.98 + (var(--voice-lvl, 1) - 1) * 0.25));
+}
+html[data-voice="connecting"] .pf-portrait-ring {
+  animation: pf-pulse 1.1s ease-in-out infinite;
+}
+@keyframes pf-pulse {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.pf-voice {
+  --v-bg: #ffffff;
+  --v-ink: #131a2e;
+  --v-sub: #5a6178;
+  --v-rule: #dcdfe7;
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 50;
+  color: var(--v-ink);
+  font-family: var(--font-bricolage), system-ui, sans-serif;
+}
+.pf-voice-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 50px;
+  padding: 0 18px 0 8px;
+  border-radius: 999px;
+  background: var(--v-ink);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 16px 34px -14px rgb(19 26 46 / 0.6);
+}
+@media (max-width: 639px) {
+  .pf-voice-pill {
+    gap: 8px;
+    padding: 0 14px 0 8px;
+  }
+}
+.pf-voice-card {
+  width: min(340px, calc(100vw - 32px));
+  padding: 18px;
+  border-radius: 22px;
+  background: var(--v-bg);
+  box-shadow: 0 0 0 1px rgb(19 26 46 / 0.08), 0 30px 60px -24px rgb(19 26 46 / 0.45);
+}
+.pf-vavatar {
+  position: relative;
+  flex: none;
+  display: inline-block;
+  border-radius: 50%;
+}
+.pf-vavatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 25%;
+}
+.pf-vavatar::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid #4b3bff;
+  opacity: 0;
+  transform: scale(var(--voice-lvl, 1));
+  transition: opacity 0.25s, transform 0.1s linear;
+}
+html[data-voice="speaking"] .pf-vavatar::after,
+html[data-voice="listening"] .pf-vavatar::after {
+  opacity: 1;
+}
+html[data-voice="listening"] .pf-vavatar::after {
+  border-color: #1fae6a;
+}
+html[data-voice="connecting"] .pf-vavatar::after {
+  opacity: 1;
+  border-color: #8a90a3;
+  animation: pf-pulse 1.1s ease-in-out infinite;
+}
+.pf-voice-lines {
+  display: grid;
+  gap: 8px;
+  max-height: 180px;
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.pf-voice-lines li[data-role="you"] {
+  justify-self: end;
+  max-width: 85%;
+  padding: 6px 11px;
+  border-radius: 14px 14px 4px 14px;
+  background: #eef0f5;
+}
+.pf-voice-lines li[data-role="ai"] {
+  max-width: 92%;
+}
+.pf-voice-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 42px;
+  border-radius: 999px;
+  background: var(--v-ink);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+.pf-voice-btn--end {
+  background: #d63b3b;
+}
+.pf-voice-x {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: var(--v-sub);
+}
+.pf-voice-x:hover {
+  background: #eef0f5;
+}
+.pf-voice :focus-visible {
+  outline: 2px solid #4b3bff;
+  outline-offset: 3px;
+}
+
+/* ---------- scroll-driven moments (CSS scroll timelines; skipped when unsupported) ---------- */
+.pf-progress {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 2px;
+  width: 100%;
+  background: var(--site);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .pf-progress {
+      animation: pf-grow linear both;
+      animation-timeline: scroll(root);
+    }
+    /* screens tip back and settle flat as they come up the page */
+    .pf-settle {
+      animation: pf-settle linear both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 35%;
+    }
+    /* each process step's rule draws across as it arrives */
+    .pf-draw {
+      border-top-color: transparent;
+      background: linear-gradient(var(--ink), var(--ink)) 0 0 / 0 3px no-repeat;
+      animation: pf-draw linear both;
+      animation-timeline: view();
+      animation-range: entry 20% cover 45%;
+    }
+  }
+}
+@keyframes pf-grow {
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes pf-settle {
+  from {
+    opacity: 0.35;
+    transform: perspective(1400px) rotateX(18deg) translateY(56px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pf-draw {
+  to {
+    background-size: 100% 3px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pf *,
   .pf *::before,
