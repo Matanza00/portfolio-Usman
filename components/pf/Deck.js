@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "@phosphor-icons/react";
 import { useReduced } from "@/components/motion/useReduced";
@@ -37,6 +37,16 @@ export default function Deck({ sites }) {
     mq.addEventListener("change", on);
     return () => { clearTimeout(t); mq.removeEventListener("change", on); };
   }, []);
+
+  // tell the little me which site is on top now (not on the first render)
+  const first = useRef(true);
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    window.dispatchEvent(new CustomEvent("pf:guide", { detail: { pose: "present", say: `${site.name}. Drag again for the next one.`, ttl: 2600 } }));
+  }, [top]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const go = useCallback(
     (dir) => {

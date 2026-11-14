@@ -34,9 +34,9 @@ export async function generateMetadata({ params }) {
   };
 }
 
-function Section({ id, title, children, className = "" }) {
+function Section({ id, title, children, className = "", guide, say }) {
   return (
-    <section aria-labelledby={`${id}-title`} className={`border-t border-[var(--rule)] py-20 sm:py-28 ${className}`}>
+    <section aria-labelledby={`${id}-title`} className={`border-t border-[var(--rule)] py-20 sm:py-28 ${className}`} data-guide={guide} data-say={say}>
       <div className="pf-wrap">
         <Words as="h2" id={`${id}-title`} className="pf-h2 max-w-[18ch]" text={title} />
         {children}
@@ -68,7 +68,7 @@ export default async function CaseStudyPage({ params }) {
       <SiteHeader />
       <main id="main" tabIndex={-1}>
         {/* hero */}
-        <section aria-labelledby="case-title" className="pb-20 pt-8 sm:pb-28 sm:pt-12">
+        <section aria-labelledby="case-title" className="pb-20 pt-8 sm:pb-28 sm:pt-12" data-guide="present" data-say={`${c.name}: ${c.kind}.`}>
           <div className="pf-wrap">
             <div className="flex flex-wrap items-center justify-between gap-3 text-[14px] font-medium text-[var(--sub)]">
               <Link href="/work" className="inline-flex items-center gap-1.5 hover:text-[var(--ink)]">
@@ -108,7 +108,7 @@ export default async function CaseStudyPage({ params }) {
         </section>
 
         {/* problem and answer */}
-        <Section id="problem" title="What was in the way">
+        <Section id="problem" title="What was in the way" guide="think" say="The problem first, then what I built.">
           <p className="pf-lead mt-6 max-w-[64ch]">{c.challenge}</p>
           <div className="mt-14 grid gap-12 md:grid-cols-2">
             <div>
@@ -145,7 +145,7 @@ export default async function CaseStudyPage({ params }) {
 
         {/* process: a real sequence, so it is numbered */}
         {c.process?.length > 0 && (
-          <Section id="process" title="How it came together">
+          <Section id="process" title="How it came together" guide="chest" say="Four steps, start to finish.">
             <ol className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
               {c.process.map(([step, text], k) => (
                 <Reveal as="li" key={step} delay={k * 0.1} y={28} className="pf-step pf-draw">
@@ -159,7 +159,7 @@ export default async function CaseStudyPage({ params }) {
         )}
 
         {/* features */}
-        <Section id="features" title="What it does">
+        <Section id="features" title="What it does" guide="point" say="Pick a line and the screen changes.">
           <p className="pf-lead mt-5">Pick a line to see the screen that goes with it.</p>
           <div className="mt-16 space-y-24 sm:space-y-32">
             {c.features.map((f, k) => (
@@ -169,7 +169,7 @@ export default async function CaseStudyPage({ params }) {
         </Section>
 
         {/* every screen */}
-        <Section id="screens" title="Every screen">
+        <Section id="screens" title="Every screen" guide="point" say="Swipe or use the arrows for every screen.">
           <p className="pf-lead mt-5">Use the arrows, the thumbnails, your keyboard or a swipe.</p>
           <div className="mt-12">
             <ScreenViewer shots={c.gallery} domain={domain} name={c.name} />
@@ -178,7 +178,7 @@ export default async function CaseStudyPage({ params }) {
 
         {/* design system */}
         {(c.palette || c.fonts) && (
-          <Section id="design" title="The design system">
+          <Section id="design" title="The design system" guide="present" say="Tap a colour to copy it.">
             {c.palette && (
               <>
                 <p className="pf-lead mt-5">Tap a colour to copy it.</p>
@@ -228,7 +228,7 @@ export default async function CaseStudyPage({ params }) {
         )}
 
         {/* closing */}
-        <section aria-labelledby="close-title" className="bg-[var(--ink)] py-24 text-white sm:py-32">
+        <section aria-labelledby="close-title" className="bg-[var(--ink)] py-24 text-white sm:py-32" data-guide="cheer" data-say="Want one like this? Click me to talk.">
           <div className="pf-wrap">
             <h2 id="close-title" className="pf-display max-w-[16ch] text-[clamp(2.4rem,6vw,4.8rem)]">
               {c.closing.join(" ")}

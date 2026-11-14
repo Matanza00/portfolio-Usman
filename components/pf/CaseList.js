@@ -24,7 +24,13 @@ export default function CaseList({ cases }) {
   const shown = cases.find((c) => c.slug === hover);
 
   return (
-    <div onPointerMove={move} onPointerLeave={() => setHover(null)}>
+    <div
+      onPointerMove={move}
+      onPointerLeave={() => {
+        setHover(null);
+        window.dispatchEvent(new CustomEvent("pf:guide", { detail: null }));
+      }}
+    >
       <ul>
         {cases.map((c, i) => (
           <motion.li
@@ -39,7 +45,11 @@ export default function CaseList({ cases }) {
               href={`/work/${c.slug}`}
               className="pf-row group"
               style={{ "--row-accent": c.accent }}
-              onPointerEnter={(e) => e.pointerType === "mouse" && setHover(c.slug)}
+              onPointerEnter={(e) => {
+                if (e.pointerType !== "mouse") return;
+                setHover(c.slug);
+                window.dispatchEvent(new CustomEvent("pf:guide", { detail: { pose: "point", say: `${c.name}: ${c.kind}.` } }));
+              }}
               onFocus={() => setHover(null)}
             >
               <div className="min-w-0">

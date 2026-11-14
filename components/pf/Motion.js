@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { animate, motion, useInView, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 
 /*
@@ -44,18 +44,21 @@ export function Words({ text, as = "h2", className, id, delay = 0, stagger = 0.0
       transition={{ staggerChildren: stagger, delayChildren: delay }}
       aria-label={text}
     >
+      {/* the space sits between the masks: inside an inline-block it would collapse */}
       {words.map((w, i) => (
-        <span key={i} className="pf-word" aria-hidden="true">
-          <motion.span
-            className="pf-word-in"
-            data-reveal=""
-            variants={{ hide: { y: "108%", rotate: 4, opacity: 0 }, show: { y: "0%", rotate: 0, opacity: 1 } }}
-            transition={{ type: "spring", stiffness: 120, damping: 18 }}
-          >
-            {w}
-          </motion.span>
+        <Fragment key={i}>
+          <span className="pf-word" aria-hidden="true">
+            <motion.span
+              className="pf-word-in"
+              data-reveal=""
+              variants={{ hide: { y: "108%", rotate: 4, opacity: 0 }, show: { y: "0%", rotate: 0, opacity: 1 } }}
+              transition={{ type: "spring", stiffness: 120, damping: 18 }}
+            >
+              {w}
+            </motion.span>
+          </span>
           {i < words.length - 1 ? " " : null}
-        </span>
+        </Fragment>
       ))}
     </M>
   );

@@ -786,6 +786,136 @@ html[data-voice="connecting"] .pf-vavatar::after {
   outline-offset: 3px;
 }
 
+/* ---------- the little me, bottom-left ---------- */
+.pf-guide {
+  position: fixed;
+  left: max(12px, env(safe-area-inset-left));
+  bottom: 0;
+  z-index: 45;
+  width: 168px;
+  pointer-events: none;
+  font-family: var(--font-bricolage), system-ui, sans-serif;
+}
+.pf-guide-me {
+  display: block;
+  width: 100%;
+  pointer-events: auto;
+  cursor: pointer;
+  filter: drop-shadow(0 18px 22px rgb(19 26 46 / 0.28));
+  -webkit-tap-highlight-color: transparent;
+}
+.pf-guide-me:focus-visible {
+  outline: 2px solid #4b3bff;
+  outline-offset: 2px;
+  border-radius: 16px;
+}
+.pf-guide-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.pf-guide-say {
+  position: absolute;
+  left: 58%;
+  bottom: calc(100% - 22px);
+  width: max-content;
+  max-width: 230px;
+  padding: 10px 14px;
+  border-radius: 16px 16px 16px 4px;
+  background: #ffffff;
+  color: #131a2e;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  box-shadow: 0 0 0 1px rgb(19 26 46 / 0.08), 0 14px 30px -14px rgb(19 26 46 / 0.4);
+  transform-origin: 0 100%;
+}
+.pf-guide-x {
+  position: absolute;
+  left: 4px;
+  top: 30%;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #5a6178;
+  box-shadow: 0 0 0 1px rgb(19 26 46 / 0.1);
+  opacity: 0;
+  pointer-events: auto;
+  transition: opacity 0.15s;
+}
+.pf-guide:hover .pf-guide-x,
+.pf-guide-x:focus-visible {
+  opacity: 1;
+}
+/* joints: springy CSS transitions between poses; the wave loops the forearm */
+.pf-guide-joint {
+  transform-box: view-box;
+  transition: transform 0.7s cubic-bezier(0.34, 1.45, 0.64, 1);
+}
+.pf-guide-wave {
+  animation: pf-wave 0.9s ease-in-out infinite;
+}
+@keyframes pf-wave {
+  0%, 100% { transform: rotate(calc(var(--fore) - 24deg)); }
+  50% { transform: rotate(calc(var(--fore) + 18deg)); }
+}
+.pf-guide-breathe {
+  transform-box: view-box;
+  transform-origin: 120px 280px;
+  animation: pf-breathe 3.2s ease-in-out infinite;
+}
+@keyframes pf-breathe {
+  50% { transform: scaleY(1.012); }
+}
+/* blinking, and a mouth that opens with the assistant's voice */
+.pf-guide-blink rect {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  transform: scaleY(0);
+  animation: pf-blink 4.6s infinite;
+}
+@keyframes pf-blink {
+  0%, 94%, 100% { transform: scaleY(0); }
+  96% { transform: scaleY(1); }
+}
+.pf-guide-mouth {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  transform: scaleY(0);
+  transition: transform 0.08s linear;
+}
+.pf-guide-mouth[data-talking="true"] {
+  transform: scaleY(calc(0.25 + (var(--voice-lvl, 1) - 1) * 4));
+}
+.pf-guide-smile[data-talking="true"] {
+  opacity: 0;
+}
+@media (max-width: 639px) {
+  .pf-guide {
+    width: 92px;
+  }
+  .pf-guide-say {
+    left: 70%;
+    max-width: 190px;
+    font-size: 13px;
+    padding: 8px 11px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-guide-blink rect,
+  .pf-guide-wave,
+  .pf-guide-breathe {
+    animation: none;
+  }
+  .pf-guide-joint {
+    transition: none;
+  }
+}
+
 /* ---------- scroll-driven moments (CSS scroll timelines; skipped when unsupported) ---------- */
 .pf-progress {
   position: absolute;
