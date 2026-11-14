@@ -26,10 +26,7 @@ export default function CaseList({ cases }) {
   return (
     <div
       onPointerMove={move}
-      onPointerLeave={() => {
-        setHover(null);
-        window.dispatchEvent(new CustomEvent("pf:guide", { detail: null }));
-      }}
+      onPointerLeave={() => setHover(null)}
     >
       <ul>
         {cases.map((c, i) => (
@@ -48,7 +45,6 @@ export default function CaseList({ cases }) {
               onPointerEnter={(e) => {
                 if (e.pointerType !== "mouse") return;
                 setHover(c.slug);
-                window.dispatchEvent(new CustomEvent("pf:guide", { detail: { pose: "point", say: `${c.name}: ${c.kind}.` } }));
               }}
               onFocus={() => setHover(null)}
             >

@@ -12,8 +12,8 @@ import { animate, motion, useInView, useReducedMotion, useScroll, useSpring, use
 const VIEW = { once: true, margin: "0px 0px -10% 0px" };
 const spring = { type: "spring", stiffness: 80, damping: 18, mass: 0.9 };
 
-// Fades and rises into place the first time it scrolls into view.
-export function Reveal({ as = "div", delay = 0, y = 34, className, children, ...rest }) {
+// Drops into place from above the first time it scrolls into view.
+export function Reveal({ as = "div", delay = 0, y = -46, className, children, ...rest }) {
   const M = motion[as];
   return (
     <M
@@ -30,7 +30,7 @@ export function Reveal({ as = "div", delay = 0, y = 34, className, children, ...
   );
 }
 
-// A headline whose words rise out of a mask, one after another.
+// A headline whose words drop in from above, one after another.
 export function Words({ text, as = "h2", className, id, delay = 0, stagger = 0.06 }) {
   const M = motion[as];
   const words = text.split(" ");
@@ -51,8 +51,8 @@ export function Words({ text, as = "h2", className, id, delay = 0, stagger = 0.0
             <motion.span
               className="pf-word-in"
               data-reveal=""
-              variants={{ hide: { y: "108%", rotate: 4, opacity: 0 }, show: { y: "0%", rotate: 0, opacity: 1 } }}
-              transition={{ type: "spring", stiffness: 120, damping: 18 }}
+              variants={{ hide: { y: "-110%", rotate: -5, opacity: 0 }, show: { y: "0%", rotate: 0, opacity: 1 } }}
+              transition={{ type: "spring", stiffness: 150, damping: 13 }}
             >
               {w}
             </motion.span>
@@ -65,21 +65,22 @@ export function Words({ text, as = "h2", className, id, delay = 0, stagger = 0.0
 }
 
 /*
-  Scroll-linked: tips back and sits low while it is near the bottom of the
-  screen, and settles flat as you scroll it up into place.
+  Scroll-linked: hangs above its place, tipped and swinging, while it is near
+  the bottom of the screen, and comes down into place as you scroll.
 */
 export function Settle({ children, className = "", tilt = 16 }) {
   const ref = useRef(null);
   const still = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "start 0.55"] });
   const p = useSpring(scrollYProgress, { stiffness: 140, damping: 26, mass: 0.4 });
-  const rotateX = useTransform(p, [0, 1], [tilt, 0]);
-  const y = useTransform(p, [0, 1], [90, 0]);
-  const scale = useTransform(p, [0, 1], [0.9, 1]);
-  const opacity = useTransform(p, [0, 0.6], [0.25, 1]);
+  const rotateX = useTransform(p, [0, 1], [-tilt, 0]);
+  const rotate = useTransform(p, [0, 0.7, 1], [-4, 1, 0]);
+  const y = useTransform(p, [0, 1], [-56, 0]); // small enough never to cover the row above
+  const scale = useTransform(p, [0, 1], [0.92, 1]);
+  const opacity = useTransform(p, [0, 0.5], [0, 1]);
   return (
     <div ref={ref} className={className} style={{ perspective: 1400 }}>
-      <motion.div style={still ? { opacity } : { rotateX, y, scale, opacity, transformOrigin: "50% 100%" }}>{children}</motion.div>
+      <motion.div style={still ? { opacity } : { rotateX, rotate, y, scale, opacity, transformOrigin: "50% 0%" }}>{children}</motion.div>
     </div>
   );
 }

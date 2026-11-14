@@ -40,7 +40,7 @@ function Scrub({ site }) {
 
 function SiteCard({ site }) {
   return (
-    <article className="min-w-0" style={{ "--site": site.accent }} data-guide="point" data-say={site.say || site.name}>
+    <article className="min-w-0" style={{ "--site": site.accent }}>
       <Settle>
       <div className="pf-browser">
         <div className="pf-browser-bar" aria-hidden="true">
@@ -97,7 +97,7 @@ export default function LiveSites({ sites }) {
   };
   const shown = useMemo(() => (filter === "all" ? sites : sites.filter((s) => s.tags.includes(filter))), [filter, sites]);
   return (
-    <section id="live" aria-labelledby="live-title" className="scroll-mt-20 py-24 sm:py-32" data-guide="point" data-say={`All ${sites.length} of these are on the web right now.`}>
+    <section id="live" aria-labelledby="live-title" className="scroll-mt-20 py-24 sm:py-32">
       <div className="pf-wrap">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>

@@ -7,6 +7,15 @@ import LiveSites from "@/components/pf/LiveSites";
 import CaseList from "@/components/pf/CaseList";
 import { About, Contact, SiteFooter } from "@/components/pf/Sections";
 import { Reveal, ScrollAway, Words } from "@/components/pf/Motion";
+import ScrollThread from "@/components/pf/ScrollThread";
+
+const THREAD = [
+  { id: "top", label: "Start" },
+  { id: "live", label: "Live sites" },
+  { id: "cases", label: "Case studies" },
+  { id: "about", label: "About" },
+  { id: "contact", label: "Contact" },
+];
 
 export default function Home() {
   const cases = CASE_STUDIES.map((c) => ({
@@ -22,8 +31,9 @@ export default function Home() {
   return (
     <div className="pf">
       <SiteHeader />
+      <ScrollThread sections={THREAD} />
       <main id="main" tabIndex={-1}>
-        <section aria-labelledby="hero-title" className="overflow-x-clip pb-20 pt-10 sm:pt-16 lg:pb-28" data-guide="wave" data-say="Hi, I'm Usman. Drag a card to flip through my live sites.">
+        <section id="top" aria-labelledby="hero-title" className="overflow-x-clip pb-20 pt-10 sm:pt-16 lg:pb-28">
           <div className="pf-wrap grid items-center gap-x-14 gap-y-12 lg:grid-cols-[1fr_1.12fr]">
             <div>
               <Reveal y={16}>
@@ -54,7 +64,7 @@ export default function Home() {
 
         <LiveSites sites={LIVE_SITES} />
 
-        <section id="cases" aria-labelledby="cases-title" className="scroll-mt-20 border-t border-[var(--rule)] py-24 sm:py-32" data-guide="present" data-say={`${cases.length} case studies. Hover one and I'll name it.`}>
+        <section id="cases" aria-labelledby="cases-title" className="scroll-mt-20 border-t border-[var(--rule)] py-24 sm:py-32">
           <div className="pf-wrap">
             <Words as="h2" id="cases-title" className="pf-h2" text="Case studies" />
             <p className="pf-lead mt-4">The problem, the process and every screen, for {cases.length} products I designed and built.</p>

@@ -7,7 +7,7 @@ import { CountUp, Reveal, Words } from "./Motion";
 
 export function About() {
   return (
-    <section id="about" aria-labelledby="about-title" className="scroll-mt-20 overflow-x-clip border-t border-[var(--rule)] py-24 sm:py-32" data-guide="chest" data-say="That's me. Tap my photo to repaint the wall.">
+    <section id="about" aria-labelledby="about-title" className="scroll-mt-20 overflow-x-clip border-t border-[var(--rule)] py-24 sm:py-32">
       <div className="pf-wrap grid items-start gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
         <Reveal className="lg:sticky lg:top-24" y={60}>
           <Portrait />
@@ -73,7 +73,7 @@ export function About() {
 
 export function Contact() {
   return (
-    <section id="contact" aria-labelledby="contact-title" className="scroll-mt-20 bg-[var(--ink)] py-24 text-white sm:py-32" data-guide="cheer" data-say="Have something to build? Click me to talk, or email me.">
+    <section id="contact" aria-labelledby="contact-title" className="scroll-mt-20 bg-[var(--ink)] py-24 text-white sm:py-32">
       <div className="pf-wrap">
         <Words as="h2" id="contact-title" className="pf-display max-w-[14ch] text-[clamp(2.6rem,7vw,5.6rem)]" text="Have something to build?" stagger={0.09} />
         <p className="mt-6 max-w-[48ch] text-[18px] leading-relaxed text-white/70">

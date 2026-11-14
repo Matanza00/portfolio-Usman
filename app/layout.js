@@ -4,7 +4,6 @@ import "./pf.css";
 import { MotionProvider } from "@/components/motion/useReduced";
 import { SITE_URL } from "@/lib/site";
 import VoiceDock from "@/components/pf/VoiceDock";
-import Guide from "@/components/pf/Guide";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -72,7 +71,6 @@ export default function RootLayout({ children }) {
         </a>
         <MotionProvider>
           {children}
-          <Guide />
           <VoiceDock />
         </MotionProvider>
       </body>

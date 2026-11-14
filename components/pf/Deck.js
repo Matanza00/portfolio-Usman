@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "@phosphor-icons/react";
 import { useReduced } from "@/components/motion/useReduced";
@@ -38,16 +38,6 @@ export default function Deck({ sites }) {
     return () => { clearTimeout(t); mq.removeEventListener("change", on); };
   }, []);
 
-  // tell the little me which site is on top now (not on the first render)
-  const first = useRef(true);
-  useEffect(() => {
-    if (first.current) {
-      first.current = false;
-      return;
-    }
-    window.dispatchEvent(new CustomEvent("pf:guide", { detail: { pose: "present", say: `${site.name}. Drag again for the next one.`, ttl: 2600 } }));
-  }, [top]); // eslint-disable-line react-hooks/exhaustive-deps
-
   const go = useCallback(
     (dir) => {
       setFlung({ i: top, dir });
@@ -71,7 +61,8 @@ export default function Deck({ sites }) {
           const target = out
             ? { x: flung.dir * 520, y: -30, rotate: flung.dir * 18, scale: 0.96, opacity: 0 }
             : pose(depth, small);
-          const initial = reduce ? false : { x: 0, y: 160, rotate: -8 + depth * 4, scale: 0.9, opacity: 0 };
+          // on load the cards drop in from the top, one after another
+          const initial = reduce ? false : { x: 0, y: -520, rotate: -10 + depth * 5, scale: 0.92, opacity: 0 };
           return (
             <motion.div
               key={s.slug}
