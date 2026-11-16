@@ -1,24 +1,12 @@
 {
   "name": "usman-nadeem-portfolio",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
+  "description": "Usman Nadeem's portfolio: a static site in site/, built by research/usman-vs/build_me.py.",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@elevenlabs/client": "^1.36.0",
-    "@phosphor-icons/react": "^2.1.10",
-    "motion": "^14.0.0",
-    "next": "^16.2.10",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "serve": "npx -y serve site"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.19",
-    "postcss": "^8.4.39",
-    "tailwindcss": "^3.4.4"
+    "@elevenlabs/client": "^1.36.0"
   }
 }

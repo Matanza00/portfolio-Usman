@@ -1,0 +1,41 @@
+# Usman Nadeem
+
+> Usman Nadeem is a senior full-stack developer in Kalispell, Montana. 11 live sites, 11 case studies: SaaS platforms, Three.js 3D websites, mobile apps and AI automation.
+
+Email usmannadeem3621@gmail.com. LinkedIn https://www.linkedin.com/in/usmannadeem-dev. Company: https://nxcsol.com
+
+## Live sites
+
+- [Resham](https://resham-ruby.vercel.app): A store for hand-embroidered womenswear: a silk dupatta that moves with your cursor, a shop-the-look outfit picker and Noor, a voice assistant who can offer a discount.
+- [system-arch, a Claude Code skill](https://nxcsol.com/claude-skills/): A Claude Code skill that turns a one-line product idea into a researched system architecture: market scan, live pricing, C4 diagrams, a data model and a runbook.
+- [anime.support](https://anime.support): An anime news site that runs itself: a bot reads the feeds every two hours, drafts original stories with artwork, and publishes the ones I approve.
+- [Dr Solar](https://nxcsol.com/work/dr-solar/): A Shopify store for a solar installer: a house that switches from day to night, a system-size calculator and the whole site in English, Urdu and Roman Urdu.
+- [Kesh Atelier](https://kesh-atelier.vercel.app): A hair salon site with scroll-scrubbed film, a before-and-after slider, online booking and Ava, a voice receptionist that takes calls in the browser.
+- [NXCSOL](https://nxcsol.com): The site for my software company, built like a code editor: a file explorer for pages, a terminal, a Claude-powered agent and a first-party heatmap.
+- [Portal Rewards](https://portal-rewards.vercel.app): A 3D landing page for a loyalty platform. Fly through the portal, flip the coin, try the wallet demo and estimate a brand's revenue.
+- [The Derma Club](https://dermaclub.vercel.app): A 31-page rebrand for a Mississauga skin clinic, with 20 treatment pages, a financing calculator and its own online booking system.
+- [Atomic Muscles](https://atomic-muscles.vercel.app): A scroll-driven 3D store for a supplement brand: pinned video scenes, a three.js particle layer, product viewers and Shopify checkout.
+- [Horizon Analytical](https://directpeptide-test.vercel.app): A virtual lab you walk into: the doors slide open on a full 3D lab built in Three.js, as the front door for a research supplier.
+- [HRMS](https://nxcsol.com/products/hrms/): HR, payroll and accounts for small teams: QR check-in attendance, leave, payslips and owner reports, from $10 a month. Shown with demo data.
+- [iFund](https://www.ifund.realestate): A funding marketplace for property and business loans. Borrowers post what they need, every lender match is scored, and both sides close inside the app.
+- [Obyect](https://www.obyect.io): An ad-insights platform for DTC brands: a curated library of top static ads, boards, creative requests and an admin side for the strategists.
+- [Subyect](https://www.subyect.com): The site for a static-ad creative agency: a scroll-driven story of their method, their client results and their in-house ad library.
+
+## Case studies
+
+- [The Derma Club Clinic Website and Online Booking](https://usmannadeem.vercel.app/work/dermaclub/): A 31-page website rebrand for a Mississauga skin clinic, with 20 treatment pages, a 51-product shop and an online booking system built to replace Jane.
+- [Obyect AI Ad-Insights SaaS Platform](https://usmannadeem.vercel.app/work/obyect/): How we built Obyect, a curated library of 2,400+ winning DTC ads with boards, creative requests, admin curation and analytics on React and Supabase.
+- [Dr Solar 3D Scroll Website and Shopify Theme](https://usmannadeem.vercel.app/work/dr-solar/): A scroll-driven website for a solar installer: one house turns from day to night while the power runs through it, with a sizing calculator on a Shopify theme.
+- [Atomic Muscles 3D E-commerce Store (Three.js)](https://usmannadeem.vercel.app/work/atomic-muscles/): Case study: a scroll-driven Three.js storefront for a supplement brand, with 3D product viewers, Shopify checkout and English and Urdu support.
+- [Fleet Management Software for 580+ Vehicles](https://usmannadeem.vercel.app/work/fleet-management-system/): A custom fleet management system tracking 580+ vehicles across 12+ cities, with live tracking, fuel anomaly flags, maintenance and role-based access.
+- [iFund Real Estate Funding App (React Native)](https://usmannadeem.vercel.app/work/ifund/): A two-sided iOS and Android marketplace for property funding: scored lender matches, a leads pipeline, in-app chat, Face ID and subscriptions.
+- [GaragePal Auto-Service App and Garage Dashboard](https://usmannadeem.vercel.app/work/garagepal/): An auto-service marketplace in Canada and Qatar: a driver app to find, book and track garage services, plus a web dashboard for garage owners.
+- [Facility Management Software Case Study](https://usmannadeem.vercel.app/work/facility-management-system/): A facility management system for the SaudiPak tower: complaints, job slips, tenants, plant-room logs and CCTV for 260+ users across 6 roles.
+- [Karighar Home-Services Booking App UI/UX](https://usmannadeem.vercel.app/work/karighar/): A home-services app redesign: book verified plumbers and electricians, track them on a live map and pay cash, in a calm light and dark interface.
+- [ZestLead Real Estate Lead Marketplace SaaS](https://usmannadeem.vercel.app/work/zestlead/): A SaaS marketplace where real estate agents preview, buy and manage property leads, with audio previews, Stripe subscriptions and an admin panel.
+- [Subyect Creative Agency Website (Next.js)](https://usmannadeem.vercel.app/work/subyect/): A scroll-driven Next.js and Framer Motion website for a DTC static-ad agency, telling its method, its named client results and its in-house ad library.
+
+## Pages
+
+- [About](https://usmannadeem.vercel.app/about/)
+- [Contact](https://usmannadeem.vercel.app/contact/)

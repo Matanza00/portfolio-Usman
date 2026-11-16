@@ -2,133 +2,73 @@
 
 # Usman Nadeem: Portfolio
 
-**Senior full-stack developer.** I build websites and apps people use every day.
+**Senior full-stack developer.** I build products end to end.
 
 ### [Visit the live site](https://usmannadeem.vercel.app)
 
-![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
-![React](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-06B6D4?logo=tailwindcss&logoColor=white)
-![Motion](https://img.shields.io/badge/Motion-14-FFF312?logo=framer&logoColor=black)
-![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?logo=vercel&logoColor=white)
-
-<img src="docs/screenshots/home.jpg" alt="Home page: the headline 'I build websites and apps people use every day' beside a deck of live-site cards, with Resham on top" width="100%">
+<img src="docs/screenshots/home.jpg" alt="Home page inside a VS Code style editor: the Explorer lists pages, live sites and case studies as files, and the hero reads 'I build products end to end' beside a usman.config.ts file" width="100%">
 
 </div>
 
 ## About this site
 
-My portfolio: every site I have running on the web, and case studies for the products I designed and built. The page is light and quiet, and the colour comes from the work itself. Things move when you touch them, not on their own.
+My portfolio, built inside the same VS Code frame as [nxcsol.com](https://nxcsol.com), my software company's site. The pages are files in an Explorer, every page you open stays as a tab, and there is a working terminal, a command palette, a minimap and a status bar. Pages change under a slash without reloading.
 
-## Live sites
+## What is on it
 
 <table>
   <tr>
     <td width="50%" valign="top">
-      <img src="docs/screenshots/home.jpg" alt="The hero deck of live sites">
-      <br><b>A deck of live sites</b>
-      <br><sub>Drag the top card away, tap it, use the arrows or your keyboard. The caption and the link follow the card.</sub>
-    </td>
-    <td width="50%" valign="top">
-      <img src="docs/screenshots/live-sites.jpg" alt="Live on the web: filter chips and site cards with browser frames">
+      <img src="docs/screenshots/live-sites.jpg" alt="Live on the web: filter chips and live-site windows">
       <br><b>Live on the web</b>
-      <br><sub>Move across a screenshot to scrub down the real page; on a phone, tap to step. Filter by 3D, business sites, web apps, or AI and agents. The filter is kept in the URL.</sub>
-    </td>
-  </tr>
-</table>
-
-The 14 sites are listed in `lib/live.js`: Resham, the system-arch Claude Code skill, anime.support, Dr Solar, Kesh Atelier, NXCSOL, Portal Rewards, The Derma Club, Atomic Muscles, Horizon Analytical, HRMS, iFund, Obyect and Subyect.
-
-## Me, and a voice assistant
-
-- **The photo** in About leans toward the pointer, and a tap repaints the wall behind me from navy to grey (and back) in a circle that grows from where you touched. Scrolling past, the photo drifts inside its frame.
-- **The voice assistant** is an ElevenLabs agent (`lib/voice.js`, `components/pf/VoiceDock.js`). Start it from the dock in the corner, the About section or Contact. It talks about my work and moves the page while it talks: it can scroll to a section, filter the live sites and open a case study. Its allowlist only accepts this site's domain. While it talks, a ring around my photo moves with its voice.
-- **Scroll moments:** a progress line under the header, screens that tip back and settle flat as they come up the page, and process steps whose rule draws across. They use CSS scroll timelines and are skipped with reduced motion.
-
-## Case studies
-
-<table>
-  <tr>
-    <td width="50%" valign="top">
-      <img src="docs/screenshots/case-list.jpg" alt="Case study list with a preview of Atomic Muscles following the cursor">
-      <br><b>The list</b>
-      <br><sub>Hover a project and its main screen follows the cursor. On a phone each row carries a thumbnail.</sub>
+      <br><sub>Fourteen sites running right now. Move across a screenshot to scrub down the real page, tap to step through, filter by 3D, business sites, web apps or AI.</sub>
     </td>
     <td width="50%" valign="top">
-      <img src="docs/screenshots/case-study.jpg" alt="Karighar case study: name, overview, facts and three phones on the project's dark green">
-      <br><b>A case study</b>
-      <br><sub>The overview, the facts, and the product on its own colour. The devices rise in once when the page opens.</sub>
+      <img src="docs/screenshots/case-study.jpg" alt="Fleet Management System case study">
+      <br><b>Case studies</b>
+      <br><sub>Eleven products, each with the problem, the stack and why, the people who use it, and every screen.</sub>
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <img src="docs/screenshots/case-features.jpg" alt="A feature with its lines on the left and the matching phone screen on the right">
-      <br><b>Features you can click</b>
-      <br><sub>Each feature line is a button. Pick one, or hover it, and the screen beside it changes to match.</sub>
+      <img src="docs/screenshots/experience.jpg" alt="Experience as a git log">
+      <br><b>Experience as a git log</b>
+      <br><sub>Every role as a commit, the numbers as a passing test run, and the skills as a package.json.</sub>
     </td>
     <td width="50%" valign="top">
-      <img src="docs/screenshots/case-screens.jpg" alt="The screen viewer showing the Fleet live-tracking screen with thumbnails below">
-      <br><b>Every screen</b>
-      <br><sub>One viewer for every screen: arrows, thumbnails, the keyboard or a swipe. Palette swatches copy their colour when tapped.</sub>
+      <img src="docs/screenshots/about.jpg" alt="About page with the photo">
+      <br><b>About</b>
+      <br><sub>Tap the photo to repaint the wall behind me. The voice assistant (an ElevenLabs agent) talks about my work and opens pages while it talks.</sub>
     </td>
   </tr>
 </table>
-
-## On a phone
 
 <p align="center">
   <img src="docs/screenshots/mobile-home.jpg" alt="Home page on a phone" width="30%">
   <img src="docs/screenshots/mobile-live.jpg" alt="Live sites on a phone" width="30%">
-  <img src="docs/screenshots/mobile-case.jpg" alt="iFund case study on a phone" width="30%">
 </p>
 
-## Tech stack
+Try the terminal: <kbd>Ctrl</kbd> + <kbd>`</kbd>, then `help`, `ls`, `open fleet-management-system`, `whoami`. <kbd>Ctrl</kbd> + <kbd>K</kbd> opens the command palette and <kbd>Ctrl</kbd> + <kbd>B</kbd> toggles the Explorer.
 
-| Area | Tools |
-| --- | --- |
-| Framework | Next.js 16 (App Router, static prerender), React 19 |
-| Animation | Motion: springs, drag and presence, only in answer to what you do |
-| Styling | Tailwind CSS 3 and `app/pf.css` |
-| Type and icons | Bricolage Grotesque (its width and optical-size axes), Phosphor Icons |
-| Hosting | Vercel |
+## How it is built
 
-Reduced motion is respected everywhere: the deck and the case-study devices stop animating and every screen still shows.
+The site in `site/` is static HTML, CSS and JavaScript, prerendered page by page. Vercel serves it as it is (see `vercel.json`); there is no build step on Vercel.
 
-## Run it locally
-
-You need Node.js 20 or newer.
-
-```bash
-npm install
-npm run dev
-```
-
-Then open http://localhost:3000. For a production build, run `npm run build` and then `npm run start`.
-
-Every push to the `main` branch redeploys the site on Vercel.
-
-## Editing the content
+It is generated by `research/usman-vs/build_me.py` in my workspace, a fork of the generator behind nxcsol.com:
 
 | What | Where |
 | --- | --- |
-| Live sites: name, link, status, filters, stack, screenshots | `lib/live.js` and `public/live/<slug>/f1.webp` to `f4.webp` (1200x750) |
-| Case studies: overview, problems, process, features, screens, palette, fonts | `lib/caseStudies.js` and `public/work/<project>/` |
-| About text, skills, experience, education | `lib/profile.js` |
-| Site address, email, phone, social links | `lib/site.js` |
+| Live sites, experience, education, skills, contact details | `research/usman-vs/me.data.js` |
+| Home, live sites, about, contact pages | `research/usman-vs/me.views.js` |
+| The VS Code frame: Explorer, tabs, terminal, status bar | `research/usman-vs/vs.views.js`, `vs.client.js` |
+| Case studies | `research/usman-vs/cs.data.js`, `why.data.js` |
+| Scrub, photo and voice assistant | `research/usman-vs/me.live.js`, `me.voice.mjs`, `me.css` |
+| Live-site screenshots and my photo | `public/live/<slug>/`, `public/me/` |
 
-## Project structure
-
-```text
-app/                  home page, layout, pf.css, and /work (case-study index and pages)
-components/pf/        header, deck, live sites, case list, case-study parts, frames, sections
-lib/                  live sites, case studies, profile, site settings, screenshot helpers
-public/live/          screenshots taken down each live site
-public/work/          app screens and captures for the case studies
-docs/screenshots/     images used in this README
-```
+Rebuild with `python build_me.py`, then commit `site/`. Every push to `main` redeploys.
 
 ## Contact
 
-- **Email:** [usmannadeem3621@gmail.com](mailto:usmannadeem3621@gmail.com)
 - **LinkedIn:** [usmannadeem-dev](https://www.linkedin.com/in/usmannadeem-dev)
 - **GitHub:** [Matanza00](https://github.com/Matanza00)
+- Email and phone are on the [contact page](https://usmannadeem.vercel.app/contact/).

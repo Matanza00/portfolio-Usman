@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://usmannadeem.vercel.app/sitemap.xml
